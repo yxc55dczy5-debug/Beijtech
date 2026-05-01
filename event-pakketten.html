@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bruiloftpakketten – BeijTech | Licht, Geluid & DJ voor jouw Bruiloft</title>
+    <meta name="description" content="Bekijk de bruiloftpakketten van BeijTech: Sound & Light Essentials, DJ Experience, Memories In Focus en het Dream Wedding Package. Vanaf €445 ex. BTW.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .header-gradient { background: linear-gradient(90deg, #C9A028 0%, #E2C84E 40%, #F0DC94 80%, #F8F0C0 100%); }
+        .hero-gradient   { background: linear-gradient(135deg, #C9A028 0%, #E0CB60 50%, #F0DC94 100%); }
+        .cta-gradient    { background: linear-gradient(135deg, #C9A028 0%, #DFC048 60%, #EDD570 100%); }
+
+        @keyframes blob-a {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%     { transform: translate(18px,-14px) scale(1.05); }
+            66%     { transform: translate(-10px,10px) scale(0.97); }
+        }
+        @keyframes blob-b {
+            0%,100% { transform: translate(0,0) scale(1); }
+            40%     { transform: translate(-20px,12px) scale(1.04); }
+            70%     { transform: translate(14px,-8px) scale(0.98); }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .blob-a    { animation: blob-a 8s ease-in-out infinite; }
+        .blob-b    { animation: blob-b 11s ease-in-out infinite; }
+        .spin-slow { animation: spin-slow 20s linear infinite; }
+
+        /* Package card */
+        .pakket-card {
+            background: #fff;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pakket-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 56px rgba(0,0,0,0.13);
+        }
+
+        /* Feature checkmark */
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            margin-bottom: 0.625rem;
+        }
+        .check-icon {
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #C9A028;
+            margin-top: 1px;
+        }
+
+        /* Price badge */
+        .price-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1a1a1a;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+        }
+
+        /* Dream Wedding premium styling */
+        .premium-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- ========= HEADER ========= -->
+    <header class="header-gradient sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center select-none">
+                <span class="text-2xl font-black tracking-tight leading-none">
+                    <span class="text-black">BEIJ</span><span class="bg-black text-[#C9A028] px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black hover:text-amber-900 transition-colors">Home</a>
+                <a href="over-ons.html" class="text-black hover:text-amber-900 transition-colors">Over Ons</a>
+
+                <div class="group relative">
+                    <button class="flex items-center gap-1 text-black hover:text-amber-900 transition-colors py-1 cursor-default underline underline-offset-4 decoration-black/30">
+                        Diensten
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="absolute left-0 top-full pt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
+                        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                            <a href="diensten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
+                                <span class="w-7 h-7 bg-black/6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                                </span>
+                                IT
+                            </a>
+                            <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                            <div class="group/ev relative">
+                                <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-7 h-7 bg-[#C9A028]/12 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3.5 h-3.5 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                                        </span>
+                                        Events
+                                    </div>
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                                <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/ev:visible group-hover/ev:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
+                                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                                        <a href="event-pakketten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-[#C9A028] hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">💍</span> Bruiloftpakketten
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="contact.html"     class="text-black hover:text-amber-900 transition-colors">Contact</a>
+                <a href="verhuurshop.html" class="text-black hover:text-amber-900 transition-colors">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-2.5 px-5 rounded-xl hover:scale-105 transition-all inline-flex items-center gap-1.5 shadow-md whitespace-nowrap text-[14px]">
+                    ✨ Offerte Aanvragen
+                </a>
+            </nav>
+
+            <button id="menu-btn" aria-label="Menu openen" class="md:hidden p-1">
+                <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden px-5 pb-5 border-t border-black/10 mt-1 pt-3">
+            <div class="flex flex-col gap-0.5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Home</a>
+                <a href="over-ons.html" class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Over Ons</a>
+                <div>
+                    <button id="mob-diensten-btn" class="w-full flex items-center justify-between text-black py-2 px-3 rounded-xl hover:bg-black/5">
+                        Diensten
+                        <svg id="mob-diensten-arrow" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="mob-diensten-sub" class="hidden pl-3 mt-1 mb-1 space-y-0.5 border-l-2 border-[#C9A028]/40 ml-3">
+                        <a href="diensten.html" class="block text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">IT</a>
+                        <div>
+                            <button id="mob-events-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
+                                Events
+                                <svg id="mob-events-arrow" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div id="mob-events-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-[#C9A028]/20 ml-3">
+                                <a href="event-pakketten.html" class="block text-[#C9A028] font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💍 Bruiloftpakketten</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="contact.html"     class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Contact</a>
+                <a href="verhuurshop.html" class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="mt-2 text-black font-black py-3 px-5 rounded-xl inline-flex items-center gap-2 shadow-md justify-center text-[14px]">
+                    ✨ Offerte Aanvragen
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========= HERO ========= -->
+    <section class="hero-gradient relative overflow-hidden min-h-[52vh] flex items-center justify-center text-center">
+        <div class="blob-a absolute -top-12 -left-12 w-72 h-72 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="blob-b absolute -bottom-8 right-0 w-96 h-96 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="blob-a absolute top-1/3 left-1/3 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" style="animation-delay:-3s"></div>
+
+        <div class="spin-slow absolute top-14 right-16 w-12 h-12 opacity-20 pointer-events-none hidden md:block">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 4 L26 20 L40 24 L26 28 L24 44 L22 28 L8 24 L22 20 Z" fill="#1a1a1a"/></svg>
+        </div>
+        <div class="spin-slow absolute bottom-20 left-14 w-7 h-7 opacity-15 pointer-events-none hidden md:block" style="animation-direction:reverse;animation-duration:14s">
+            <svg viewBox="0 0 28 28" fill="none"><path d="M14 2 L15.5 11 L24 14 L15.5 17 L14 26 L12.5 17 L4 14 L12.5 11 Z" fill="#1a1a1a"/></svg>
+        </div>
+
+        <div class="relative px-6 py-24">
+            <div class="inline-flex items-center gap-2 bg-black/12 text-black font-semibold text-sm px-5 py-2 rounded-full mb-7 border border-black/10">
+                <span>💍</span> Jullie grote dag, onze grootste zorg
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-black mb-5 leading-[1.05]">
+                Bruiloft
+                <span class="bg-black text-[#C9A028] px-3 py-1 inline-block rotate-1 rounded-lg">Pakketten</span>
+            </h1>
+            <p class="text-black/65 text-lg md:text-xl max-w-xl mx-auto leading-relaxed">
+                Van sfeervol licht en kristalhelder geluid tot een top DJ en professionele fotografie — wij regelen het allemaal.
+            </p>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 leading-none">
+            <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+                <path d="M0,35 C300,70 900,0 1440,40 L1440,70 L0,70 Z" fill="white"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ========= INTRO ========= -->
+    <section class="bg-white py-16 px-6 relative overflow-hidden">
+        <div class="blob-a absolute -right-20 top-0 w-72 h-72 pointer-events-none" style="background: radial-gradient(circle, #FBF4D8 60%, transparent 100%); opacity: 0.7;"></div>
+
+        <div class="max-w-2xl mx-auto text-center relative">
+            <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Jullie Bruiloft, Onze Zorg</p>
+            <h2 class="text-4xl md:text-5xl font-black text-black mb-6 leading-tight">
+                Jullie
+                <span class="relative inline-block">
+                    Bruiloft,
+                    <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 150 10" fill="none" preserveAspectRatio="none">
+                        <path d="M3,7 Q38,2 75,7 Q112,12 147,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </span>
+                Onze Zorg
+            </h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-6">
+                <strong>Onze belofte:</strong> Kwaliteit, professionaliteit en totale ontzorging. Laat ons de techniek en entertainment regelen, zodat jullie volop kunnen genieten van elk magisch moment.
+            </p>
+            <p class="text-gray-500 text-base leading-relaxed">
+                Benieuwd naar de mogelijkheden? Bekijk hieronder onze verschillende pakketten of neem direct contact met ons op!
+            </p>
+        </div>
+    </section>
+
+    <!-- ========= BEIJTECH EVENTS ========= -->
+    <div class="leading-none bg-white">
+        <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70 Z" fill="#FBF4D8"/>
+        </svg>
+    </div>
+
+    <section class="px-6 py-14" style="background-color: #FBF4D8;">
+        <div class="max-w-2xl mx-auto relative">
+            <!-- Decoratief blob links -->
+            <div class="absolute -left-32 top-0 w-64 h-64 rounded-full pointer-events-none hidden md:block" style="background: radial-gradient(circle, #F0DC94 50%, transparent 100%); opacity: 0.5;"></div>
+
+            <div class="relative text-center">
+                <h2 class="text-3xl md:text-4xl font-black text-black mb-5">
+                    BeijTech <span class="text-[#C9A028]">Events</span>
+                </h2>
+                <p class="text-gray-600 text-[15px] leading-relaxed mb-5">
+                    Jullie bruiloft moet perfect zijn – en daar helpen wij graag bij! BeijTech biedt alles wat nodig is om jullie grote dag onvergetelijk te maken. Van sfeervol licht en kristalhelder geluid tot een top DJ en zelfs professionele fotografen. Willen jullie alleen een DJ of juist alleen licht en geluid? Geen probleem! Al onze diensten zijn los of als compleet pakket af te nemen.
+                </p>
+                <div class="rounded-2xl px-6 py-5 text-left border-l-4 border-[#C9A028]" style="background: rgba(255,255,255,0.7);">
+                    <p class="text-gray-700 text-[15px] leading-relaxed">
+                        <strong class="text-black">Het grote voordeel:</strong> BeijTech is jullie enige aanspreekpunt voor al deze diensten. Dit betekent korte lijntjes, heldere communicatie en een naadloze organisatie. Of jullie nu dromen van een intieme setting met warme verlichting of een groots feest met professionele showeffecten — wij denken altijd met jullie mee.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= BASISPAKKETTEN LABEL ========= -->
+    <div class="leading-none" style="background-color: #FBF4D8;">
+        <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,35 C480,0 960,70 1440,35 L1440,70 L0,70 Z" fill="white"/>
+        </svg>
+    </div>
+
+    <div class="bg-white pt-10 pb-4 text-center px-6">
+        <div class="inline-flex items-center gap-3 text-gray-400 text-sm font-bold tracking-widest uppercase">
+            <div class="h-px w-12 bg-gray-200"></div>
+            Basispakketten
+            <div class="h-px w-12 bg-gray-200"></div>
+        </div>
+    </div>
+
+    <!-- ========= PAKKETTEN ========= -->
+    <section class="bg-white px-6 pb-20">
+        <div class="max-w-3xl mx-auto space-y-8">
+
+            <!-- ── 1. Sound & Light Essentials ── -->
+            <div class="pakket-card">
+                <!-- Foto placeholder -->
+                <div class="w-full h-52 bg-gray-900 flex items-center justify-center overflow-hidden relative">
+                    <!-- Vervang door: <img src="images/sound-light.jpg" alt="Sound & Light" class="w-full h-full object-cover"> -->
+                    <div class="text-center text-gray-600">
+                        <svg class="w-12 h-12 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                        <p class="text-gray-500 text-xs">Foto: Sound & Light sfeer</p>
+                    </div>
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-[#C9A028] text-black text-xs font-black px-3 py-1 rounded-full">Basispakket</span>
+                    </div>
+                </div>
+
+                <div class="p-7">
+                    <p class="text-[#C9A028] italic font-semibold text-sm mb-2">De Basis Voor Een Magisch Huwelijksfeest</p>
+                    <h3 class="text-2xl md:text-3xl font-black text-black mb-4 leading-tight">Sound & Light Essentials</h3>
+                    <p class="text-gray-500 text-[15px] leading-relaxed mb-6">
+                        Een bruiloft is niet compleet zonder de juiste sfeer. Met ons <strong class="text-black">Sound & Light Essentials-pakket</strong> zorgen wij ervoor dat jullie trouwdag de perfecte ambiance krijgt. Denk aan kristalhelder geluid voor de mooiste speeches en sfeervolle verlichting die de ruimte omtovert tot een romantische of feestelijke setting.
+                    </p>
+
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Professioneel geluidssysteem</strong> – Heldere en genoeg audio voor speeches en het feest</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Sfeervolle verlichting</strong> – Passend en genoeg licht voor elk moment</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Complete installatie & afstemming</strong> – Wij verzorgen opbouw, afstemming en bediening</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Passend maken</strong> – Wij zorgen dat jouw event volledig passend is qua geluid en licht</span>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray-500 text-sm leading-relaxed mb-7 p-4 rounded-xl" style="background-color: #FBF4D8;">
+                        Bij <strong class="text-black">BeijTech</strong> weten we dat geluid en licht de sfeer maken of breken. Daarom zorgen wij niet alleen voor de beste apparatuur, maar ook voor een vlekkeloze uitvoering. Willen jullie een DJ of andere diensten? Dat kan! Dit pakket is eenvoudig uit te breiden naar jullie wensen.
+                    </p>
+
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <span class="price-badge">Vanaf €445 <span class="font-normal text-gray-400 text-sm">ex. BTW</span></span>
+                        <a href="contact.html#offerte" class="bg-black text-white font-bold py-3 px-7 rounded-full hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-md">
+                            Offerte Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 2. DJ Experience ── -->
+            <div class="pakket-card">
+                <!-- Dubbele foto's (gestapeld) -->
+                <div class="relative h-64 overflow-hidden bg-gray-800">
+                    <!-- Vervang door echte foto's -->
+                    <div class="absolute top-3 right-3 w-2/3 h-36 bg-gray-700 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg">
+                        <p class="text-gray-500 text-xs text-center px-2">Foto: Bruiloft dansfeest</p>
+                    </div>
+                    <div class="absolute bottom-3 left-3 w-2/3 h-44 bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center shadow-xl">
+                        <svg class="w-10 h-10 opacity-20 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+                    </div>
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-[#C9A028] text-black text-xs font-black px-3 py-1 rounded-full">Basispakket</span>
+                    </div>
+                </div>
+
+                <div class="p-7">
+                    <p class="text-[#C9A028] italic font-semibold text-sm mb-2">De Perfecte Genre Voor Jullie Bruiloft</p>
+                    <h3 class="text-2xl md:text-3xl font-black text-black mb-4 leading-tight">DJ Experience</h3>
+                    <p class="text-gray-500 text-[15px] leading-relaxed mb-6">
+                        Geen bruiloft is compleet zonder een geweldige sfeer op de dansvloer. Met ons <strong class="text-black">DJ Experience-pakket</strong> zorgen wij voor een top DJ die precies weet hoe hij jullie gasten aan het dansen krijgt. Van romantische openingsdansen tot feestelijke knallers, de muziek wordt volledig afgestemd op jullie wensen.
+                    </p>
+
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Professionele DJ</strong> – Ervaren DJ die inspeelt op sfeer en wensen <span class="text-gray-400 text-sm">(op basis van 4 uur)</span></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Muzikale afstemming</strong> – Alle muziek totaal afgestemd op jullie feest <span class="text-gray-400 text-sm">(1 gesprek voor het feest)</span></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Vertrouwd aanspreekpunt</strong> – Wij regelen alles met de DJ van muziek tot tijden</span>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray-500 text-sm leading-relaxed mb-7 p-4 rounded-xl" style="background-color: #FBF4D8;">
+                        Bij <strong class="text-black">BeijTech</strong> brengen onze DJ's de energie, sfeer en ervaring die jullie feest verdienen. We overleggen vooraf over muziekstijlen en speciale nummers. Geen standaard afspeellijsten, maar een beleving op maat! Extra wensen zoals een andere act of lichteffecten? Dit pakket is eenvoudig uit te breiden.
+                    </p>
+
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <span class="price-badge">Vanaf €455 <span class="font-normal text-gray-400 text-sm">ex. BTW</span></span>
+                        <a href="contact.html#offerte" class="bg-black text-white font-bold py-3 px-7 rounded-full hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-md">
+                            Offerte Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── 3. Memories In Focus ── -->
+            <div class="pakket-card">
+                <div class="w-full h-52 bg-gray-800 flex items-center justify-center relative">
+                    <!-- Vervang door: <img src="images/fotografie.jpg" alt="Trouwfotografie" class="w-full h-full object-cover"> -->
+                    <div class="text-center text-gray-600">
+                        <svg class="w-12 h-12 mx-auto mb-2 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+                        <p class="text-gray-500 text-xs">Foto: Trouwfotografie</p>
+                    </div>
+                    <div class="absolute top-3 left-3">
+                        <span class="bg-[#C9A028] text-black text-xs font-black px-3 py-1 rounded-full">Basispakket</span>
+                    </div>
+                </div>
+
+                <div class="p-7">
+                    <p class="text-[#C9A028] italic font-semibold text-sm mb-2">Leg Jullie Mooiste Momenten Vast</p>
+                    <h3 class="text-2xl md:text-3xl font-black text-black mb-4 leading-tight">Memories In Focus</h3>
+                    <p class="text-gray-500 text-[15px] leading-relaxed mb-6">
+                        Een bruiloft is een dag vol liefde, emoties en onvergetelijke momenten. Met ons <strong class="text-black">Memories In Focus-pakket</strong> zorgen wij ervoor dat al die bijzondere herinneringen professioneel worden vastgelegd. Van de eerste blik tot de laatste dans — elk detail vastgelegd, zodat jullie nog jaren kunnen nagenieten.
+                    </p>
+
+                    <ul class="space-y-2.5 mb-6">
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Professionele fotograaf</strong> – Ervaren trouwfotograaf voor spontane en pure momenten <span class="text-gray-400 text-sm">(op basis van 6 uur)</span></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Hoogwaardige fotobewerking</strong> – Perfect nabewerkte beelden voor een tijdloze herinnering</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Mogelijkheid tot videografie</strong> – Optioneel videograaf voor een complete bruiloftsfilm <span class="text-gray-400 text-sm">(vanaf €495,-)</span></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Digitale galerij & albumopties</strong> – Alle beelden digitaal incl. mini sfeer/fotoalbum van max 10 pagina's</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="check-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-700"><strong class="text-black">Optionele second shooter</strong> – 4 ogen zien meer dan twee. Dezelfde situaties vanuit meerdere hoeken <span class="text-gray-400 text-sm">(vanaf €495,-)</span></span>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray-500 text-sm leading-relaxed mb-7 p-4 rounded-xl" style="background-color: #FBF4D8;">
+                        Bij <strong class="text-black">BeijTech</strong> zijn onze fotografen en videografen specialisten in het vastleggen van emoties en spontane momenten. We werken onopvallend en creëren beelden die de sfeer perfect weergeven. Geen geforceerde poses, maar échte herinneringen. Extra wensen zoals dronebeelden of second shooter? Dit pakket is eenvoudig uit te breiden.
+                    </p>
+
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <span class="price-badge">Vanaf €745 <span class="font-normal text-gray-400 text-sm">ex. BTW</span></span>
+                        <a href="contact.html#offerte" class="bg-black text-white font-bold py-3 px-7 rounded-full hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-md">
+                            Offerte Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========= PREMIUM PAKKET ========= -->
+    <div class="leading-none bg-white">
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#111"/>
+        </svg>
+    </div>
+
+    <section class="bg-[#111] px-6 py-16 relative overflow-hidden">
+        <!-- Gouden gloed -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background: radial-gradient(circle, rgba(201,160,40,0.15) 0%, transparent 70%);"></div>
+
+        <div class="max-w-3xl mx-auto">
+            <!-- Label -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-3 text-gray-600 text-sm font-bold tracking-widest uppercase">
+                    <div class="h-px w-12 bg-gray-700"></div>
+                    Totaalpakket
+                    <div class="h-px w-12 bg-gray-700"></div>
+                </div>
+            </div>
+
+            <div class="rounded-3xl overflow-hidden border border-[#C9A028]/30 relative" style="background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);">
+                <!-- "Meest gekozen" badge -->
+                <div class="absolute top-5 right-5 z-10">
+                    <span style="background: linear-gradient(135deg, #C9A028, #E8C830);" class="text-black text-xs font-black px-3 py-1.5 rounded-full shadow-lg">⭐ Meest gekozen</span>
+                </div>
+
+                <!-- Foto -->
+                <div class="w-full h-56 bg-gray-900 flex items-center justify-center relative overflow-hidden">
+                    <!-- Vervang door: <img src="images/dream-wedding.jpg" alt="Dream Wedding" class="w-full h-full object-cover opacity-70"> -->
+                    <div class="text-center text-gray-600 relative z-10">
+                        <svg class="w-14 h-14 mx-auto mb-2 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        <p class="text-gray-600 text-xs">Foto: Dream Wedding sfeer</p>
+                    </div>
+                    <!-- Gouden overlay gradient -->
+                    <div class="absolute inset-0" style="background: linear-gradient(to top, #1e1e1e 0%, transparent 50%);"></div>
+                </div>
+
+                <div class="p-7 md:p-10">
+                    <p class="text-[#C9A028] italic font-semibold text-sm mb-2">De Ultieme Totaalbeleving</p>
+                    <h3 class="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">Dream Wedding Package</h3>
+                    <p class="text-gray-400 text-[15px] leading-relaxed mb-7">
+                        Op jullie grote dag willen jullie maar één ding: zorgeloos genieten. Met ons <strong class="text-white">Dream Wedding Package</strong> nemen wij alle technische en entertainmentzaken uit handen, zodat alles tot in de puntjes geregeld is. Van sfeervolle verlichting en perfect geluid tot een top DJ – wij zorgen voor de ultieme totaalbeleving.
+                    </p>
+
+                    <ul class="space-y-3 mb-7">
+                        <li class="feature-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-300"><strong class="text-white">Professioneel geluidssysteem</strong> – Heldere en genoeg audio voor speeches en het feest</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-300"><strong class="text-white">Sfeervolle verlichting</strong> – Passend en genoeg licht voor elk moment</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-300"><strong class="text-white">Professionele DJ</strong> – Ervaren DJ die inspeelt op sfeer en wensen <span class="text-gray-500 text-sm">(op basis van 4 uur)</span></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-300"><strong class="text-white">Op maat gemaakt</strong> – Jullie feest precies naar jullie wensen, altijd genoeg licht en geluid</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[15px] text-gray-300"><strong class="text-white">Complete installatie & afstemming</strong> – Wij verzorgen opbouw, afstemming en bediening</span>
+                        </li>
+                    </ul>
+
+                    <p class="text-gray-500 text-sm leading-relaxed mb-8 p-4 rounded-xl border border-[#C9A028]/20" style="background: rgba(201,160,40,0.05);">
+                        Jullie trouwdag draait om liefde, emotie en beleving. Met ons <strong class="text-white">Dream Wedding Package</strong> zorgen wij voor een naadloze ervaring waarbij alles technisch en visueel op elkaar is afgestemd. Eén aanspreekpunt, één perfect georganiseerde dag. Hebben jullie extra wensen zoals een videograaf of speciale showeffecten? Dit pakket is eenvoudig uit te breiden.
+                    </p>
+
+                    <div class="flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                            <div class="text-gray-500 text-xs mb-1 uppercase tracking-wider">Prijs</div>
+                            <div class="text-2xl font-black text-white">Vanaf €895 <span class="text-gray-500 font-normal text-base">ex. BTW</span></div>
+                        </div>
+                        <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-3.5 px-8 rounded-full hover:scale-105 transition-all inline-flex items-center gap-2 shadow-xl text-[15px]">
+                            ✨ Offerte Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= CTA ========= -->
+    <div class="leading-none bg-[#111]">
+        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,30 C480,90 960,0 1440,50 L1440,80 L0,80 Z" fill="#C9A028"/>
+        </svg>
+    </div>
+
+    <section class="cta-gradient relative py-20 px-6 text-center overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-2xl mx-auto relative">
+            <p class="text-black/60 italic font-semibold mb-3">Iets Op Maat?</p>
+            <h2 class="text-4xl md:text-5xl font-black text-black mb-4 leading-tight">
+                Geen Pakket Dat Past?
+            </h2>
+            <p class="text-black/65 text-lg mb-10">Wij maken graag een offerte op maat. Vertel ons wat jullie willen en wij regelen de rest!</p>
+            <a href="contact.html#offerte" class="bg-black text-white font-bold py-4 px-10 rounded-2xl text-base hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-xl">
+                Offerte Op Maat Aanvragen
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========= FOOTER ========= -->
+    <footer class="bg-black text-white py-14 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                <div>
+                    <div class="text-2xl font-black mb-4 leading-none">
+                        <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mt-4">Jouw alles-in-één partner voor professionele IT-oplossingen en onvergetelijke evenementen.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Navigatie</h4>
+                    <ul class="space-y-2.5 text-gray-400 text-sm">
+                        <li><a href="index.html"           class="hover:text-[#C9A028] transition-colors">Home</a></li>
+                        <li><a href="over-ons.html"        class="hover:text-[#C9A028] transition-colors">Over Ons</a></li>
+                        <li><a href="diensten.html"        class="hover:text-[#C9A028] transition-colors">Diensten</a></li>
+                        <li><a href="event-pakketten.html" class="hover:text-[#C9A028] transition-colors">Bruiloftpakketten</a></li>
+                        <li><a href="contact.html"         class="hover:text-[#C9A028] transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Contact</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            info@beijtech.nl
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                            www.beijtech.nl
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-6 text-center text-gray-600 text-xs">
+                © 2025 BeijTech. Alle rechten voorbehouden.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating button -->
+    <a href="contact.html" aria-label="Stuur een e-mail"
+       class="fixed bottom-6 left-6 w-14 h-14 bg-[#6B46C1] hover:bg-[#553C9A] text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+    </a>
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        document.getElementById('mob-diensten-btn').addEventListener('click', function () {
+            document.getElementById('mob-diensten-sub').classList.toggle('hidden');
+            document.getElementById('mob-diensten-arrow').classList.toggle('rotate-180');
+        });
+        document.getElementById('mob-events-btn').addEventListener('click', function () {
+            document.getElementById('mob-events-sub').classList.toggle('hidden');
+            document.getElementById('mob-events-arrow').classList.toggle('rotate-180');
+        });
+    </script>
+</body>
+</html>
