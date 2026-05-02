@@ -109,6 +109,21 @@
         }
         .option-chip:hover { border-color: #C9A028; }
 
+        /* Date input fix */
+        input[type="date"].form-input {
+            color: #111;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        input[type="date"].form-input::-webkit-calendar-picker-indicator {
+            opacity: 0.4;
+            cursor: pointer;
+            padding: 2px;
+        }
+        input[type="date"].form-input:not([value]):not(:focus) {
+            color: #9ca3af;
+        }
+
         /* Submit button */
         .btn-submit {
             background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);
@@ -457,7 +472,7 @@
                             </div>
                             <div>
                                 <label class="form-label" for="o-datum">Datum van het event</label>
-                                <input type="date" id="o-datum" name="datum" class="form-input">
+                                <input type="date" id="o-datum" name="datum" class="form-input" style="color-scheme: light;">
                             </div>
                         </div>
                     </div>
@@ -538,11 +553,18 @@
                                 <label class="form-label" for="o-pakket">Interesse in pakket</label>
                                 <select id="o-pakket" name="pakket" class="form-input">
                                     <option value="">Geen voorkeur</option>
-                                    <option>Sound & Light Essentials (€445)</option>
-                                    <option>DJ Experience (€455)</option>
-                                    <option>Memories In Focus (€745)</option>
-                                    <option>Dream Wedding Package (€895)</option>
-                                    <option>All-In Wedding Experience (€1640)</option>
+                                    <optgroup label="💍 Bruiloftpakketten">
+                                        <option>Sound & Light Essentials (€445)</option>
+                                        <option>DJ Experience (€455)</option>
+                                        <option>Memories In Focus (€745)</option>
+                                        <option>Dream Wedding Package (€895)</option>
+                                        <option>All-In Wedding Experience (€1640)</option>
+                                    </optgroup>
+                                    <optgroup label="🎉 Feestpakketten">
+                                        <option>Party Essentials (€300)</option>
+                                        <option>Ultimate Party Experience (€350)</option>
+                                        <option>Elite Party Experience (€475)</option>
+                                    </optgroup>
                                     <option>Pakket op maat</option>
                                 </select>
                             </div>
