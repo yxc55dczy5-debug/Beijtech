@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totaalproducties – BeijTech | Van Concept Tot Knallende Uitvoering</title>
+    <meta name="description" content="BeijTech verzorgt professionele totaalproducties voor bedrijfsfeesten, jubilea, festivals en exclusieve events. Licht, geluid, podium, AV, special effects en ervaren crew — alles onder één dak. Vraag vrijblijvend een offerte aan.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .header-gradient { background: linear-gradient(90deg, #C9A028 0%, #E2C84E 40%, #F0DC94 80%, #F8F0C0 100%); }
+        .hero-gradient   { background: linear-gradient(135deg, #C9A028 0%, #E0CB60 50%, #F0DC94 100%); }
+        .cta-gradient    { background: linear-gradient(135deg, #C9A028 0%, #DFC048 60%, #EDD570 100%); }
+
+        @keyframes blob-a {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%     { transform: translate(18px,-14px) scale(1.05); }
+            66%     { transform: translate(-10px,10px) scale(0.97); }
+        }
+        @keyframes blob-b {
+            0%,100% { transform: translate(0,0) scale(1); }
+            40%     { transform: translate(-20px,12px) scale(1.04); }
+            70%     { transform: translate(14px,-8px) scale(0.98); }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .blob-a    { animation: blob-a 8s ease-in-out infinite; }
+        .blob-b    { animation: blob-b 11s ease-in-out infinite; }
+        .spin-slow { animation: spin-slow 20s linear infinite; }
+
+        .service-card {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 1.75rem;
+            box-shadow: 0 4px 28px rgba(0,0,0,0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            border-left: 4px solid #C9A028;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.11);
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+    <!-- ========= HEADER ========= -->
+    <header class="header-gradient sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center select-none">
+                <span class="text-2xl font-black tracking-tight leading-none">
+                    <span class="text-black">BEIJ</span><span class="bg-black text-[#C9A028] px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black hover:text-amber-900 transition-colors">Home</a>
+                <a href="over-ons.html" class="text-black hover:text-amber-900 transition-colors">Over Ons</a>
+
+                <div class="group relative">
+                    <button class="flex items-center gap-1 text-black hover:text-amber-900 transition-colors py-1 cursor-default underline underline-offset-4 decoration-black/30">
+                        Diensten
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="absolute left-0 top-full pt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
+                        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                            <a href="diensten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
+                                <span class="w-7 h-7 bg-black/6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                                </span>
+                                IT
+                            </a>
+                            <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                            <div class="group/ev relative">
+                                <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-7 h-7 bg-[#C9A028]/12 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3.5 h-3.5 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                                        </span>
+                                        Events
+                                    </div>
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                                <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/ev:visible group-hover/ev:opacity-100 transition-all duration-150 z-50 min-w-[220px]">
+                                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                                        <a href="event-pakketten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">💍</span> Bruiloftpakketten
+                                        </a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="feest-pakketten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">🎉</span> Feestpakketten
+                                        </a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="vaste-installaties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">🎭</span> Vaste Installaties
+                                        </a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="totaalproducties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-[#C9A028] hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">🚀</span> Totaalproducties
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="contact.html"     class="text-black hover:text-amber-900 transition-colors">Contact</a>
+                <a href="verhuurshop.html" class="text-black hover:text-amber-900 transition-colors">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-2.5 px-5 rounded-xl hover:scale-105 transition-all inline-flex items-center gap-1.5 shadow-md whitespace-nowrap text-[14px]">
+                    ✨ Offerte Aanvragen
+                </a>
+            </nav>
+
+            <button id="menu-btn" aria-label="Menu openen" class="md:hidden p-1">
+                <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden px-5 pb-5 border-t border-black/10 mt-1 pt-3">
+            <div class="flex flex-col gap-0.5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Home</a>
+                <a href="over-ons.html" class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Over Ons</a>
+                <div>
+                    <button id="mob-diensten-btn" class="w-full flex items-center justify-between text-black py-2 px-3 rounded-xl hover:bg-black/5">
+                        Diensten
+                        <svg id="mob-diensten-arrow" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="mob-diensten-sub" class="hidden pl-3 mt-1 mb-1 space-y-0.5 border-l-2 border-[#C9A028]/40 ml-3">
+                        <a href="diensten.html" class="block text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">IT</a>
+                        <div>
+                            <button id="mob-events-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
+                                Events
+                                <svg id="mob-events-arrow" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div id="mob-events-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-[#C9A028]/20 ml-3">
+                                <a href="event-pakketten.html"  class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💍 Bruiloftpakketten</a>
+                                <a href="feest-pakketten.html"  class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎉 Feestpakketten</a>
+                                <a href="vaste-installaties.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎭 Vaste Installaties</a>
+                                <a href="totaalproducties.html" class="block text-[#C9A028] font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🚀 Totaalproducties</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="contact.html"     class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Contact</a>
+                <a href="verhuurshop.html" class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="mt-2 text-black font-black py-3 px-5 rounded-xl inline-flex items-center gap-2 shadow-md justify-center text-[14px]">
+                    ✨ Offerte Aanvragen
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========= HERO ========= -->
+    <section class="hero-gradient relative overflow-hidden min-h-[52vh] flex items-center justify-center text-center">
+        <div class="blob-a absolute -top-12 -left-12 w-72 h-72 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="blob-b absolute -bottom-8 right-0 w-96 h-96 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="blob-a absolute top-1/3 left-1/3 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" style="animation-delay:-3s"></div>
+
+        <div class="spin-slow absolute top-14 right-16 w-12 h-12 opacity-20 pointer-events-none hidden md:block">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 4 L26 20 L40 24 L26 28 L24 44 L22 28 L8 24 L22 20 Z" fill="#1a1a1a"/></svg>
+        </div>
+        <div class="spin-slow absolute bottom-20 left-14 w-7 h-7 opacity-15 pointer-events-none hidden md:block" style="animation-direction:reverse;animation-duration:14s">
+            <svg viewBox="0 0 28 28" fill="none"><path d="M14 2 L15.5 11 L24 14 L15.5 17 L14 26 L12.5 17 L4 14 L12.5 11 Z" fill="#1a1a1a"/></svg>
+        </div>
+
+        <div class="relative px-6 py-24">
+            <div class="inline-flex items-center gap-2 bg-black/12 text-black font-semibold text-sm px-5 py-2 rounded-full mb-7 border border-black/10">
+                <span>🚀</span> Van concept tot knallende uitvoering
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-black mb-5 leading-[1.05]">
+                Totaal
+                <span class="bg-black text-[#C9A028] px-3 py-1 inline-block rotate-1 rounded-lg">Producties</span>
+            </h1>
+            <p class="text-black/65 text-lg md:text-xl max-w-xl mx-auto leading-relaxed">
+                Wij verzorgen complete evenementenproducties van A tot Z — techniek, sfeer en beleving naadloos gebundeld in één professioneel pakket.
+            </p>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 leading-none">
+            <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+                <path d="M0,35 C300,70 900,0 1440,40 L1440,70 L0,70 Z" fill="white"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ========= INTRO ========= -->
+    <section class="bg-white py-16 px-6 relative overflow-hidden">
+        <div class="blob-a absolute -right-20 top-0 w-72 h-72 pointer-events-none" style="background: radial-gradient(circle, #FBF4D8 60%, transparent 100%); opacity: 0.7;"></div>
+
+        <div class="max-w-2xl mx-auto text-center relative">
+            <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Van Concept Tot Knallende Uitvoering</p>
+            <h2 class="text-4xl md:text-5xl font-black text-black mb-6 leading-tight">
+                Jouw Event,
+                <span class="relative inline-block">
+                    Onze Productie
+                    <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 240 10" fill="none" preserveAspectRatio="none">
+                        <path d="M3,7 Q60,2 120,7 Q180,12 237,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </span>
+            </h2>
+            <p class="text-gray-600 text-lg leading-relaxed mb-5">
+                Een geslaagd evenement begint bij een krachtig concept, maar valt of staat met de juiste uitvoering. Bij <strong>BeijTech</strong> verzorgen wij totaalproducties waarbij techniek, sfeer en beleving naadloos samenkomen.
+            </p>
+            <p class="text-gray-500 text-base leading-relaxed">
+                Of het nu gaat om een bedrijfsfeest, jubileum, festival of exclusieve party — wij regelen alles wat nodig is om jouw event naar een hoger niveau te tillen. Benieuwd naar de mogelijkheden? Bekijk hieronder wat wij aanbieden of neem direct contact met ons op!
+            </p>
+        </div>
+    </section>
+
+    <!-- Wave -->
+    <div class="leading-none bg-white">
+        <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70 Z" fill="#FBF4D8"/>
+        </svg>
+    </div>
+
+    <!-- ========= BEIJTECH EVENTS + USP ========= -->
+    <section class="px-6 py-14" style="background-color: #FBF4D8;">
+        <div class="max-w-3xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+
+                <!-- Links: tekst + foto -->
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-black text-black mb-4">
+                        BeijTech <span class="text-[#C9A028]">Events</span>
+                    </h2>
+                    <p class="text-gray-600 text-[15px] leading-relaxed mb-4">
+                        Een geslaagd evenement begint bij een krachtig concept, maar valt of staat met de juiste uitvoering. Bij BeijTech verzorgen wij totaalproducties waarbij techniek, sfeer en beleving naadloos samenkomen. Of het nu gaat om een bedrijfsfeest, jubileum, festival of exclusieve party — wij regelen alles wat nodig is om jouw event naar een hoger niveau te tillen.
+                    </p>
+                    <p class="text-gray-600 text-[15px] leading-relaxed mb-6">
+                        Met één vast aanspreekpunt en een team van ervaren professionals ontzorgen we je volledig. Van licht- en geluidsinstallatie tot podiumtechniek, video, special effects en meer — alles perfect afgestemd op jouw locatie, doelgroep en doelstelling.
+                    </p>
+                    <!-- Foto placeholder -->
+                    <div class="rounded-3xl overflow-hidden h-52 bg-gray-900 flex items-center justify-center relative">
+                        <!-- Vervang door: <img src="images/concert.jpg" alt="Totaalproductie BeijTech" class="w-full h-full object-cover"> -->
+                        <svg class="w-14 h-14 opacity-15 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        <p class="absolute bottom-3 text-gray-600 text-xs">Foto: event productie sfeer</p>
+                    </div>
+                </div>
+
+                <!-- Rechts: Volledig verzorgd -->
+                <div class="rounded-3xl p-7" style="background: rgba(255,255,255,0.75);">
+                    <p class="text-[#C9A028] italic font-semibold text-sm mb-1">Snel, Veilig En Betrouwbaar</p>
+                    <h3 class="text-xl font-black text-black mb-4">Alles Onder Één Dak</h3>
+                    <p class="text-gray-600 text-[14px] leading-relaxed mb-5">
+                        Wij leveren niet zomaar losse techniek, maar een complete totaaloplossing. Dankzij onze combinatie van technische knowhow en creatieve input garanderen we een soepele productie én een onvergetelijke beleving voor je gasten.
+                    </p>
+                    <div>
+                        <div class="check-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Één aanspreekpunt</strong> — van eerste gesprek tot afbouw</span>
+                        </div>
+                        <div class="check-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Volledig ontzorgd</strong> — wij denken mee, plannen en voeren uit</span>
+                        </div>
+                        <div class="check-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Maatwerk</strong> — geen standaardoplossingen, altijd op maat</span>
+                        </div>
+                        <div class="check-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Topkwaliteit apparatuur</strong> — professionele merken, betrouwbaar onder druk</span>
+                        </div>
+                        <div class="check-item">
+                            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Ervaren crew op locatie</strong> — altijd iemand aanwezig voor vlekkeloze uitvoering</span>
+                        </div>
+                    </div>
+                    <a href="contact.html#offerte" class="mt-6 inline-flex items-center gap-2 bg-black text-white font-bold py-3 px-6 rounded-full hover:bg-gray-800 transition-all hover:scale-105 text-sm shadow-md">
+                        Vrijblijvend Gesprek Plannen
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wave -->
+    <div class="leading-none" style="background-color: #FBF4D8;">
+        <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,35 C480,0 960,70 1440,35 L1440,70 L0,70 Z" fill="white"/>
+        </svg>
+    </div>
+
+    <!-- ========= WAT WE LEVEREN ========= -->
+    <section class="bg-white px-6 py-16 relative overflow-hidden">
+        <div class="blob-a absolute -left-24 bottom-10 w-80 h-80 pointer-events-none" style="background: radial-gradient(circle, #FBF4D8 60%, transparent 100%); opacity: 0.5;"></div>
+
+        <div class="max-w-3xl mx-auto relative">
+            <div class="text-center mb-12">
+                <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Alles voor jouw event</p>
+                <h2 class="text-3xl md:text-4xl font-black text-black leading-tight mb-4">
+                    Onze Totaalproducties
+                    <span class="relative inline-block">
+                        Omvatten
+                        <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 160 10" fill="none" preserveAspectRatio="none">
+                            <path d="M3,7 Q40,2 80,7 Q120,12 157,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </h2>
+                <p class="text-gray-500 text-[15px] max-w-xl mx-auto mt-4">
+                    Van de eerste technische tekening tot de laatste spot die uitgaat — BeijTech staat garant voor een feilloze uitvoering en een onvergetelijke beleving.
+                </p>
+            </div>
+
+            <div class="space-y-5">
+
+                <!-- Licht & Geluid -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Professioneel licht en geluid</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Van sfeervolle LED-verlichting tot krachtige PA-systemen die elk detail laten horen. Wij stemmen licht en geluid nauwkeurig af op de grootte van de ruimte, het type event en de gewenste sfeer — zodat elke gast de beleving krijgt die jij voor ogen hebt.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Podium & Truss -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Podium- en trussconstructies</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Flexibele, veilige en stijlvolle podia en trussconstructies — geschikt voor indoor én outdoor evenementen. Of je nu een klein podium nodig hebt voor een spreker of een volledig festival-stage, wij leveren en bouwen op maat. Veiligheid en esthetiek gaan bij ons altijd hand in hand.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AV-techniek -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Audiovisuele techniek</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Schermen, beamers, videoswitches en livestreaming — professioneel en plug & play. Wij zorgen dat iedere presentatie, uitzending of videomoment er perfect uitziet en foutloos verloopt. Van LED-walls voor grote zalen tot compacte display-setups voor kleinere ruimtes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special effects -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Special effects en sfeercreatie</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Rookmachines, CO₂-jets, lichtshows, uplighting en confetti-cannons — wij tillen de beleving naar een ander niveau. Special effects zijn dé manier om je gasten te verrassen en onvergetelijke momenten te creëren. Veilig, betrouwbaar en spectaculair toegepast.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technisch ontwerp -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Technisch ontwerp en productieplanning</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Samen vertalen we jouw wensen naar een helder technisch plan — van schets tot realisatie. Wij denken proactief mee over locatie, routing, veiligheid en timing. Zo weet je vooraf precies wat je kunt verwachten en loopt de productiedag zelf soepel en stressvrij.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crew op locatie -->
+                <div class="service-card">
+                    <div class="flex items-start gap-5">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-black mb-1">Ervaren crew op locatie</h3>
+                            <p class="text-gray-500 text-[14px] leading-relaxed">
+                                Onze technici zorgen voor vlekkeloze opbouw, afbouw en ondersteuning tijdens het evenement. Ons team staat de hele dag voor je klaar: van de eerste kist die van de vrachtwagen gaat tot de laatste kabel die wordt opgerold. Zo kun jij als organisator je focussen op de gasten.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-10">
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-4 px-10 rounded-2xl text-base hover:scale-105 transition-all inline-flex items-center gap-2 shadow-xl">
+                    ✨ Offerte Aanvragen
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= EVENT TYPES DARK BALK ========= -->
+    <div class="leading-none bg-white">
+        <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#111"/>
+        </svg>
+    </div>
+
+    <section class="bg-[#111] px-6 py-16 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-64 rounded-full blur-3xl pointer-events-none" style="background: radial-gradient(circle, rgba(201,160,40,0.12) 0%, transparent 70%);"></div>
+
+        <div class="max-w-4xl mx-auto relative">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-black text-white mb-3">
+                    Voor Elk <span style="color:#C9A028">Type Event</span>
+                </h2>
+                <p class="text-gray-500 text-[15px] max-w-lg mx-auto">Wij hebben ervaring met een breed scala aan evenementen. Herken jij jouw event?</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🏢</div>
+                    <h4 class="font-black text-white text-sm mb-1">Bedrijfsfeest</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Indrukwekkende producties die jouw team en relaties versteld doen staan</p>
+                </div>
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🎊</div>
+                    <h4 class="font-black text-white text-sm mb-1">Jubileum</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Een mijlpaal verdient een onvergetelijke viering met de juiste techniek</p>
+                </div>
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🎵</div>
+                    <h4 class="font-black text-white text-sm mb-1">Festival</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Van klein muziekfestival tot grootschalig outdoor event — wij schalen mee</p>
+                </div>
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🎤</div>
+                    <h4 class="font-black text-white text-sm mb-1">Gala & Award</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Stijlvolle producties met elegant licht, helder geluid en een premium uitstraling</p>
+                </div>
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🎭</div>
+                    <h4 class="font-black text-white text-sm mb-1">Theaterproductie</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Podium, licht en geluid perfect afgestemd op het verhaal dat je wilt vertellen</p>
+                </div>
+                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
+                    <div class="text-3xl mb-3">🎉</div>
+                    <h4 class="font-black text-white text-sm mb-1">Exclusief Feest</h4>
+                    <p class="text-gray-600 text-xs leading-relaxed">Privéfeesten en exclusieve parties met een totaalproductie op maat</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= CTA ========= -->
+    <div class="leading-none bg-[#111]">
+        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" class="w-full block">
+            <path d="M0,30 C480,90 960,0 1440,50 L1440,80 L0,80 Z" fill="#C9A028"/>
+        </svg>
+    </div>
+
+    <section class="cta-gradient relative py-20 px-6 text-center overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-2xl mx-auto relative">
+            <p class="text-black/60 italic font-semibold mb-3">Klaar voor iets bijzonders?</p>
+            <h2 class="text-4xl md:text-5xl font-black text-black mb-4 leading-tight">
+                Maak Jouw Event<br>Onvergetelijk
+            </h2>
+            <p class="text-black/65 text-lg mb-10">Vertel ons over jouw event en wij stellen een totaalproductie op maat samen. Vrijblijvend en binnen 24 uur reactie.</p>
+            <a href="contact.html#offerte" class="bg-black text-white font-bold py-4 px-10 rounded-2xl text-base hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-xl">
+                Vrijblijvende Offerte Aanvragen
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ========= FOOTER ========= -->
+    <footer class="bg-black text-white py-14 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                <div>
+                    <div class="text-2xl font-black mb-4 leading-none">
+                        <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mt-4">Jouw alles-in-één partner voor professionele IT-oplossingen en onvergetelijke evenementen.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Navigatie</h4>
+                    <ul class="space-y-2.5 text-gray-400 text-sm">
+                        <li><a href="index.html"               class="hover:text-[#C9A028] transition-colors">Home</a></li>
+                        <li><a href="over-ons.html"            class="hover:text-[#C9A028] transition-colors">Over Ons</a></li>
+                        <li><a href="diensten.html"            class="hover:text-[#C9A028] transition-colors">Diensten</a></li>
+                        <li><a href="event-pakketten.html"     class="hover:text-[#C9A028] transition-colors">Bruiloftpakketten</a></li>
+                        <li><a href="feest-pakketten.html"     class="hover:text-[#C9A028] transition-colors">Feestpakketten</a></li>
+                        <li><a href="vaste-installaties.html"  class="hover:text-[#C9A028] transition-colors">Vaste Installaties</a></li>
+                        <li><a href="totaalproducties.html"    class="hover:text-[#C9A028] transition-colors">Totaalproducties</a></li>
+                        <li><a href="contact.html"             class="hover:text-[#C9A028] transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Contact</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            info@beijtech.nl
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                            www.beijtech.nl
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-6 text-center text-gray-600 text-xs">
+                © 2025 BeijTech. Alle rechten voorbehouden.
+            </div>
+        </div>
+    </footer>
+
+    <a href="contact.html" aria-label="Stuur een e-mail"
+       class="fixed bottom-6 left-6 w-14 h-14 bg-[#6B46C1] hover:bg-[#553C9A] text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+    </a>
+
+    <script>
+        document.getElementById('menu-btn').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        document.getElementById('mob-diensten-btn').addEventListener('click', function () {
+            document.getElementById('mob-diensten-sub').classList.toggle('hidden');
+            document.getElementById('mob-diensten-arrow').classList.toggle('rotate-180');
+        });
+        document.getElementById('mob-events-btn').addEventListener('click', function () {
+            document.getElementById('mob-events-sub').classList.toggle('hidden');
+            document.getElementById('mob-events-arrow').classList.toggle('rotate-180');
+        });
+    </script>
+</body>
+</html>
