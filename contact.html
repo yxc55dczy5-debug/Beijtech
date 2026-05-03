@@ -187,12 +187,25 @@
                     </button>
                     <div class="absolute left-0 top-full pt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
                         <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
-                            <a href="diensten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
-                                <span class="w-7 h-7 bg-black/6 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-                                </span>
-                                IT
-                            </a>
+                            <!-- IT sub-dropdown -->
+                            <div class="group/it relative">
+                                <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-7 h-7 bg-black/6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                                        </span>
+                                        IT
+                                    </div>
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                                <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/it:visible group-hover/it:opacity-100 transition-all duration-150 z-50 min-w-[220px]">
+                                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                                        <a href="netwerkbeheer.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-[#C9A028] hover:bg-gray-50 transition-colors">
+                                            <span class="text-base">🌐</span> Netwerkbeheer
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="h-px bg-gray-100 mx-3 my-1"></div>
                             <div class="group/ev relative">
                                 <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
@@ -254,7 +267,17 @@
                         </svg>
                     </button>
                     <div id="mob-diensten-sub" class="hidden pl-3 mt-1 mb-1 space-y-0.5 border-l-2 border-[#C9A028]/40 ml-3">
-                        <a href="diensten.html" class="block text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">IT</a>
+                        <div>
+                            <button id="mob-it-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
+                                IT
+                                <svg id="mob-it-arrow" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            <div id="mob-it-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-gray-200 ml-3">
+                                <a href="netwerkbeheer.html" class="block text-[#C9A028] font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🌐 Netwerkbeheer</a>
+                            </div>
+                        </div>
                         <div>
                             <button id="mob-events-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
                                 Events
@@ -744,6 +767,10 @@
         document.getElementById('mob-diensten-btn').addEventListener('click', function () {
             document.getElementById('mob-diensten-sub').classList.toggle('hidden');
             document.getElementById('mob-diensten-arrow').classList.toggle('rotate-180');
+        });
+        document.getElementById('mob-it-btn').addEventListener('click', function () {
+            document.getElementById('mob-it-sub').classList.toggle('hidden');
+            document.getElementById('mob-it-arrow').classList.toggle('rotate-180');
         });
         document.getElementById('mob-events-btn').addEventListener('click', function () {
             document.getElementById('mob-events-sub').classList.toggle('hidden');

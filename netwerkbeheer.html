@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaste Installaties – BeijTech | Professioneel Geluid, Licht & AV voor Jouw Locatie</title>
-    <meta name="description" content="BeijTech levert professionele vaste installaties voor cafés, theaters, evenementenruimtes en bedrijven. Kraakhelder geluid, sfeervolle verlichting en slimme AV-systemen op maat. Vraag vrijblijvend een offerte aan.">
+    <title>Netwerkbeheer – BeijTech | On-Site Netwerkinfrastructuur & IT Beheer</title>
+    <meta name="description" content="BeijTech beheert jouw netwerkinfrastructuur op locatie. Van firewall en switches tot WiFi en systeembeheer — snel, veilig en betrouwbaar. Basis €50/mnd, Uitgebreid €100/mnd. Vraag vrijblijvend een offerte aan.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -44,6 +44,36 @@
             transform: translateY(-5px);
             box-shadow: 0 16px 48px rgba(0,0,0,0.11);
         }
+
+        /* Prijskaarten */
+        .prijs-card {
+            border-radius: 1.75rem;
+            overflow: hidden;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.09);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .prijs-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 56px rgba(0,0,0,0.14);
+        }
+        .prijs-card .card-header {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .prijs-card .card-body {
+            background: #fafafa;
+            padding: 1.75rem;
+        }
+        .prijs-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        .prijs-feature:last-of-type { border-bottom: none; }
 
         .check-item {
             display: flex;
@@ -97,6 +127,7 @@
                                 </div>
                             </div>
                             <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                            <!-- Events sub-dropdown -->
                             <div class="group/ev relative">
                                 <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
                                     <div class="flex items-center gap-2.5">
@@ -109,17 +140,13 @@
                                 </div>
                                 <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/ev:visible group-hover/ev:opacity-100 transition-all duration-150 z-50 min-w-[220px]">
                                     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
-                                        <a href="event-pakketten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                                            <span class="text-base">💍</span> Bruiloftpakketten
-                                        </a>
+                                        <a href="event-pakketten.html"  class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">💍</span> Bruiloftpakketten</a>
                                         <div class="h-px bg-gray-100 mx-3 my-1"></div>
-                                        <a href="feest-pakketten.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
-                                            <span class="text-base">🎉</span> Feestpakketten
-                                        </a>
+                                        <a href="feest-pakketten.html"  class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🎉</span> Feestpakketten</a>
                                         <div class="h-px bg-gray-100 mx-3 my-1"></div>
-                                        <a href="vaste-installaties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-[#C9A028] hover:bg-gray-50 transition-colors">
-                                            <span class="text-base">🎭</span> Vaste Installaties
-                                        </a>
+                                        <a href="vaste-installaties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🎭</span> Vaste Installaties</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="totaalproducties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🚀</span> Totaalproducties</a>
                                     </div>
                                 </div>
                             </div>
@@ -172,9 +199,10 @@
                                 </svg>
                             </button>
                             <div id="mob-events-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-[#C9A028]/20 ml-3">
-                                <a href="event-pakketten.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💍 Bruiloftpakketten</a>
-                                <a href="feest-pakketten.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎉 Feestpakketten</a>
-                                <a href="vaste-installaties.html" class="block text-[#C9A028] font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎭 Vaste Installaties</a>
+                                <a href="event-pakketten.html"    class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💍 Bruiloftpakketten</a>
+                                <a href="feest-pakketten.html"    class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎉 Feestpakketten</a>
+                                <a href="vaste-installaties.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎭 Vaste Installaties</a>
+                                <a href="totaalproducties.html"   class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🚀 Totaalproducties</a>
                             </div>
                         </div>
                     </div>
@@ -203,14 +231,14 @@
 
         <div class="relative px-6 py-24">
             <div class="inline-flex items-center gap-2 bg-black/12 text-black font-semibold text-sm px-5 py-2 rounded-full mb-7 border border-black/10">
-                <span>🎭</span> Professionele installaties voor elke locatie
+                <span>🌐</span> Jouw netwerk, onze verantwoordelijkheid — op locatie
             </div>
             <h1 class="text-5xl md:text-7xl font-black text-black mb-5 leading-[1.05]">
-                Vaste
-                <span class="bg-black text-[#C9A028] px-3 py-1 inline-block rotate-1 rounded-lg">Installaties</span>
+                Netwerk
+                <span class="bg-black text-[#C9A028] px-3 py-1 inline-block rotate-1 rounded-lg">Beheer</span>
             </h1>
             <p class="text-black/65 text-lg md:text-xl max-w-xl mx-auto leading-relaxed">
-                Van kraakhelder geluid en sfeervolle verlichting tot slimme AV-systemen — wij tillen jouw locatie naar een professioneel niveau.
+                Wij beheren jouw netwerkinfrastructuur on-site — snel ingrijpen bij storingen, proactief onderhoud en altijd een vast aanspreekpunt.
             </p>
         </div>
 
@@ -224,23 +252,22 @@
     <!-- ========= INTRO ========= -->
     <section class="bg-white py-16 px-6 relative overflow-hidden">
         <div class="blob-a absolute -right-20 top-0 w-72 h-72 pointer-events-none" style="background: radial-gradient(circle, #FBF4D8 60%, transparent 100%); opacity: 0.7;"></div>
-
         <div class="max-w-2xl mx-auto text-center relative">
-            <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Vaste Installaties Die Indruk Maken</p>
+            <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Jouw Partner In IT Infrastructuur</p>
             <h2 class="text-4xl md:text-5xl font-black text-black mb-6 leading-tight">
-                Jouw Locatie,
+                Stabiel, Veilig &
                 <span class="relative inline-block">
-                    Ons Vakwerk
-                    <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 180 10" fill="none" preserveAspectRatio="none">
-                        <path d="M3,7 Q45,2 90,7 Q135,12 177,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    Betrouwbaar
+                    <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 200 10" fill="none" preserveAspectRatio="none">
+                        <path d="M3,7 Q50,2 100,7 Q150,12 197,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
                     </svg>
                 </span>
             </h2>
             <p class="text-gray-600 text-lg leading-relaxed mb-4">
-                Of je nu een bruisend café runt, een sfeervol theater beheert of een veelzijdige evenementenruimte exploiteert — de juiste techniek maakt het verschil. BeijTech levert <strong>vaste installaties</strong> die jouw locatie naar een hoger niveau tillen.
+                Bij <strong>BeijTech</strong> leveren en beheren wij betrouwbare hosting en hoogwaardige netwerkinfrastructuur rechtstreeks op jouw locatie. Of het nu gaat om dagelijkse monitoring, een storingsdienst of een complete IT-infrastructuur — wij zorgen voor een stabiele en veilige omgeving.
             </p>
             <p class="text-gray-500 text-base leading-relaxed">
-                Van kraakhelder geluid tot sfeervolle verlichting en slimme AV-oplossingen: wij zorgen voor een totaalbeleving die blijft hangen. Benieuwd naar de mogelijkheden? Bekijk hieronder wat wij aanbieden en neem direct contact met ons op!
+                Benieuwd naar de mogelijkheden? Bekijk hieronder onze oplossingen en pakketten, of neem direct contact met ons op!
             </p>
         </div>
     </section>
@@ -252,54 +279,61 @@
         </svg>
     </div>
 
-    <!-- ========= BEIJTECH EVENTS + WAAROM ========= -->
+    <!-- ========= BEIJTECH IT + WAAROM ========= -->
     <section class="px-6 py-14" style="background-color: #FBF4D8;">
         <div class="max-w-3xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-
-                <!-- Links: tekst -->
                 <div>
                     <h2 class="text-3xl md:text-4xl font-black text-black mb-4">
-                        BeijTech <span class="text-[#C9A028]">Events</span>
+                        BeijTech <span class="text-[#C9A028]">IT</span>
                     </h2>
-                    <p class="text-gray-600 text-[15px] leading-relaxed mb-6">
-                        Of je nu een bruisend café runt, een sfeervol theater beheert of een veelzijdige evenementenruimte exploiteert — de juiste techniek maakt het verschil. BeijTech levert vaste installaties die jouw locatie naar een hoger niveau tillen. Van kraakhelder geluid tot sfeervolle verlichting en slimme AV-oplossingen: wij zorgen voor een totaalbeleving die blijft hangen.
+                    <p class="text-gray-600 text-[15px] leading-relaxed mb-4">
+                        Bij <strong class="text-black">BeijTech</strong> leveren we betrouwbare hosting en hoogwaardige netwerkinfrastructuur. Of het nou gaat om on-site support of een gehele IT-infrastructuur — wij passen ons aan jouw situatie aan en zorgen voor een stabiele en veilige omgeving.
                     </p>
-                    <!-- Foto placeholder -->
-                    <div class="rounded-3xl overflow-hidden h-52 bg-gray-900 flex items-center justify-center relative">
-                        <!-- Vervang door: <img src="images/theater.jpg" alt="Theater installatie" class="w-full h-full object-cover"> -->
-                        <svg class="w-14 h-14 opacity-15 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <p class="absolute bottom-3 text-gray-600 text-xs">Foto: installatie locatie</p>
+                    <p class="text-gray-600 text-[15px] leading-relaxed mb-6">
+                        Een stabiel en veilig netwerk is de ruggengraat van elke organisatie. BeijTech levert en beheert hoogwaardige <strong class="text-black">netwerkinfrastructuren</strong> die zorgen voor een snelle en veilige verbinding tussen jouw apparaten, servers en cloudomgevingen — voor een <strong class="text-black">naadloze en veilige netwerkoplossing</strong>.
+                    </p>
+                    <!-- Dubbele foto's gestapeld -->
+                    <div class="relative h-56">
+                        <div class="absolute top-0 right-0 w-2/3 h-36 bg-gray-800 rounded-2xl overflow-hidden flex items-center justify-center shadow-lg">
+                            <!-- Vervang door: <img src="images/netwerk-rack.jpg" alt="Server rack" class="w-full h-full object-cover"> -->
+                            <svg class="w-10 h-10 opacity-15 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-2/3 h-40 bg-gray-900 rounded-2xl overflow-hidden flex items-center justify-center shadow-xl">
+                            <!-- Vervang door: <img src="images/netwerk-kabels.jpg" alt="Netwerkkabels" class="w-full h-full object-cover"> -->
+                            <svg class="w-10 h-10 opacity-15 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Rechts: Waarom BeijTech -->
                 <div class="rounded-3xl p-7" style="background: rgba(255,255,255,0.75);">
-                    <h3 class="text-xl font-black text-black mb-5">Waarom BeijTech?</h3>
+                    <h3 class="text-xl font-black text-black mb-2">Waarom kiezen voor BeijTech?</h3>
+                    <p class="text-gray-500 text-sm mb-5 leading-relaxed">Wij beheren jouw netwerk alsof het ons eigen netwerk is — proactief, persoonlijk en altijd bereikbaar.</p>
                     <div>
                         <div class="check-item">
                             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            <span class="text-[15px] text-gray-700"><strong class="text-black">Oplossingen op maat</strong> — geen standaardpakketten, altijd passend bij jouw locatie</span>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Optimale netwerkprestaties</strong> — Razendsnelle verbindingen zonder onderbrekingen</span>
                         </div>
                         <div class="check-item">
                             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            <span class="text-[15px] text-gray-700"><strong class="text-black">Snelle, persoonlijke communicatie</strong> — één vast aanspreekpunt van start tot oplevering</span>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Maximale beveiliging</strong> — Beschermd tegen cyberaanvallen en ongeautoriseerde toegang</span>
                         </div>
                         <div class="check-item">
                             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            <span class="text-[15px] text-gray-700"><strong class="text-black">Installatie door ervaren professionals</strong> — vakkundige montage met oog voor detail</span>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Schaalbaar en toekomstbestendig</strong> — Netwerken die meegroeien met jouw organisatie</span>
                         </div>
                         <div class="check-item">
                             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            <span class="text-[15px] text-gray-700"><strong class="text-black">Alleen topkwaliteit apparatuur</strong> — betrouwbare merken voor duurzame prestaties</span>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">24/7 monitoring en support</strong> — Wij houden jouw netwerk continu in de gaten en grijpen direct in bij storingen</span>
                         </div>
                         <div class="check-item">
                             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#C9A028" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                            <span class="text-[15px] text-gray-700"><strong class="text-black">Eén aanspreekpunt van advies tot oplevering</strong> — wij begeleiden het volledige traject</span>
+                            <span class="text-[14px] text-gray-700"><strong class="text-black">Maatwerkoplossingen</strong> — Van kleine netwerken tot grootschalige bedrijfsinfrastructuren</span>
                         </div>
                     </div>
                     <a href="contact.html#offerte" class="mt-6 inline-flex items-center gap-2 bg-black text-white font-bold py-3 px-6 rounded-full hover:bg-gray-800 transition-all hover:scale-105 text-sm shadow-md">
-                        Vrijblijvend Adviesgesprek
+                        Offerte Aanvragen
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                     </a>
                 </div>
@@ -314,171 +348,250 @@
         </svg>
     </div>
 
-    <!-- ========= WAT WE LEVEREN ========= -->
+    <!-- ========= ONZE OPLOSSINGEN ========= -->
     <section class="bg-white px-6 py-16 relative overflow-hidden">
         <div class="blob-a absolute -left-24 bottom-10 w-80 h-80 pointer-events-none" style="background: radial-gradient(circle, #FBF4D8 60%, transparent 100%); opacity: 0.5;"></div>
 
         <div class="max-w-3xl mx-auto relative">
             <div class="text-center mb-12">
-                <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Maatwerk voor elke ruimte</p>
+                <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Op locatie bij jou</p>
                 <h2 class="text-3xl md:text-4xl font-black text-black leading-tight mb-4">
-                    Alles In Huis Voor Een
+                    Onze
                     <span class="relative inline-block">
-                        Onvergetelijke
-                        <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 240 10" fill="none" preserveAspectRatio="none">
-                            <path d="M3,7 Q60,2 120,7 Q180,12 237,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        Oplossingen
+                        <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 190 10" fill="none" preserveAspectRatio="none">
+                            <path d="M3,7 Q47,2 95,7 Q143,12 187,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
                         </svg>
                     </span>
-                    Ervaring
                 </h2>
-                <p class="text-gray-500 text-[15px] max-w-xl mx-auto mt-4">
-                    Bij BeijTech geloven we in maatwerk. Geen standaardoplossing, maar een installatie die perfect aansluit bij jouw ruimte, doelgroep en ambities. Wij combineren technische kennis met creatief inzicht om een oplossing te realiseren die functioneert én inspireert.
-                </p>
+                <p class="text-gray-500 text-[15px] max-w-xl mx-auto mt-4">Wij bieden een compleet pakket aan netwerkdiensten — altijd afgestemd op jouw locatie, jouw omgeving en jouw doelen.</p>
             </div>
 
             <div class="space-y-5">
-
-                <!-- Geluid -->
                 <div class="service-card">
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
-                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M12 6v12m0 0a3 3 0 01-3-3V9a3 3 0 013-3zm0 12a3 3 0 003-3V9a3 3 0 00-3-3M3 12h1m16 0h1M6.343 6.343l.707.707M17.657 17.657l.707.707M6.343 17.657l.707-.707M17.657 6.343l-.707.707"/></svg>
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-black mb-1">Geluidsinstallaties die gehoord mogen worden</h3>
+                            <h3 class="text-lg font-black text-black mb-1">Firewall Beheer & Beveiliging</h3>
                             <p class="text-gray-500 text-[14px] leading-relaxed">
-                                Heldere klanken, diepe bassen en perfecte spreiding — afgestemd op de akoestiek van jouw ruimte. Of het nu gaat om achtergrondmuziek in een restaurant, spraakverstaanbaarheid in een conferentiezaal of krachtig geluid in een evenementenhal: wij ontwerpen een systeem dat presteert waar jij het nodig hebt.
+                                Een sterke firewall is essentieel om jouw bedrijfsnetwerk te beschermen tegen cyberdreigingen. Wij implementeren en beheren <strong class="text-black">geavanceerde firewall-oplossingen</strong> die jouw data en systemen optimaal beveiligen — en wij configureren alles direct op jouw locatie voor maximale controle en reactiesnelheid.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Licht -->
                 <div class="service-card">
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
-                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-black mb-1">Sfeervolle lichtoplossingen</h3>
+                            <h3 class="text-lg font-black text-black mb-1">Switches & Netwerkbeheer</h3>
                             <p class="text-gray-500 text-[14px] leading-relaxed">
-                                Van subtiele ambiance tot spectaculaire lichtshows, volledig programmeerbaar en eenvoudig te bedienen. Wij ontwerpen lichtconcepten die de ruimte tot leven brengen en elke sfeer ondersteunen — van intiem en warm tot energiek en dynamisch. Inclusief installatie, programmering en instructie.
+                                Wij leveren en configureren hoogwaardige <strong class="text-black">managed en unmanaged switches</strong> die zorgen voor een stabiele en snelle netwerkverbinding. Van kleine bedrijfsnetwerken tot grote multi-site oplossingen — wij installeren en onderhouden alles ter plaatse voor een efficiënte en overzichtelijke netwerkstructuur.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- AV -->
-                <div class="service-card">
-                    <div class="flex items-start gap-5">
-                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
-                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-black text-black mb-1">Slimme AV-installaties</h3>
-                            <p class="text-gray-500 text-[14px] leading-relaxed">
-                                Beamers, displays, video-routing en bediening in één gestroomlijnd systeem — gebruiksvriendelijk en professioneel. Wij zorgen voor een naadloze integratie van beeld en geluid, zodat presentaties, evenementen en live-streams altijd vlekkeloos verlopen. Eenvoudig te bedienen voor iedereen in jouw team.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Netwerk -->
                 <div class="service-card">
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
                             <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-black mb-1">Sterke netwerkinfrastructuur</h3>
+                            <h3 class="text-lg font-black text-black mb-1">WiFi & Draadloze Netwerken</h3>
                             <p class="text-gray-500 text-[14px] leading-relaxed">
-                                Betrouwbare bekabeling en verbindingen voor al je systemen — stabiel, snel en veilig. Een solide netwerkinfrastructuur is de ruggengraat van elke moderne installatie. Wij leggen gestructureerde bekabeling aan en zorgen voor een stabiel en snel netwerk dat al jouw apparatuur feilloos met elkaar verbindt.
+                                Betrouwbare en snelle WiFi is cruciaal voor een productieve werkomgeving. Wij ontwerpen en installeren <strong class="text-black">zakelijke WiFi-oplossingen</strong> met optimale dekking, hoge snelheid en sterke beveiliging — op maat voor jouw pand, volledig geïnstalleerd en geoptimaliseerd op locatie.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Onderhoud -->
                 <div class="service-card">
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
-                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-black text-black mb-1">Onderhoud en support</h3>
+                            <h3 class="text-lg font-black text-black mb-1">Cloud- en On-Premise Netwerkinfrastructuur</h3>
                             <p class="text-gray-500 text-[14px] leading-relaxed">
-                                Ook na de installatie blijven wij betrokken met snelle service, upgrades en proactief onderhoud. Wij geloven in een duurzame samenwerking. Na oplevering staan wij altijd klaar voor vragen, storingen of uitbreidingen — zodat jouw installatie jaar na jaar optimaal blijft presteren.
+                                Of je nu werkt met <strong class="text-black">lokale servers, cloudoplossingen of hybride infrastructuren</strong> — wij zorgen voor een naadloze integratie en optimale prestaties. Wij komen bij jou op locatie om alles te implementeren, te testen en te optimaliseren, zodat jij zonder zorgen kunt werken.
                             </p>
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-            <div class="text-center mt-10">
-                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-4 px-10 rounded-2xl text-base hover:scale-105 transition-all inline-flex items-center gap-2 shadow-xl">
-                    ✨ Offerte Aanvragen
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                </a>
             </div>
         </div>
     </section>
 
-    <!-- ========= DARK USP BALK ========= -->
+    <!-- ========= PAKKETTEN ========= -->
     <div class="leading-none bg-white">
         <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" class="w-full block">
-            <path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z" fill="#111"/>
+            <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#FBF4D8"/>
         </svg>
     </div>
 
-    <section class="bg-[#111] px-6 py-16 relative overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-64 rounded-full blur-3xl pointer-events-none" style="background: radial-gradient(circle, rgba(201,160,40,0.12) 0%, transparent 70%);"></div>
-
-        <div class="max-w-4xl mx-auto relative">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl md:text-4xl font-black text-white mb-3">
-                    Voor Elke <span style="color:#C9A028">Locatie</span> De Juiste Oplossing
+    <section class="px-6 py-16" style="background-color: #FBF4D8;">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <p class="text-[#C9A028] italic font-semibold tracking-wide mb-3">Transparante prijzen</p>
+                <h2 class="text-3xl md:text-4xl font-black text-black leading-tight mb-4">
+                    Kies Jouw
+                    <span class="relative inline-block">
+                        Pakket
+                        <svg class="absolute -bottom-1 left-0 w-full" viewBox="0 0 100 10" fill="none" preserveAspectRatio="none">
+                            <path d="M3,7 Q25,2 50,7 Q75,12 97,5" stroke="#C9A028" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </span>
                 </h2>
-                <p class="text-gray-500 text-[15px] max-w-lg mx-auto">Wij werken voor uiteenlopende locaties door heel Nederland. Herken jij jouw situatie?</p>
+                <p class="text-gray-500 text-[15px] max-w-lg mx-auto mt-4">Alle pakketten inclusief on-site beheer op jouw locatie. Geen verborgen kosten, altijd persoonlijk contact.</p>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">🍺</div>
-                    <h4 class="font-black text-white text-sm mb-1">Café & Bar</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Sfeervolle muziek en verlichting die de beleving versterken</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Basis Netwerkbeheer -->
+                <div class="prijs-card">
+                    <div class="card-header bg-gray-700">
+                        <h3 class="text-xl font-black text-white">Basis Netwerkbeheer</h3>
+                        <p class="text-gray-300 text-sm mt-1">Beheer van jouw omgeving</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center py-5 border-b border-gray-200 mb-4">
+                            <div class="text-gray-400 text-sm mb-1">Vanaf</div>
+                            <div class="flex items-end justify-center gap-1">
+                                <span class="text-2xl font-black text-gray-700">€</span>
+                                <span class="text-5xl font-black text-gray-800 leading-none">50</span>
+                                <span class="text-xl font-black text-gray-700 mb-1">,-</span>
+                            </div>
+                            <div class="text-gray-400 text-sm mt-1">per maand · ex. BTW</div>
+                        </div>
+                        <div class="space-y-0">
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Monitoring en basisonderhoud van firewalls en switches
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Netwerkconfiguratie en optimalisatie
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Beveiligingsupdates en patches
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Tot 10 devices
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Korte lijnen met support
+                            </div>
+                        </div>
+                        <a href="contact.html#offerte" class="mt-5 w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 px-5 rounded-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-sm shadow-md">
+                            Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">🎭</div>
-                    <h4 class="font-black text-white text-sm mb-1">Theater & Podium</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Professioneel geluid en licht voor een indrukwekkende show</p>
+
+                <!-- Uitgebreid Netwerkbeheer — Popular -->
+                <div class="prijs-card relative">
+                    <div class="absolute top-3 right-3 z-10">
+                        <span style="background: linear-gradient(135deg, #C9A028, #E8C830);" class="text-black text-[10px] font-black px-2.5 py-1 rounded-full shadow tracking-widest uppercase">Popular</span>
+                    </div>
+                    <div class="card-header" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                        <h3 class="text-xl font-black text-black">Uitgebreid Netwerkbeheer</h3>
+                        <p class="text-black/60 text-sm mt-1">Volledige ontzorging</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center py-5 border-b border-gray-200 mb-4">
+                            <div class="text-gray-400 text-sm mb-1">Vanaf</div>
+                            <div class="flex items-end justify-center gap-1">
+                                <span class="text-2xl font-black text-gray-700">€</span>
+                                <span class="text-5xl font-black text-gray-800 leading-none">100</span>
+                                <span class="text-xl font-black text-gray-700 mb-1">,-</span>
+                            </div>
+                            <div class="text-gray-400 text-sm mt-1">per maand · ex. BTW</div>
+                        </div>
+                        <div class="space-y-0">
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Alle voordelen van Basis Netwerkbeheer
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Geavanceerde beveiligingsmaatregelen en dreigingsdetectie
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Volledig support — remote én on-site
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Tot 30 devices
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Prioriteit bij storingen
+                            </div>
+                        </div>
+                        <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="mt-5 w-full text-black font-black py-3 px-5 rounded-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-sm shadow-md">
+                            Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">🏛️</div>
-                    <h4 class="font-black text-white text-sm mb-1">Evenementenhal</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Krachtige installaties voor grote zalen en drukke evenementen</p>
+
+                <!-- Systeembeheer -->
+                <div class="prijs-card">
+                    <div class="card-header bg-gray-800">
+                        <h3 class="text-xl font-black text-white">Systeembeheer</h3>
+                        <p class="text-gray-400 text-sm mt-1">Remote & On-Site</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center py-5 border-b border-gray-200 mb-4">
+                            <div class="text-gray-400 text-sm mb-2">Prijs</div>
+                            <div class="text-3xl font-black text-gray-800 leading-tight">Op aanvraag</div>
+                            <div class="text-gray-400 text-xs mt-1">Altijd maatwerk</div>
+                        </div>
+                        <div class="space-y-0">
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Ondersteuning en onderhoud van servers en werkplekken
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Software-installaties, updates en troubleshooting
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Beveiligingsbeheer en back-up strategieën
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Remote support of on-site beheer op locatie
+                            </div>
+                            <div class="prijs-feature">
+                                <svg class="w-4 h-4 flex-shrink-0 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Op maat gemaakte SLA's voor snelle responstijden
+                            </div>
+                        </div>
+                        <a href="contact.html#offerte" class="mt-5 w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-5 rounded-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-sm shadow-md">
+                            Aanvragen
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">🏢</div>
-                    <h4 class="font-black text-white text-sm mb-1">Bedrijf & Kantoor</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Vergader- en presentatiesystemen voor professionele omgevingen</p>
-                </div>
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">🍽️</div>
-                    <h4 class="font-black text-white text-sm mb-1">Restaurant</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Subtiele audio en verlichting die de eetbeleving compleet maken</p>
-                </div>
-                <div class="rounded-2xl p-5 text-center border border-gray-800 bg-[#1a1a1a] hover:border-[#C9A028]/40 transition-colors">
-                    <div class="text-3xl mb-3">⛪</div>
-                    <h4 class="font-black text-white text-sm mb-1">Kerk & Zaal</h4>
-                    <p class="text-gray-600 text-xs leading-relaxed">Heldere spraakverstaanbaarheid voor elke samenkomst</p>
-                </div>
+
             </div>
         </div>
     </section>
 
     <!-- ========= CTA ========= -->
-    <div class="leading-none bg-[#111]">
+    <div class="leading-none" style="background-color: #FBF4D8;">
         <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" class="w-full block">
             <path d="M0,30 C480,90 960,0 1440,50 L1440,80 L0,80 Z" fill="#C9A028"/>
         </svg>
@@ -488,11 +601,11 @@
         <div class="absolute -top-10 -left-10 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
         <div class="max-w-2xl mx-auto relative">
-            <p class="text-black/60 italic font-semibold mb-3">Klaar voor de volgende stap?</p>
+            <p class="text-black/60 italic font-semibold mb-3">Geen zorgen meer over je netwerk</p>
             <h2 class="text-4xl md:text-5xl font-black text-black mb-4 leading-tight">
-                Laat Jouw Locatie Stralen
+                Wij Komen Naar Jou Toe
             </h2>
-            <p class="text-black/65 text-lg mb-10">Wij maken graag een vrijblijvend adviesgesprek en offerte op maat. Vertel ons over jouw ruimte en wensen — wij regelen de rest.</p>
+            <p class="text-black/65 text-lg mb-10">Geen gedoe met remote sessies die niet werken — wij beheren jouw netwerk gewoon op locatie. Persoonlijk, snel en betrouwbaar.</p>
             <a href="contact.html#offerte" class="bg-black text-white font-bold py-4 px-10 rounded-2xl text-base hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-xl">
                 Vrijblijvende Offerte Aanvragen
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
@@ -515,10 +628,11 @@
                     <ul class="space-y-2.5 text-gray-400 text-sm">
                         <li><a href="index.html"               class="hover:text-[#C9A028] transition-colors">Home</a></li>
                         <li><a href="over-ons.html"            class="hover:text-[#C9A028] transition-colors">Over Ons</a></li>
-                        <li><a href="diensten.html"            class="hover:text-[#C9A028] transition-colors">Diensten</a></li>
+                        <li><a href="netwerkbeheer.html"       class="hover:text-[#C9A028] transition-colors">Netwerkbeheer</a></li>
                         <li><a href="event-pakketten.html"     class="hover:text-[#C9A028] transition-colors">Bruiloftpakketten</a></li>
                         <li><a href="feest-pakketten.html"     class="hover:text-[#C9A028] transition-colors">Feestpakketten</a></li>
                         <li><a href="vaste-installaties.html"  class="hover:text-[#C9A028] transition-colors">Vaste Installaties</a></li>
+                        <li><a href="totaalproducties.html"    class="hover:text-[#C9A028] transition-colors">Totaalproducties</a></li>
                         <li><a href="contact.html"             class="hover:text-[#C9A028] transition-colors">Contact</a></li>
                     </ul>
                 </div>
@@ -542,7 +656,6 @@
         </div>
     </footer>
 
-    <!-- Floating button -->
     <a href="contact.html" aria-label="Stuur een e-mail"
        class="fixed bottom-6 left-6 w-14 h-14 bg-[#6B46C1] hover:bg-[#553C9A] text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 z-50">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
