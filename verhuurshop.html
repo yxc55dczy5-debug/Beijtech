@@ -602,35 +602,31 @@
     </div>
 
     <script>
-        // ── Standaard producten (ook gebruikt door admin.html) ─────
+        // ── Standaard producten (fallback als server niet bereikbaar is) ─
         const DEFAULT_PRODUCTS = [
-            { id:1,  cat:'geluid',    name:'LD Systems MAUI 28 G2 Column PA',       desc:'Column PA-systeem — compact, krachtig geluid tot ±150 personen. Inclusief subwoofer en kabels.', popular:false },
-            { id:2,  cat:'geluid',    name:'QSC K12.2 Actieve Speaker',             desc:'2000W actieve full-range speaker. Kristalhelder geluid, ideaal als hoofd- of monitorluidspreker.', popular:false },
-            { id:3,  cat:'geluid',    name:'LD Systems MAUI 44 G2 Sub',             desc:'Krachtige subwoofer voor diepe bas. Geschikt voor feesten en evenementen tot ±300 personen.', popular:false },
-            { id:4,  cat:'licht',     name:'Showtec Compact Par 7 Tri Uplight',     desc:'Draadloze RGB uplight, ideaal voor sfeerverlichting langs wanden. Per stuk of per set.', popular:false },
-            { id:5,  cat:'licht',     name:'Chauvet DJ Intimidator Spot 375Z',      desc:'Moving head spot met zoom — voor dynamische lichtshows op elk podium of dansvloer.', popular:true  },
-            { id:6,  cat:'licht',     name:'Showtec Performer 2500 Fresnel',        desc:'Krachtige theaterfresnel voor scèneverlichting, toneelspelen of productie-opnames.', popular:false },
-            { id:7,  cat:'microfoon', name:'Shure SM58 Dynamische Microfoon',       desc:'De industrie-standaard voor vocals. Robuust, betrouwbaar. Inclusief standaard en kabel.', popular:false },
-            { id:8,  cat:'microfoon', name:'LD Systems U508 HHD 2 Dubbel draadloos',desc:'Professioneel dubbel draadloos systeem inclusief ontvanger. Ideaal voor sprekers en zangers.', popular:true  },
-            { id:9,  cat:'overig',    name:'Rookmachine 1500W',                     desc:'Krachtige rookmachine voor sfeereffecten bij shows en feesten. Incl. rookvloeistof voor één avond.', popular:false },
-            { id:10, cat:'overig',    name:'Podiumtrap / Verhogingsplateau',        desc:'Modulaire podiumelementen, 2×1 m, instelbare hoogte 40–80 cm. Eenvoudig op te bouwen.', popular:false },
-            { id:11, cat:'overig',    name:'Statieven (microfoon / licht)',          desc:'Verstelbare statieven voor microfoon of lichtarmatuur. Per stuk of set.', popular:false },
-            { id:12, cat:'geluid',    name:'Allen & Heath ZEDi-10FX Mixer',         desc:'Compact 10-kanaals analoog mengpaneel met ingebouwde FX. Voor kleine tot middelgrote evenementen.', popular:false },
+            { id:1,  category:'geluid',    name:'LD Systems MAUI 28 G2 Column PA',       description:'Column PA-systeem — compact, krachtig geluid tot ±150 personen. Inclusief subwoofer en kabels.', popular:0 },
+            { id:2,  category:'geluid',    name:'QSC K12.2 Actieve Speaker',             description:'2000W actieve full-range speaker. Kristalhelder geluid, ideaal als hoofd- of monitorluidspreker.', popular:0 },
+            { id:3,  category:'geluid',    name:'LD Systems MAUI 44 G2 Sub',             description:'Krachtige subwoofer voor diepe bas. Geschikt voor feesten en evenementen tot ±300 personen.', popular:0 },
+            { id:4,  category:'licht',     name:'Showtec Compact Par 7 Tri Uplight',     description:'Draadloze RGB uplight, ideaal voor sfeerverlichting langs wanden. Per stuk of per set.', popular:0 },
+            { id:5,  category:'licht',     name:'Chauvet DJ Intimidator Spot 375Z',      description:'Moving head spot met zoom — voor dynamische lichtshows op elk podium of dansvloer.', popular:1 },
+            { id:6,  category:'licht',     name:'Showtec Performer 2500 Fresnel',        description:'Krachtige theaterfresnel voor scèneverlichting, toneelspelen of productie-opnames.', popular:0 },
+            { id:7,  category:'microfoon', name:'Shure SM58 Dynamische Microfoon',       description:'De industrie-standaard voor vocals. Robuust, betrouwbaar. Inclusief standaard en kabel.', popular:0 },
+            { id:8,  category:'microfoon', name:'LD Systems U508 HHD 2 Dubbel draadloos',description:'Professioneel dubbel draadloos systeem inclusief ontvanger. Ideaal voor sprekers en zangers.', popular:1 },
+            { id:9,  category:'overig',    name:'Rookmachine 1500W',                     description:'Krachtige rookmachine voor sfeereffecten. Incl. rookvloeistof voor één avond.', popular:0 },
+            { id:10, category:'overig',    name:'Podiumtrap / Verhogingsplateau',        description:'Modulaire podiumelementen, 2×1 m, instelbare hoogte 40–80 cm. Eenvoudig op te bouwen.', popular:0 },
+            { id:11, category:'overig',    name:'Statieven (microfoon / licht)',          description:'Verstelbare statieven voor microfoon of lichtarmatuur. Per stuk of set.', popular:0 },
+            { id:12, category:'geluid',    name:'Allen & Heath ZEDi-10FX Mixer',         description:'Compact 10-kanaals mengpaneel met ingebouwde FX. Voor kleine tot middelgrote evenementen.', popular:0 },
         ];
 
-        // Laad producten: admin-beheerde versie heeft prioriteit
-        function loadProducts() {
+        // Laad producten via API, val terug op hardcoded lijst
+        let PRODUCTS = [];
+        async function initProducts() {
             try {
-                const stored = localStorage.getItem('beijtech_products');
-                if (stored) {
-                    const parsed = JSON.parse(stored);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed.filter(p => p.active !== false);
-                }
+                const res = await fetch('/api/products');
+                if (res.ok) { PRODUCTS = await res.json(); return; }
             } catch(e) {}
-            return DEFAULT_PRODUCTS;
+            PRODUCTS = DEFAULT_PRODUCTS;
         }
-
-        const PRODUCTS = loadProducts();
 
         // Categorie-iconen (SVG paths)
         const CAT_ICONS = {
@@ -648,20 +644,25 @@
 
         // ── Render product grid ────────────────────────────────────
         function buildCard(p) {
-            const badge = CAT_BADGE[p.cat] || CAT_BADGE.overig;
-            const icon  = CAT_ICONS[p.cat]  || CAT_ICONS.overig;
+            const cat   = p.category || p.cat;
+            const desc  = p.description || p.desc || '';
+            const badge = CAT_BADGE[cat] || CAT_BADGE.overig;
+            const icon  = CAT_ICONS[cat] || CAT_ICONS.overig;
+            const imgEl = p.image_path
+                ? `<img src="/uploads/products/${p.image_path.split('/').pop()}" alt="${p.name}" class="w-full h-full object-cover">`
+                : `<svg class="w-16 h-16 opacity-20 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${icon}"/></svg>`;
             return `
-            <div class="product-card" data-id="${p.id}" data-cat="${p.cat}" data-name="${p.name.replace(/"/g,'&quot;')}">
+            <div class="product-card" data-id="${p.id}" data-cat="${cat}" data-name="${p.name.replace(/"/g,'&quot;')}">
                 <div class="h-44 bg-gray-900 flex items-center justify-center relative overflow-hidden">
-                    <svg class="w-16 h-16 opacity-20 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${icon}"/></svg>
+                    ${imgEl}
                     <div class="absolute top-3 left-3">
                         <span class="${badge.bg} ${badge.text} text-xs font-black px-2.5 py-1 rounded-full">${badge.label}</span>
                     </div>
-                    ${p.popular ? '<div class="absolute top-3 right-3"><span class="bg-[#C9A028] text-black text-xs font-black px-2.5 py-1 rounded-full">Populair</span></div>' : ''}
+                    ${(p.popular||p.popular===1) ? '<div class="absolute top-3 right-3"><span class="bg-[#C9A028] text-black text-xs font-black px-2.5 py-1 rounded-full">Populair</span></div>' : ''}
                 </div>
                 <div class="p-5">
                     <h3 class="font-black text-black text-[15px] mb-1 leading-snug">${p.name}</h3>
-                    <p class="text-gray-500 text-xs leading-relaxed mb-3">${p.desc}</p>
+                    <p class="text-gray-500 text-xs leading-relaxed mb-3">${desc}</p>
                     <div class="flex items-center justify-between">
                         <span class="text-xs text-gray-400 font-semibold">Prijs op aanvraag</span>
                         <button class="add-btn bg-black text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-all hover:scale-105 flex items-center gap-1.5">
@@ -674,7 +675,12 @@
         }
 
         const grid = document.getElementById('product-grid');
-        grid.innerHTML = PRODUCTS.map(buildCard).join('');
+
+        async function initGrid() {
+            await initProducts();
+            grid.innerHTML = PRODUCTS.map(buildCard).join('');
+        }
+        initGrid();
 
         // ── State ──────────────────────────────────────────────────
         const wishlist = {};
@@ -795,7 +801,7 @@
         }
 
         // ── Formulier versturen ────────────────────────────────────
-        document.getElementById('offerte-form').addEventListener('submit', function(e) {
+        document.getElementById('offerte-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const dateFrom = document.getElementById('date-from').value;
             const dateTo   = document.getElementById('date-to').value;
@@ -804,19 +810,29 @@
             if (!naam || !email || !dateFrom || !dateTo) return;
             if (new Date(dateTo) < new Date(dateFrom)) { alert('De retourdatum mag niet voor de ophaaldatum liggen.'); return; }
 
-            const lHeen   = document.querySelector('input[name="levering-heen"]:checked')?.value   || 'Zelf ophalen';
-            const lRetour = document.querySelector('input[name="levering-retour"]:checked')?.value || 'Zelf terugbrengen';
-            const items   = Object.values(wishlist).map(i => `- ${i.name} (x${i.qty})`).join('\n');
-            const bedrijf = document.getElementById('bedrijf').value;
-            const telefoon = document.getElementById('telefoon').value;
-            const locatie  = document.getElementById('locatie').value;
+            const lHeen      = document.querySelector('input[name="levering-heen"]:checked')?.value   || 'Zelf ophalen';
+            const lRetour    = document.querySelector('input[name="levering-retour"]:checked')?.value || 'Zelf terugbrengen';
+            const bedrijf    = document.getElementById('bedrijf').value;
+            const telefoon   = document.getElementById('telefoon').value;
+            const locatie    = document.getElementById('locatie').value;
             const opmerkingen = document.getElementById('opmerkingen').value;
+            const items      = Object.entries(wishlist).map(([id, i]) => ({ product_id: parseInt(id), product_name: i.name, quantity: i.qty }));
 
-            const body = encodeURIComponent(
-                `Hallo BeijTech,\n\nIk wil graag een offerte ontvangen voor de volgende verhuurartikelen:\n\n${items || '(geen items geselecteerd)'}\n\nHuurdatums:\nOphaaldatum: ${dateFrom}\nRetourdatum: ${dateTo}\n\nBezorgvoorkeur:\nHeen: ${lHeen}\nRetour: ${lRetour}\n\nGegevens:\nNaam: ${naam}\n${bedrijf ? 'Bedrijf: '+bedrijf+'\n':''}E-mail: ${email}\n${telefoon ? 'Telefoon: '+telefoon+'\n':''}${locatie ? 'Locatie evenement: '+locatie+'\n':''}${opmerkingen ? '\nOpmerkingen:\n'+opmerkingen : ''}\n\nMet vriendelijke groet,\n${naam}`
-            );
+            const payload = { naam, email, telefoon, bedrijf, locatie, date_from: dateFrom, date_to: dateTo, levering_heen: lHeen, levering_retour: lRetour, opmerkingen, items };
 
-            window.location.href = `mailto:info@beijtech.nl?subject=${encodeURIComponent('Verhuurofferte aanvraag – '+naam)}&body=${body}`;
+            let usedApi = false;
+            try {
+                const res = await fetch('/api/quotes', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                if (res.ok) usedApi = true;
+            } catch {}
+
+            if (!usedApi) {
+                // Fallback: mailto als server niet bereikbaar is
+                const itemsTxt = Object.values(wishlist).map(i => `- ${i.name} (x${i.qty})`).join('\n');
+                const body = encodeURIComponent(`Hallo BeijTech,\n\nOfferte aanvraag:\n\n${itemsTxt||'(geen items)'}\n\nDatums: ${dateFrom} → ${dateTo}\nHeen: ${lHeen}\nRetour: ${lRetour}\n\nNaam: ${naam}\n${bedrijf?'Bedrijf: '+bedrijf+'\n':''}E-mail: ${email}\n${telefoon?'Telefoon: '+telefoon+'\n':''}${locatie?'Locatie: '+locatie+'\n':''}${opmerkingen?'\nOpmerkingen:\n'+opmerkingen:''}\n\nMet vriendelijke groet,\n${naam}`);
+                window.location.href = `mailto:info@beijtech.nl?subject=${encodeURIComponent('Verhuurofferte – '+naam)}&body=${body}`;
+            }
+
             document.getElementById('form-success').classList.remove('hidden');
             this.querySelector('button[type="submit"]').classList.add('opacity-50','pointer-events-none');
         });
