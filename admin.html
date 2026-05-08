@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verhuurshop Beheer – BeijTech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .form-input {
+            width: 100%;
+            border: 2px solid #2e2e2e;
+            border-radius: 0.875rem;
+            padding: 0.7rem 1rem;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            background: #1e1e1e;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { border-color: #C9A028; }
+        .form-input::placeholder { color: #555; }
+        .form-input option { background: #1e1e1e; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .tr-hover:hover { background: rgba(201,160,40,0.04); }
+        @keyframes fadein { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+        .fadein { animation: fadein 0.25s ease; }
+        .toggle-check:checked + .toggle-track { background: #C9A028; }
+        .toggle-check:checked + .toggle-track .toggle-thumb { transform: translateX(20px); }
+    </style>
+</head>
+<body class="bg-[#0d0d0d] text-white min-h-screen antialiased">
+
+    <!-- ========= LOGIN SCHERM ========= -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="w-full max-w-sm fadein">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <a href="index.html" class="inline-block text-2xl font-black tracking-tight">
+                    <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                </a>
+                <p class="text-gray-500 text-sm mt-3">Verhuurshop Beheer</p>
+            </div>
+
+            <div class="rounded-2xl border border-[#2a2a2a] p-7" style="background:#141414;">
+                <h1 class="text-xl font-black text-white mb-5">Inloggen</h1>
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Wachtwoord</label>
+                        <input type="password" id="login-pw" placeholder="••••••••" class="form-input" autocomplete="current-password">
+                    </div>
+                    <div id="login-error" class="hidden text-red-400 text-sm font-semibold py-2 px-3 rounded-xl bg-red-400/10 border border-red-400/20">
+                        Onjuist wachtwoord.
+                    </div>
+                    <button type="submit" class="w-full font-black text-black py-3 rounded-xl hover:scale-[1.02] transition-all" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                        Inloggen
+                    </button>
+                </form>
+                <p class="text-gray-600 text-xs text-center mt-4">Standaard wachtwoord: <span class="font-mono text-gray-500">beijtech2024</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========= DASHBOARD ========= -->
+    <div id="dashboard" class="hidden min-h-screen flex flex-col">
+
+        <!-- Header -->
+        <header class="border-b border-[#1e1e1e] px-5 py-4 flex items-center justify-between sticky top-0 z-40" style="background:#111;">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-xl font-black tracking-tight">
+                    <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                </a>
+                <span class="text-gray-600 text-sm hidden sm:block">/ Verhuurshop Beheer</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="verhuurshop.html" target="_blank" class="text-gray-400 hover:text-white text-sm font-semibold flex items-center gap-1.5 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    Shop bekijken
+                </a>
+                <button id="logout-btn" class="text-gray-500 hover:text-red-400 text-sm font-semibold transition-colors">
+                    Uitloggen
+                </button>
+            </div>
+        </header>
+
+        <!-- Main -->
+        <main class="flex-1 px-4 md:px-8 py-8 max-w-6xl mx-auto w-full">
+
+            <!-- Stats row -->
+            <div id="stats-row" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8"></div>
+
+            <!-- Twee kolommen: form + lijst -->
+            <div class="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start">
+
+                <!-- ── Formulier: nieuw / bewerken ── -->
+                <div id="form-panel" class="rounded-2xl border border-[#2a2a2a] overflow-hidden sticky top-24" style="background:#141414;">
+                    <div class="px-5 py-4 border-b border-[#2a2a2a]" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                        <h2 id="form-title" class="font-black text-black text-base">Nieuw product toevoegen</h2>
+                    </div>
+                    <form id="product-form" class="p-5 space-y-4">
+                        <input type="hidden" id="edit-id">
+
+                        <div>
+                            <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Productnaam *</label>
+                            <input type="text" id="f-name" required placeholder="Bijv. QSC K12.2 Actieve Speaker" class="form-input">
+                        </div>
+
+                        <div>
+                            <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Categorie *</label>
+                            <select id="f-cat" required class="form-input">
+                                <option value="">Kies categorie…</option>
+                                <option value="geluid">Geluid</option>
+                                <option value="licht">Licht</option>
+                                <option value="microfoon">Microfoons</option>
+                                <option value="overig">Overig</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Beschrijving *</label>
+                            <textarea id="f-desc" required rows="3" placeholder="Korte omschrijving van het product…" class="form-input resize-none"></textarea>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-gray-400 text-sm font-semibold">Populair</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="f-popular" class="toggle-check sr-only">
+                                    <div class="toggle-track w-10 h-5 bg-[#2e2e2e] rounded-full relative transition-colors duration-200 border border-[#3e3e3e]">
+                                        <div class="toggle-thumb absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-gray-400 text-sm font-semibold">Actief</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="f-active" class="toggle-check sr-only" checked>
+                                    <div class="toggle-track w-10 h-5 bg-[#2e2e2e] rounded-full relative transition-colors duration-200 border border-[#3e3e3e]">
+                                        <div class="toggle-thumb absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200"></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 pt-1">
+                            <button type="submit" class="flex-1 font-black text-black py-2.5 rounded-xl text-sm hover:scale-[1.02] transition-all" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                                <span id="form-btn-label">Toevoegen</span>
+                            </button>
+                            <button type="button" id="cancel-edit-btn" class="hidden px-4 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white border border-[#2e2e2e] hover:border-[#444] transition-colors">
+                                Annuleer
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Gevaarzone -->
+                    <div class="px-5 pb-5">
+                        <div class="border border-red-900/40 rounded-xl p-4" style="background:rgba(239,68,68,0.04);">
+                            <p class="text-red-400 text-xs font-bold mb-2 uppercase tracking-wider">Terugzetten</p>
+                            <p class="text-gray-500 text-xs mb-3 leading-relaxed">Verwijder alle aanpassingen en herstel de standaard productenlijst.</p>
+                            <button id="reset-btn" class="text-red-400 hover:text-red-300 text-sm font-bold border border-red-900/40 hover:border-red-700/60 px-4 py-2 rounded-lg transition-colors">
+                                Herstel standaard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Productenlijst ── -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-black text-white text-base">Alle producten</h2>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            <input id="admin-search" type="text" placeholder="Zoek…" class="form-input pl-8 py-2 text-sm w-44">
+                        </div>
+                    </div>
+
+                    <div id="product-list" class="space-y-2"></div>
+                    <p id="no-products" class="hidden text-center text-gray-600 py-12 text-sm">Geen producten gevonden.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bevestiging modal -->
+    <div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-4" style="background:rgba(0,0,0,0.7);">
+        <div class="rounded-2xl border border-[#2a2a2a] p-7 w-full max-w-sm fadein" style="background:#141414;">
+            <h3 class="font-black text-white text-lg mb-2">Product verwijderen?</h3>
+            <p id="confirm-name" class="text-gray-400 text-sm mb-6 leading-relaxed"></p>
+            <div class="flex gap-3">
+                <button id="confirm-yes" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 rounded-xl text-sm transition-colors">Verwijderen</button>
+                <button id="confirm-no"  class="flex-1 border border-[#2e2e2e] text-gray-300 hover:text-white font-bold py-2.5 rounded-xl text-sm transition-colors">Annuleer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="hidden fixed bottom-5 right-5 z-50 px-5 py-3 rounded-xl shadow-2xl font-bold text-sm text-black fadein" style="background: linear-gradient(135deg, #C9A028, #E8C830);"></div>
+
+    <script>
+        // ── Wachtwoord ─────────────────────────────────────────────
+        const ADMIN_PW = 'beijtech2024';
+        const SESSION_KEY = 'bt_admin_session';
+
+        // ── Standaard producten (zelfde als verhuurshop.html) ──────
+        const DEFAULT_PRODUCTS = [
+            { id:1,  cat:'geluid',    name:'LD Systems MAUI 28 G2 Column PA',        desc:'Column PA-systeem — compact, krachtig geluid tot ±150 personen. Inclusief subwoofer en kabels.',  popular:false, active:true },
+            { id:2,  cat:'geluid',    name:'QSC K12.2 Actieve Speaker',              desc:'2000W actieve full-range speaker. Kristalhelder geluid, ideaal als hoofd- of monitorluidspreker.', popular:false, active:true },
+            { id:3,  cat:'geluid',    name:'LD Systems MAUI 44 G2 Sub',              desc:'Krachtige subwoofer voor diepe bas. Geschikt voor feesten en evenementen tot ±300 personen.',      popular:false, active:true },
+            { id:4,  cat:'licht',     name:'Showtec Compact Par 7 Tri Uplight',      desc:'Draadloze RGB uplight, ideaal voor sfeerverlichting langs wanden. Per stuk of per set.',           popular:false, active:true },
+            { id:5,  cat:'licht',     name:'Chauvet DJ Intimidator Spot 375Z',       desc:'Moving head spot met zoom — voor dynamische lichtshows op elk podium of dansvloer.',               popular:true,  active:true },
+            { id:6,  cat:'licht',     name:'Showtec Performer 2500 Fresnel',         desc:'Krachtige theaterfresnel voor scèneverlichting, toneelspelen of productie-opnames.',               popular:false, active:true },
+            { id:7,  cat:'microfoon', name:'Shure SM58 Dynamische Microfoon',        desc:'De industrie-standaard voor vocals. Robuust, betrouwbaar. Inclusief standaard en kabel.',          popular:false, active:true },
+            { id:8,  cat:'microfoon', name:'LD Systems U508 HHD 2 Dubbel draadloos', desc:'Professioneel dubbel draadloos systeem inclusief ontvanger. Ideaal voor sprekers en zangers.',     popular:true,  active:true },
+            { id:9,  cat:'overig',    name:'Rookmachine 1500W',                      desc:'Krachtige rookmachine voor sfeereffecten. Incl. rookvloeistof voor één avond.',                    popular:false, active:true },
+            { id:10, cat:'overig',    name:'Podiumtrap / Verhogingsplateau',         desc:'Modulaire podiumelementen, 2×1 m, instelbare hoogte 40–80 cm. Eenvoudig op te bouwen.',           popular:false, active:true },
+            { id:11, cat:'overig',    name:'Statieven (microfoon / licht)',           desc:'Verstelbare statieven voor microfoon of lichtarmatuur. Per stuk of set.',                          popular:false, active:true },
+            { id:12, cat:'geluid',    name:'Allen & Heath ZEDi-10FX Mixer',          desc:'Compact 10-kanaals mengpaneel met ingebouwde FX. Voor kleine tot middelgrote evenementen.',       popular:false, active:true },
+        ];
+
+        const LS_KEY = 'beijtech_products';
+        const CAT_LABELS = { geluid:'Geluid', licht:'Licht', microfoon:'Microfoon', overig:'Overig' };
+        const CAT_COLORS = { geluid:'bg-[#C9A028] text-black', licht:'bg-black text-[#C9A028] border border-[#C9A028]/30', microfoon:'bg-gray-700 text-gray-200', overig:'bg-gray-600 text-gray-100' };
+
+        // ── State ──────────────────────────────────────────────────
+        let products = [];
+        let pendingDeleteId = null;
+
+        function saveProducts() { localStorage.setItem(LS_KEY, JSON.stringify(products)); }
+        function loadProducts() {
+            try {
+                const s = localStorage.getItem(LS_KEY);
+                if (s) { const p = JSON.parse(s); if (Array.isArray(p) && p.length) return p; }
+            } catch(e) {}
+            return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+        }
+        function nextId() { return products.length ? Math.max(...products.map(p => p.id)) + 1 : 1; }
+
+        // ── Login ──────────────────────────────────────────────────
+        function checkSession() { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+
+        document.getElementById('login-form').addEventListener('submit', e => {
+            e.preventDefault();
+            if (document.getElementById('login-pw').value === ADMIN_PW) {
+                sessionStorage.setItem(SESSION_KEY, '1');
+                openDashboard();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('login-pw').value = '';
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            sessionStorage.removeItem(SESSION_KEY);
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        });
+
+        function openDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            products = loadProducts();
+            renderStats();
+            renderList();
+        }
+
+        // ── Stats ──────────────────────────────────────────────────
+        function renderStats() {
+            const total   = products.length;
+            const active  = products.filter(p => p.active !== false).length;
+            const popular = products.filter(p => p.popular).length;
+            const cats    = new Set(products.map(p => p.cat)).size;
+            const statsData = [
+                { label:'Totaal producten', value:total },
+                { label:'Actief in shop',   value:active },
+                { label:'Populair badge',   value:popular },
+                { label:'Categorieën',      value:cats },
+            ];
+            document.getElementById('stats-row').innerHTML = statsData.map(s => `
+                <div class="rounded-2xl border border-[#2a2a2a] p-5" style="background:#141414;">
+                    <p class="text-3xl font-black text-white mb-1">${s.value}</p>
+                    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">${s.label}</p>
+                </div>`).join('');
+        }
+
+        // ── Product lijst ──────────────────────────────────────────
+        function renderList(filter = '') {
+            const list = document.getElementById('product-list');
+            const noP  = document.getElementById('no-products');
+            const q    = filter.toLowerCase();
+            const filtered = q ? products.filter(p => p.name.toLowerCase().includes(q) || CAT_LABELS[p.cat]?.toLowerCase().includes(q)) : products;
+
+            if (filtered.length === 0) { list.innerHTML = ''; noP.classList.remove('hidden'); return; }
+            noP.classList.add('hidden');
+
+            list.innerHTML = filtered.map(p => `
+                <div class="rounded-xl border border-[#2a2a2a] p-4 flex items-start gap-4 tr-hover fadein" id="row-${p.id}" style="background:#141414;">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                            <span class="font-bold text-white text-sm leading-snug">${p.name}</span>
+                            ${p.popular ? '<span class="badge bg-[#C9A028] text-black">Populair</span>' : ''}
+                            ${p.active === false ? '<span class="badge bg-gray-700 text-gray-300">Verborgen</span>' : ''}
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="badge ${CAT_COLORS[p.cat] || 'bg-gray-600 text-white'}">${CAT_LABELS[p.cat] || p.cat}</span>
+                        </div>
+                        <p class="text-gray-500 text-xs leading-relaxed line-clamp-2">${p.desc}</p>
+                    </div>
+                    <div class="flex gap-2 flex-shrink-0">
+                        <button onclick="startEdit(${p.id})" class="text-gray-400 hover:text-[#C9A028] transition-colors p-1.5 rounded-lg hover:bg-[#C9A028]/10" title="Bewerken">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        </button>
+                        <button onclick="toggleActive(${p.id})" class="text-gray-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10" title="${p.active === false ? 'Activeren' : 'Verbergen'}">
+                            ${p.active === false
+                                ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'
+                                : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>'
+                            }
+                        </button>
+                        <button onclick="confirmDelete(${p.id})" class="text-gray-400 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-red-400/10" title="Verwijderen">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </div>
+                </div>`).join('');
+        }
+
+        // ── Formulier: toevoegen / bewerken ────────────────────────
+        document.getElementById('product-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const id      = document.getElementById('edit-id').value;
+            const name    = document.getElementById('f-name').value.trim();
+            const cat     = document.getElementById('f-cat').value;
+            const desc    = document.getElementById('f-desc').value.trim();
+            const popular = document.getElementById('f-popular').checked;
+            const active  = document.getElementById('f-active').checked;
+
+            if (!name || !cat || !desc) return;
+
+            if (id) {
+                const idx = products.findIndex(p => p.id == id);
+                if (idx > -1) products[idx] = { ...products[idx], name, cat, desc, popular, active };
+                showToast('Product bijgewerkt ✓');
+            } else {
+                products.push({ id: nextId(), name, cat, desc, popular, active });
+                showToast('Product toegevoegd ✓');
+            }
+
+            saveProducts();
+            renderStats();
+            renderList(document.getElementById('admin-search').value);
+            resetForm();
+        });
+
+        function resetForm() {
+            document.getElementById('product-form').reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('f-active').checked = true;
+            document.getElementById('form-title').textContent = 'Nieuw product toevoegen';
+            document.getElementById('form-btn-label').textContent = 'Toevoegen';
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+        }
+
+        function startEdit(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('edit-id').value  = p.id;
+            document.getElementById('f-name').value   = p.name;
+            document.getElementById('f-cat').value    = p.cat;
+            document.getElementById('f-desc').value   = p.desc;
+            document.getElementById('f-popular').checked = !!p.popular;
+            document.getElementById('f-active').checked  = p.active !== false;
+            document.getElementById('form-title').textContent    = 'Product bewerken';
+            document.getElementById('form-btn-label').textContent = 'Opslaan';
+            document.getElementById('cancel-edit-btn').classList.remove('hidden');
+            document.getElementById('form-panel').scrollIntoView({ behavior:'smooth', block:'start' });
+        }
+
+        document.getElementById('cancel-edit-btn').addEventListener('click', resetForm);
+
+        function toggleActive(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            p.active = p.active === false ? true : false;
+            saveProducts();
+            renderStats();
+            renderList(document.getElementById('admin-search').value);
+            showToast(p.active ? 'Product geactiveerd ✓' : 'Product verborgen ✓');
+        }
+
+        // ── Verwijderen ────────────────────────────────────────────
+        function confirmDelete(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            pendingDeleteId = id;
+            document.getElementById('confirm-name').textContent = `Weet je zeker dat je "${p.name}" wil verwijderen? Dit kan niet ongedaan worden gemaakt.`;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('confirm-yes').addEventListener('click', () => {
+            if (pendingDeleteId === null) return;
+            products = products.filter(p => p.id !== pendingDeleteId);
+            saveProducts();
+            renderStats();
+            renderList(document.getElementById('admin-search').value);
+            document.getElementById('confirm-modal').classList.add('hidden');
+            pendingDeleteId = null;
+            showToast('Product verwijderd ✓');
+        });
+
+        document.getElementById('confirm-no').addEventListener('click', () => {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            pendingDeleteId = null;
+        });
+
+        // ── Terugzetten naar standaard ─────────────────────────────
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            if (!confirm('Alle aanpassingen worden verwijderd en de standaard producten worden hersteld. Doorgaan?')) return;
+            localStorage.removeItem(LS_KEY);
+            products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+            saveProducts();
+            renderStats();
+            renderList();
+            resetForm();
+            showToast('Standaard producten hersteld ✓');
+        });
+
+        // ── Zoeken ─────────────────────────────────────────────────
+        document.getElementById('admin-search').addEventListener('input', e => {
+            renderList(e.target.value);
+        });
+
+        // ── Toast ──────────────────────────────────────────────────
+        let toastTimer;
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => el.classList.add('hidden'), 2500);
+        }
+
+        // ── Init ───────────────────────────────────────────────────
+        if (checkSession()) {
+            openDashboard();
+        }
+    </script>
+</body>
+</html>
