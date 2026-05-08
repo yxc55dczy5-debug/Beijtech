@@ -38,10 +38,32 @@
             overflow: hidden;
             box-shadow: 0 4px 28px rgba(0,0,0,0.07);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
         }
         .artist-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 52px rgba(0,0,0,0.13);
+        }
+        .artist-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .artist-photo {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .artist-photo-placeholder {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         .step-line::after {
@@ -319,119 +341,135 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- DJ -->
+                <!-- Artiest 1 — vervang foto, naam, omschrijving en prijs naar wens -->
                 <div class="artist-card">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-[#C9A028]/15 rounded-xl flex items-center justify-center text-2xl">🎧</div>
-                            <div>
-                                <h3 class="text-lg font-black text-black">DJ</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Bruiloft · Feest · Festival</p>
-                            </div>
+                    <div class="relative">
+                        <!-- Vervang onderstaande div door <img src="foto.jpg" alt="Naam artiest" class="artist-photo"> zodra je een foto hebt -->
+                        <div class="artist-photo-placeholder">
+                            <svg class="w-20 h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Van een sfeervolle bruilofts-DJ tot een energieke feest-DJ of festival-act. Wij koppelen je aan een DJ die past bij jouw muziekstijl en doelgroep.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-600">
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Bruilofts-DJ (ceremonie t/m feest)</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Party- en clubnacht DJ's</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Meerdere genres beschikbaar</li>
-                        </ul>
+                        <span class="absolute top-3 left-3 bg-black/70 text-[#C9A028] text-xs font-bold px-3 py-1 rounded-full">🎧 DJ</span>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-black mb-1">DJ Maxxx</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-1">Energieke feest-DJ met meer dan 10 jaar ervaring op bruiloften, bedrijfsfeesten en clubnachten. Past zijn set aan op jouw muziekwensen en publiek.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-gray-100 pt-4">
+                            <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Vanaf prijs</span>
+                            <span class="text-2xl font-black text-black">€ 350</span>
+                        </div>
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            Boek Deze Artiest
+                        </a>
                     </div>
                 </div>
 
-                <!-- Live Band -->
+                <!-- Artiest 2 -->
                 <div class="artist-card">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-[#C9A028]/15 rounded-xl flex items-center justify-center text-2xl">🎸</div>
-                            <div>
-                                <h3 class="text-lg font-black text-black">Live Band</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Bruiloft · Bedrijfsevent · Gala</p>
-                            </div>
+                    <div class="relative">
+                        <div class="artist-photo-placeholder">
+                            <svg class="w-20 h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Een live band tilt elk event naar een hoger niveau. Van een intiem akoestisch duo tot een volledige coverband die de dansvloer vult — wij vinden de juiste match.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-600">
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Coverbands (pop, rock, funk, soul)</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Jazz &amp; loungebands</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Akoestisch duo of trio</li>
-                        </ul>
+                        <span class="absolute top-3 left-3 bg-black/70 text-[#C9A028] text-xs font-bold px-3 py-1 rounded-full">🎸 Coverband</span>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-black mb-1">The Groove Collective</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-1">Vijfkoppige coverband die de dansvloer vult met hits van de jaren 80 tot nu. Pop, funk, soul en rock — een complete live show die elk feest op zijn kop zet.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-gray-100 pt-4">
+                            <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Vanaf prijs</span>
+                            <span class="text-2xl font-black text-black">€ 1.200</span>
+                        </div>
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            Boek Deze Artiest
+                        </a>
                     </div>
                 </div>
 
-                <!-- Solo Artiest -->
+                <!-- Artiest 3 -->
                 <div class="artist-card">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-[#C9A028]/15 rounded-xl flex items-center justify-center text-2xl">🎵</div>
-                            <div>
-                                <h3 class="text-lg font-black text-black">Solo Artiest</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Bruiloft · Diner · Ceremonie</p>
-                            </div>
+                    <div class="relative">
+                        <div class="artist-photo-placeholder">
+                            <svg class="w-20 h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Een solo zanger of muzikant zorgt voor een persoonlijke en sfeervolle beleving. Ideaal als achtergrondmuziek bij een diner, ontvangst of ceremonie.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-600">
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Akoestische zanger/gitarist</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Piano of saxofoon</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Geschikt voor ceremonie &amp; diner</li>
-                        </ul>
+                        <span class="absolute top-3 left-3 bg-black/70 text-[#C9A028] text-xs font-bold px-3 py-1 rounded-full">🎵 Zangeres</span>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-black mb-1">Eva Timmers</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-1">Akoestische zangeres met een warme, intieme stem. Ideaal als sfeervolle begeleiding tijdens de ceremonie, het ontvangst of het diner van jouw bruiloft of event.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-gray-100 pt-4">
+                            <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Vanaf prijs</span>
+                            <span class="text-2xl font-black text-black">€ 250</span>
+                        </div>
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            Boek Deze Artiest
+                        </a>
                     </div>
                 </div>
 
-                <!-- Tribute Act -->
+                <!-- Artiest 4 -->
                 <div class="artist-card">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-[#C9A028]/15 rounded-xl flex items-center justify-center text-2xl">⭐</div>
-                            <div>
-                                <h3 class="text-lg font-black text-black">Tribute Act</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Feest · Jubileum · Festival</p>
-                            </div>
+                    <div class="relative">
+                        <div class="artist-photo-placeholder">
+                            <svg class="w-20 h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Een tribute act brengt de magie van grote namen naar jouw event. De beleving van een A-artiest, voor een fractie van de prijs — en altijd beschikbaar.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-600">
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Pop, rock en dance tributes</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Complete show incl. kostuum</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Altijd een memorabele avond</li>
-                        </ul>
+                        <span class="absolute top-3 left-3 bg-black/70 text-[#C9A028] text-xs font-bold px-3 py-1 rounded-full">⭐ Tribute Act</span>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-black mb-1">ABBA Gold Tribute</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-1">Spectaculaire ABBA tributeshow inclusief authentieke kostuums, choreografie en een complete lichtshow. Een memorabele avond gegarandeerd — altijd beschikbaar.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-gray-100 pt-4">
+                            <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Vanaf prijs</span>
+                            <span class="text-2xl font-black text-black">€ 900</span>
+                        </div>
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            Boek Deze Artiest
+                        </a>
                     </div>
                 </div>
 
-                <!-- Entertainment -->
+                <!-- Artiest 5 -->
                 <div class="artist-card">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-[#C9A028]/15 rounded-xl flex items-center justify-center text-2xl">🎩</div>
-                            <div>
-                                <h3 class="text-lg font-black text-black">Entertainment</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Feest · Bedrijfsevent · Kids</p>
-                            </div>
+                    <div class="relative">
+                        <div class="artist-photo-placeholder">
+                            <svg class="w-20 h-20 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                            </svg>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-4">Muziek is niet alles — soms wil je iets bijzonders. Van een goochelaar die gasten versteld laat staan tot een cabaretier of showact die iedereen aan het lachen krijgt.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-600">
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Goochelaars &amp; illusionisten</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Cabaretiers &amp; presentatoren</li>
-                            <li class="flex items-center gap-2"><svg class="w-3.5 h-3.5 text-[#C9A028] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Showacts &amp; straattheater</li>
-                        </ul>
+                        <span class="absolute top-3 left-3 bg-black/70 text-[#C9A028] text-xs font-bold px-3 py-1 rounded-full">🎩 Entertainer</span>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-black mb-1">Marco Bello</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-4 flex-1">Interactieve goochelaar en comedian die gasten versteld laat staan. Werkt zowel als tafelact tijdens een diner als als hoofdprogramma — altijd een hit bij jong en oud.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-gray-100 pt-4">
+                            <span class="text-xs text-gray-400 font-semibold uppercase tracking-wide">Vanaf prijs</span>
+                            <span class="text-2xl font-black text-black">€ 300</span>
+                        </div>
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            Boek Deze Artiest
+                        </a>
                     </div>
                 </div>
 
-                <!-- Op Maat -->
+                <!-- Eigen wens kaart -->
                 <div class="artist-card" style="background: #1a1a1a;">
-                    <div class="h-3 w-full" style="background: linear-gradient(90deg, #C9A028, #E8C830);"></div>
-                    <div class="p-6">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background: rgba(201,160,40,0.2);">✨</div>
-                            <div>
-                                <h3 class="text-lg font-black text-white">Iets Speciaals?</h3>
-                                <p class="text-[#C9A028] text-xs font-semibold">Volledig Op Maat</p>
-                            </div>
+                    <div class="artist-photo-placeholder" style="background: linear-gradient(135deg, #111 0%, #2a2a2a 100%);">
+                        <div class="text-5xl">✨</div>
+                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="text-lg font-black text-white mb-1">Iets Speciaals?</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-4 flex-1">Staat jouw artiest er niet bij? Wij hebben toegang tot een breed netwerk en denken graag mee. Vertel ons jouw wens en we komen met een passend voorstel.</p>
+                        <div class="flex items-center justify-between mb-4 border-t border-white/10 pt-4">
+                            <span class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Prijs</span>
+                            <span class="text-lg font-black text-[#C9A028]">Op maat</span>
                         </div>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-4">Heb je een specifieke wens die hier niet tussen staat? Geen probleem — wij hebben een breed netwerk en denken graag met je mee over een unieke act die bij jouw event past.</p>
-                        <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm hover:opacity-90 transition-opacity">
+                        <a href="contact.html#offerte" class="block w-full text-center text-black font-black py-3 rounded-xl text-sm transition-all hover:scale-[1.02] hover:opacity-90" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
                             Vertel Ons Jouw Wens
                         </a>
                     </div>
