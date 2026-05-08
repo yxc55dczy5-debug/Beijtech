@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
       [token, user.id, expiresAt]
     );
 
-    await run(`UPDATE users SET last_login = datetime('now') WHERE id = ?`, [user.id]);
+    await run(`UPDATE users SET last_login = NOW() WHERE id = ?`, [user.id]);
 
     return res.json({
       token,

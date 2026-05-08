@@ -1,5 +1,5 @@
 const express = require('express');
-const { run, get, all } = require('../db');
+const { run, get, all, transaction } = require('../db');
 const requireAuth = require('../middleware/auth');
 
 const router = express.Router();
@@ -19,10 +19,8 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Naam en e-mail zijn verplicht.' });
     }
 
-    await run('BEGIN TRANSACTION');
-
-    try {
-      const result = await run(
+    const quoteId = await transaction(async ({ run: txRun }) => {
+      const result = await txRun(
         `INSERT INTO quote_requests
           (naam, email, telefoon, bedrijf, locatie, date_from, date_to, levering_heen, levering_retour, opmerkingen)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -36,23 +34,21 @@ router.post('/', async (req, res) => {
         ]
       );
 
-      const quoteId = result.lastID;
+      const id = result.lastID;
 
       if (Array.isArray(items) && items.length > 0) {
         for (const item of items) {
-          await run(
+          await txRun(
             `INSERT INTO quote_items (quote_id, product_id, product_name, quantity) VALUES (?, ?, ?, ?)`,
-            [quoteId, item.product_id || null, item.product_name || 'Onbekend product', item.quantity || 1]
+            [id, item.product_id || null, item.product_name || 'Onbekend product', item.quantity || 1]
           );
         }
       }
 
-      await run('COMMIT');
-      return res.status(201).json({ id: quoteId, message: 'Aanvraag ontvangen' });
-    } catch (innerErr) {
-      await run('ROLLBACK');
-      throw innerErr;
-    }
+      return id;
+    });
+
+    return res.status(201).json({ id: quoteId, message: 'Aanvraag ontvangen' });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }

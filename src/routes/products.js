@@ -90,7 +90,7 @@ router.put('/:id', requireAuth, async (req, res) => {
     const { name, category, description, popular, active, sort_order } = req.body;
 
     await run(
-      `UPDATE products SET name = ?, category = ?, description = ?, popular = ?, active = ?, sort_order = ?, updated_at = datetime('now') WHERE id = ?`,
+      `UPDATE products SET name = ?, category = ?, description = ?, popular = ?, active = ?, sort_order = ?, updated_at = NOW() WHERE id = ?`,
       [
         name !== undefined ? name : existing.name,
         category !== undefined ? category : existing.category,
@@ -148,7 +148,7 @@ router.post('/:id/image', requireAuth, async (req, res) => {
 
         const imageUrl = `/uploads/products/${req.file.filename}`;
         await run(
-          `UPDATE products SET image_path = ?, updated_at = datetime('now') WHERE id = ?`,
+          `UPDATE products SET image_path = ?, updated_at = NOW() WHERE id = ?`,
           [imageUrl, id]
         );
 
@@ -175,7 +175,7 @@ router.delete('/:id/image', requireAuth, async (req, res) => {
     }
 
     await run(
-      `UPDATE products SET image_path = NULL, updated_at = datetime('now') WHERE id = ?`,
+      `UPDATE products SET image_path = NULL, updated_at = NOW() WHERE id = ?`,
       [id]
     );
 
