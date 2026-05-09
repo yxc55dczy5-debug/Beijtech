@@ -39,6 +39,16 @@ function handle_projects(string $method, string $sub): void
         json_ok(db_get('SELECT * FROM projects WHERE id = ?', [$id]), 201);
     }
 
+    // GET /:id — auth, single project with items
+    if ($method === 'GET' && preg_match('#^/(\d+)$#', $sub, $m)) {
+        require_auth();
+        $id  = (int)$m[1];
+        $row = db_get('SELECT * FROM projects WHERE id = ?', [$id]);
+        if (!$row) json_error('Project niet gevonden.', 404);
+        $row['items'] = db_all('SELECT * FROM project_items WHERE project_id = ? ORDER BY id', [$id]);
+        json_ok($row);
+    }
+
     // PUT /:id — auth, update project
     if ($method === 'PUT' && preg_match('#^/(\d+)$#', $sub, $m)) {
         require_auth();
@@ -75,6 +85,53 @@ function handle_projects(string $method, string $sub): void
 
         db_run('DELETE FROM projects WHERE id = ?', [$id]);
         json_ok(['message' => 'Project verwijderd.']);
+    }
+
+    // POST /:id/items — auth, add item to project
+    if ($method === 'POST' && preg_match('#^/(\d+)/items$#', $sub, $m)) {
+        require_auth();
+        $projectId = (int)$m[1];
+        if (!db_get('SELECT id FROM projects WHERE id = ?', [$projectId])) {
+            json_error('Project niet gevonden.', 404);
+        }
+        $b    = get_body();
+        $pid  = isset($b['product_id']) ? (int)$b['product_id'] : null;
+        $name = $b['product_name'] ?? null;
+        if (!$name && $pid) {
+            $prod = db_get('SELECT name FROM products WHERE id = ?', [$pid]);
+            $name = $prod ? $prod['name'] : 'Onbekend';
+        }
+        if (!$name) json_error('product_name of product_id is verplicht.', 400);
+        $iid = db_insert(
+            'INSERT INTO project_items (project_id, product_id, product_name, quantity) VALUES (?, ?, ?, ?)',
+            [$projectId, $pid, $name, max(1, (int)($b['quantity'] ?? 1))]
+        );
+        json_ok(db_get('SELECT * FROM project_items WHERE id = ?', [$iid]), 201);
+    }
+
+    // PUT /:id/items/:iid — auth, update item quantity
+    if ($method === 'PUT' && preg_match('#^/(\d+)/items/(\d+)$#', $sub, $m)) {
+        require_auth();
+        $projectId = (int)$m[1];
+        $itemId    = (int)$m[2];
+        $item = db_get('SELECT * FROM project_items WHERE id = ? AND project_id = ?', [$itemId, $projectId]);
+        if (!$item) json_error('Item niet gevonden.', 404);
+        $b   = get_body();
+        $qty = max(1, (int)($b['quantity'] ?? $item['quantity']));
+        db_run('UPDATE project_items SET quantity = ? WHERE id = ?', [$qty, $itemId]);
+        json_ok(db_get('SELECT * FROM project_items WHERE id = ?', [$itemId]));
+    }
+
+    // DELETE /:id/items/:iid — auth, remove item from project
+    if ($method === 'DELETE' && preg_match('#^/(\d+)/items/(\d+)$#', $sub, $m)) {
+        require_auth();
+        $projectId = (int)$m[1];
+        $itemId    = (int)$m[2];
+        if (!db_get('SELECT id FROM project_items WHERE id = ? AND project_id = ?', [$itemId, $projectId])) {
+            json_error('Item niet gevonden.', 404);
+        }
+        db_run('DELETE FROM project_items WHERE id = ?', [$itemId]);
+        json_ok(['message' => 'Item verwijderd.']);
     }
 
     json_error('Route niet gevonden.', 404);

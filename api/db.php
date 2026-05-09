@@ -61,6 +61,23 @@ function maybe_seed(): void
     if ($done) return;
     $done = true;
 
+    // Auto-migrate: stock_quantity on products
+    $col = db_get("SHOW COLUMNS FROM `products` LIKE 'stock_quantity'");
+    if (!$col) {
+        db_run('ALTER TABLE `products` ADD COLUMN `stock_quantity` INT NOT NULL DEFAULT 0 AFTER `sort_order`');
+    }
+
+    // Auto-migrate: project_items table
+    db_run("CREATE TABLE IF NOT EXISTS `project_items` (
+        `id`           INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        `project_id`   INT          NOT NULL,
+        `product_id`   INT,
+        `product_name` VARCHAR(255) NOT NULL,
+        `quantity`     INT          NOT NULL DEFAULT 1,
+        FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE CASCADE,
+        FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE SET NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
     $row = db_get('SELECT COUNT(*) AS cnt FROM users');
     if ((int)$row['cnt'] === 0) {
         $hash = password_hash('beijtech2024', PASSWORD_BCRYPT);

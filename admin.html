@@ -57,6 +57,9 @@
         .st-actief      { background:rgba(34,197,94,.18); color:#4ade80; }
         .st-afgerond    { background:rgba(107,114,128,.22); color:#9ca3af; }
         .st-geannuleerd { background:rgba(239,68,68,.18); color:#f87171; }
+        .inv-ok   { background:rgba(34,197,94,.15);  color:#4ade80; }
+        .inv-low  { background:rgba(234,179,8,.15);  color:#fbbf24; }
+        .inv-none { background:rgba(239,68,68,.15);  color:#f87171; }
 
         /* ── Misc ── */
         .badge { display:inline-flex; align-items:center; padding:2px 10px; border-radius:9999px; font-size:.7rem; font-weight:700; white-space:nowrap; }
@@ -141,6 +144,11 @@
             <button class="nav-item" data-nav="verhuurshop">
                 <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                 <span class="nav-label">Verhuurshop</span>
+            </button>
+
+            <button class="nav-item" data-nav="voorraad">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <span class="nav-label">Voorraad</span>
             </button>
 
             <button class="nav-item" data-nav="offertes">
@@ -280,6 +288,29 @@
         </section>
 
         <!-- ─────────────────────────────────────────────────── -->
+        <!-- TAB: VOORRAAD                                        -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <section id="tab-voorraad" class="hidden flex-1 p-6 fadein">
+            <div id="inv-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"></div>
+            <div class="flex items-center gap-4 mb-5 flex-wrap">
+                <h2 class="font-black text-white text-base">Beschikbaarheid checken</h2>
+                <div class="flex items-center gap-3 flex-wrap ml-auto">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Van</span>
+                        <input type="date" id="inv-from" class="fi py-1.5 text-sm w-36">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider">Tot</span>
+                        <input type="date" id="inv-to" class="fi py-1.5 text-sm w-36">
+                    </div>
+                    <button id="inv-check" class="btn-gold py-2 px-4 text-sm">Controleer</button>
+                </div>
+            </div>
+            <div id="inv-list" class="space-y-2"></div>
+            <p id="inv-empty" class="hidden text-gray-600 text-sm text-center py-12">Geen producten gevonden.</p>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────── -->
         <!-- TAB: OFFERTES                                        -->
         <!-- ─────────────────────────────────────────────────── -->
         <section id="tab-offertes" class="hidden flex-1 p-6 fadein">
@@ -369,6 +400,20 @@
                 <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Opmerkingen</label>
                 <textarea id="pf-opm" rows="3" placeholder="Interne notities…" class="fi resize-none"></textarea>
             </div>
+            <div id="pf-items-section" class="hidden">
+                <div class="border-t border-[#2e2e2e] pt-4">
+                    <p class="text-gray-400 text-xs font-semibold mb-3 uppercase tracking-wider">Gekoppeld materiaal</p>
+                    <div id="pf-items-list" class="space-y-1.5 mb-3"></div>
+                    <div class="flex gap-2">
+                        <select id="pf-item-product" class="fi flex-1 py-1.5 text-sm">
+                            <option value="">Kies product…</option>
+                        </select>
+                        <input type="number" id="pf-item-qty" value="1" min="1" class="fi w-16 py-1.5 text-sm text-center">
+                        <button type="button" id="pf-item-add" class="btn-gold py-1.5 px-3 text-xs flex-shrink-0">+ Toevoegen</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="pf-delete-row" class="hidden pt-1">
                 <button type="button" id="pf-delete-btn" class="text-red-400 text-xs font-semibold hover:text-red-300 transition-colors">Project verwijderen</button>
             </div>
@@ -408,6 +453,10 @@
             <div>
                 <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Beschrijving</label>
                 <textarea id="f-desc" rows="3" placeholder="Korte omschrijving…" class="fi resize-none"></textarea>
+            </div>
+            <div>
+                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Voorraad (stuks)</label>
+                <input type="number" id="f-stock" min="0" value="0" placeholder="0" class="fi">
             </div>
             <div>
                 <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Afbeelding</label>
@@ -525,6 +574,7 @@ let products    = [];
 let quotes      = [];
 let users       = [];
 let projects    = [];
+let projectItems = [];
 let calYear     = new Date().getFullYear();
 let calMonth    = new Date().getMonth();
 
@@ -624,8 +674,8 @@ async function openDashboard() {
 }
 
 // ── Sidebar Navigation ────────────────────────────────────────────────────────
-const NAV_TITLES = { agenda:'Agenda', verhuurshop:'Verhuurshop', offertes:'Offertes', gebruikers:'Gebruikers' };
-const ALL_TABS   = ['agenda','verhuurshop','offertes','gebruikers'];
+const NAV_TITLES = { agenda:'Agenda', verhuurshop:'Verhuurshop', voorraad:'Voorraad', offertes:'Offertes', gebruikers:'Gebruikers' };
+const ALL_TABS   = ['agenda','verhuurshop','voorraad','offertes','gebruikers'];
 
 function switchTab(name) {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.nav === name));
@@ -635,6 +685,10 @@ function switchTab(name) {
         if (el && t === name) el.classList.add('fadein');
     });
     document.getElementById('page-title').textContent = NAV_TITLES[name] || name;
+    if (name === 'voorraad' && !document.getElementById('inv-from').value) {
+        initInventoryDates();
+        loadInventory();
+    }
 }
 
 document.querySelectorAll('.nav-item[data-nav]').forEach(btn => {
@@ -783,12 +837,15 @@ function openProjectModal(mode) {
     document.getElementById('modal-proj-title').textContent = mode === 'edit' ? 'Project bewerken' : 'Nieuw project';
     document.getElementById('pf-btn-label').textContent     = mode === 'edit' ? 'Opslaan' : 'Project aanmaken';
     document.getElementById('pf-delete-row').classList.toggle('hidden', mode !== 'edit');
+    document.getElementById('pf-items-section').classList.toggle('hidden', mode !== 'edit');
 }
 function closeProjectModal() {
     document.getElementById('modal-project').classList.add('hidden');
     document.getElementById('project-form').reset();
     document.getElementById('pf-id').value = '';
     document.getElementById('pf-status').value = 'gepland';
+    document.getElementById('pf-items-list').innerHTML = '';
+    projectItems = [];
 }
 document.getElementById('open-add-project').addEventListener('click', () => { closeProjectModal(); openProjectModal('add'); });
 document.getElementById('close-modal-project').addEventListener('click', closeProjectModal);
@@ -802,7 +859,7 @@ function newProjectOnDate(dateStr) {
     openProjectModal('add');
 }
 
-function editProject(id) {
+async function editProject(id) {
     const p = projects.find(x => x.id == id);
     if (!p) return;
     document.getElementById('pf-id').value      = p.id;
@@ -814,6 +871,12 @@ function editProject(id) {
     document.getElementById('pf-to').value      = p.date_to;
     document.getElementById('pf-opm').value     = p.opmerkingen || '';
     openProjectModal('edit');
+    populateProductDropdown();
+    try {
+        const detail = await api('GET', `/api/projects/${p.id}`);
+        projectItems = detail.items || [];
+    } catch { projectItems = []; }
+    renderProjectItems(p.id);
 }
 
 document.getElementById('pf-delete-btn').addEventListener('click', () => {
@@ -850,6 +913,56 @@ document.getElementById('project-form').addEventListener('submit', async e => {
     } catch(err) { toast('Fout: ' + err.message); }
 });
 
+// ── Project items ─────────────────────────────────────────────────────────────
+function populateProductDropdown() {
+    const sel = document.getElementById('pf-item-product');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Kies product…</option>' +
+        products.filter(p => p.active).map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+}
+
+function renderProjectItems(projectId) {
+    const list = document.getElementById('pf-items-list');
+    if (!list) return;
+    if (!projectItems.length) {
+        list.innerHTML = '<p class="text-gray-600 text-xs text-center py-2">Nog geen materiaal gekoppeld.</p>';
+        return;
+    }
+    list.innerHTML = projectItems.map(item => `
+        <div class="flex items-center gap-2 rounded-lg px-3 py-2" style="background:#1e1e1e;">
+            <span class="flex-1 text-white text-sm truncate">${item.product_name}</span>
+            <span class="text-[#C9A028] font-bold text-sm">× ${item.quantity}</span>
+            <button type="button" onclick="removeProjectItem(${projectId},${item.id})" class="text-gray-500 hover:text-red-400 transition-colors ml-1 p-0.5 flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>`).join('');
+}
+
+async function addProjectItem() {
+    const projectId = document.getElementById('pf-id').value;
+    if (!projectId) return;
+    const productId = parseInt(document.getElementById('pf-item-product').value);
+    const qty = Math.max(1, parseInt(document.getElementById('pf-item-qty').value) || 1);
+    if (!productId) { toast('Kies eerst een product.'); return; }
+    try {
+        const item = await api('POST', `/api/projects/${projectId}/items`, { product_id: productId, quantity: qty });
+        projectItems.push(item);
+        renderProjectItems(parseInt(projectId));
+        document.getElementById('pf-item-qty').value = 1;
+        toast('Materiaal toegevoegd ✓');
+    } catch(err) { toast('Fout: ' + err.message); }
+}
+
+async function removeProjectItem(projectId, itemId) {
+    try {
+        await api('DELETE', `/api/projects/${projectId}/items/${itemId}`);
+        projectItems = projectItems.filter(i => i.id !== itemId);
+        renderProjectItems(projectId);
+    } catch(err) { toast('Fout: ' + err.message); }
+}
+
+document.getElementById('pf-item-add').addEventListener('click', addProjectItem);
+
 // ═══════════════════════════════════════════════════════════════════════════
 // PRODUCTEN
 // ═══════════════════════════════════════════════════════════════════════════
@@ -880,7 +993,10 @@ function renderProducts(filter = document.getElementById('prod-search')?.value |
                     ${p.popular ? '<span class="badge bg-[#C9A028] text-black">Populair</span>' : ''}
                     ${!p.active ? '<span class="badge bg-gray-700 text-gray-300">Verborgen</span>' : ''}
                 </div>
-                <span class="badge ${CAT_COLORS[p.category]||'bg-gray-600 text-white'}">${CAT_LABELS[p.category]||p.category}</span>
+                <div class="flex items-center gap-2 flex-wrap mt-0.5">
+                    <span class="badge ${CAT_COLORS[p.category]||'bg-gray-600 text-white'}">${CAT_LABELS[p.category]||p.category}</span>
+                    <span class="text-gray-600 text-xs">Voorraad: <strong class="${(p.stock_quantity||0)>0?'text-gray-300':'text-red-400/70'}">${p.stock_quantity||0}</strong> st.</span>
+                </div>
                 <p class="text-gray-500 text-xs mt-1 clamp2">${p.description||''}</p>
             </div>
             <div class="flex gap-1.5 flex-shrink-0">
@@ -914,6 +1030,7 @@ function closeProductModal() {
     document.getElementById('upload-preview').classList.add('hidden');
     document.getElementById('upload-placeholder').classList.remove('hidden');
     document.getElementById('remove-image-btn').classList.add('hidden');
+    document.getElementById('f-stock').value = 0;
     currentImagePath = null;
 }
 document.getElementById('open-add-product').addEventListener('click', () => { closeProductModal(); openProductModal('add'); });
@@ -930,6 +1047,7 @@ function editProduct(id) {
     document.getElementById('f-desc').value     = p.description || '';
     document.getElementById('f-popular').checked= !!p.popular;
     document.getElementById('f-active').checked = !!p.active;
+    document.getElementById('f-stock').value    = p.stock_quantity || 0;
     if (p.image_path) {
         document.getElementById('upload-preview').src = p.image_path + '?t=' + Date.now();
         document.getElementById('upload-preview').classList.remove('hidden');
@@ -984,8 +1102,9 @@ document.getElementById('product-form').addEventListener('submit', async e => {
         name:        document.getElementById('f-name').value.trim(),
         category:    document.getElementById('f-cat').value,
         description: document.getElementById('f-desc').value.trim(),
-        popular:     document.getElementById('f-popular').checked ? 1 : 0,
-        active:      document.getElementById('f-active').checked  ? 1 : 0,
+        popular:        document.getElementById('f-popular').checked ? 1 : 0,
+        active:         document.getElementById('f-active').checked  ? 1 : 0,
+        stock_quantity: Math.max(0, parseInt(document.getElementById('f-stock').value) || 0),
     };
     try {
         if (id) { await api('PUT', `/api/products/${id}`, body); toast('Product bijgewerkt ✓'); }
@@ -1232,6 +1351,75 @@ function deleteUser(id, name) {
         catch(err) { toast('Fout: ' + err.message); }
     });
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// VOORRAAD
+// ═══════════════════════════════════════════════════════════════════════════
+function initInventoryDates() {
+    const today = new Date();
+    const end   = new Date(today); end.setDate(end.getDate() + 7);
+    document.getElementById('inv-from').value = calDateStr(today);
+    document.getElementById('inv-to').value   = calDateStr(end);
+}
+
+async function loadInventory() {
+    const from = document.getElementById('inv-from').value;
+    const to   = document.getElementById('inv-to').value;
+    if (!from || !to) { toast('Selecteer een periode.'); return; }
+    try {
+        const data = await api('GET', `/api/products/availability?date_from=${encodeURIComponent(from)}&date_to=${encodeURIComponent(to)}`);
+        renderInventory(data);
+    } catch(err) { toast('Fout: ' + err.message); }
+}
+
+function renderInventory(data) {
+    const totalStock  = data.reduce((s,p) => s + (p.stock_quantity||0), 0);
+    const totalBooked = data.reduce((s,p) => s + (p.booked_quantity||0), 0);
+    const nAvail      = data.filter(p => (p.stock_quantity||0) > 0 && p.available_quantity > 0).length;
+    const nFull       = data.filter(p => (p.stock_quantity||0) > 0 && p.available_quantity === 0).length;
+
+    document.getElementById('inv-stats').innerHTML = [
+        statCard(data.length,  'Producten'),
+        statCard(totalStock,   'Totaal stuks'),
+        statCard(totalBooked,  'Gereserveerd', 'text-[#C9A028]'),
+        statCard(nAvail,       'Beschikbaar',  'text-[#4ade80]'),
+    ].join('');
+
+    document.getElementById('inv-empty').classList.toggle('hidden', data.length > 0);
+    document.getElementById('inv-list').innerHTML = data.map(p => {
+        const stock = p.stock_quantity || 0;
+        const avail = p.available_quantity || 0;
+        const booked = p.booked_quantity || 0;
+        const bookPct   = stock > 0 ? booked / stock : 0;
+        const barWidth  = Math.min(100, Math.round(bookPct * 100));
+        const barColor  = bookPct >= 1 ? '#f87171' : bookPct >= 0.75 ? '#fbbf24' : '#4ade80';
+        const statusCls = stock === 0 ? 'text-gray-500' : avail === 0 ? 'text-red-400' : bookPct >= 0.75 ? 'text-[#fbbf24]' : 'text-[#4ade80]';
+        const statusLabel = stock === 0 ? 'Geen voorraad' : avail === 0 ? 'Volledig bezet' : bookPct >= 0.75 ? 'Bijna vol' : 'Beschikbaar';
+        return `
+        <div class="rounded-xl border border-[#2a2a2a] p-4 fadein" style="background:#141414;">
+            <div class="flex items-center gap-3 flex-wrap">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap mb-1.5">
+                        <span class="font-bold text-white text-sm">${p.name}</span>
+                        <span class="badge ${CAT_COLORS[p.category]||'bg-gray-600 text-white'}">${CAT_LABELS[p.category]||p.category}</span>
+                    </div>
+                    <div class="flex items-center gap-4 flex-wrap mb-2">
+                        <span class="text-gray-500 text-xs">Voorraad: <strong class="text-white">${stock}</strong></span>
+                        <span class="text-gray-500 text-xs">Gereserveerd: <strong class="text-[#C9A028]">${booked}</strong></span>
+                        <span class="text-gray-500 text-xs">Beschikbaar: <strong class="${statusCls}">${avail}</strong></span>
+                    </div>
+                    ${stock > 0 ? `
+                    <div class="bg-[#2e2e2e] rounded-full h-1.5 overflow-hidden max-w-xs">
+                        <div class="h-full rounded-full transition-all" style="width:${barWidth}%;background:${barColor};"></div>
+                    </div>` : ''}
+                </div>
+                <span class="text-xs font-bold px-3 py-1 rounded-full flex-shrink-0 whitespace-nowrap ${statusCls}" style="background:rgba(0,0,0,.3);">${statusLabel}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+document.getElementById('inv-check').addEventListener('click', loadInventory);
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 if (token) openDashboard();

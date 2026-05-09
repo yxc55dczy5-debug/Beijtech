@@ -24,16 +24,17 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `products` (
-  `id`          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name`        VARCHAR(255) NOT NULL,
-  `category`    VARCHAR(100) NOT NULL,
-  `description` TEXT,
-  `image_path`  VARCHAR(500),
-  `popular`     TINYINT(1)   NOT NULL DEFAULT 0,
-  `active`      TINYINT(1)   NOT NULL DEFAULT 1,
-  `sort_order`  INT          NOT NULL DEFAULT 0,
-  `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id`             INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name`           VARCHAR(255) NOT NULL,
+  `category`       VARCHAR(100) NOT NULL,
+  `description`    TEXT,
+  `image_path`     VARCHAR(500),
+  `popular`        TINYINT(1)   NOT NULL DEFAULT 0,
+  `active`         TINYINT(1)   NOT NULL DEFAULT 1,
+  `sort_order`     INT          NOT NULL DEFAULT 0,
+  `stock_quantity` INT          NOT NULL DEFAULT 0,
+  `created_at`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `quote_requests` (
@@ -74,6 +75,16 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `quote_id`    INT,
   `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`quote_id`) REFERENCES `quote_requests`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `project_items` (
+  `id`           INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `project_id`   INT          NOT NULL,
+  `product_id`   INT,
+  `product_name` VARCHAR(255) NOT NULL,
+  `quantity`     INT          NOT NULL DEFAULT 1,
+  FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET foreign_key_checks = 1;

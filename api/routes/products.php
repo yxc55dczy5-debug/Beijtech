@@ -24,7 +24,7 @@ function handle_products(string $method, string $sub): void
         }
 
         $id = db_insert(
-            'INSERT INTO products (name, category, description, popular, active, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO products (name, category, description, popular, active, sort_order, stock_quantity) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
                 $b['name'],
                 $b['category'],
@@ -32,6 +32,7 @@ function handle_products(string $method, string $sub): void
                 isset($b['popular']) ? (int)(bool)$b['popular'] : 0,
                 isset($b['active'])  ? (int)(bool)$b['active']  : 1,
                 (int)($b['sort_order'] ?? 0),
+                max(0, (int)($b['stock_quantity'] ?? 0)),
             ]
         );
         json_ok(db_get('SELECT * FROM products WHERE id = ?', [$id]), 201);
@@ -46,7 +47,7 @@ function handle_products(string $method, string $sub): void
 
         $b = get_body();
         db_run(
-            'UPDATE products SET name=?, category=?, description=?, popular=?, active=?, sort_order=?, updated_at=NOW() WHERE id=?',
+            'UPDATE products SET name=?, category=?, description=?, popular=?, active=?, sort_order=?, stock_quantity=?, updated_at=NOW() WHERE id=?',
             [
                 $b['name']        ?? $row['name'],
                 $b['category']    ?? $row['category'],
@@ -54,6 +55,7 @@ function handle_products(string $method, string $sub): void
                 isset($b['popular']) ? (int)(bool)$b['popular'] : (int)$row['popular'],
                 isset($b['active'])  ? (int)(bool)$b['active']  : (int)$row['active'],
                 isset($b['sort_order']) ? (int)$b['sort_order'] : (int)$row['sort_order'],
+                isset($b['stock_quantity']) ? max(0, (int)$b['stock_quantity']) : (int)$row['stock_quantity'],
                 $id,
             ]
         );
@@ -132,6 +134,32 @@ function handle_products(string $method, string $sub): void
 
         db_run('UPDATE products SET image_path=NULL, updated_at=NOW() WHERE id=?', [$id]);
         json_ok(['message' => 'Afbeelding verwijderd.']);
+    }
+
+    // GET /availability?date_from=YYYY-MM-DD&date_to=YYYY-MM-DD — auth, stock vs booked
+    if ($method === 'GET' && $sub === '/availability') {
+        require_auth();
+        $dateFrom = $_GET['date_from'] ?? null;
+        $dateTo   = $_GET['date_to']   ?? null;
+        if (!$dateFrom || !$dateTo) {
+            json_error('date_from en date_to zijn verplicht.', 400);
+        }
+        $prods = db_all('SELECT id, name, category, stock_quantity FROM products ORDER BY sort_order ASC, id ASC');
+        foreach ($prods as &$prod) {
+            $row = db_get(
+                "SELECT COALESCE(SUM(pi.quantity), 0) AS total
+                 FROM project_items pi
+                 JOIN projects p ON p.id = pi.project_id
+                 WHERE pi.product_id = ?
+                   AND p.status NOT IN ('geannuleerd')
+                   AND p.date_from <= ?
+                   AND p.date_to   >= ?",
+                [$prod['id'], $dateTo, $dateFrom]
+            );
+            $prod['booked_quantity']    = (int)($row['total'] ?? 0);
+            $prod['available_quantity'] = max(0, (int)$prod['stock_quantity'] - $prod['booked_quantity']);
+        }
+        json_ok($prods);
     }
 
     json_error('Route niet gevonden.', 404);
