@@ -5,3 +5,4 @@ uploads/
 *.db-shm
 *.db-wal
 .env
+api/config.php
