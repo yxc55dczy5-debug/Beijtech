@@ -62,4 +62,18 @@ CREATE TABLE IF NOT EXISTS `quote_items` (
   FOREIGN KEY (`quote_id`) REFERENCES `quote_requests`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id`          INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `naam`        VARCHAR(255) NOT NULL,
+  `klant`       VARCHAR(255),
+  `locatie`     VARCHAR(255),
+  `date_from`   DATE         NOT NULL,
+  `date_to`     DATE         NOT NULL,
+  `status`      VARCHAR(50)  NOT NULL DEFAULT 'gepland',
+  `opmerkingen` TEXT,
+  `quote_id`    INT,
+  `created_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`quote_id`) REFERENCES `quote_requests`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET foreign_key_checks = 1;

@@ -3,60 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verhuurshop Beheer – BeijTech</title>
+    <title>BeijTech Beheer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .tab-btn { border-bottom: 2px solid transparent; transition: all .15s; padding-bottom: .5rem; font-weight: 600; font-size: .875rem; color: #6b7280; cursor: pointer; }
-        .tab-btn.active { border-color: #C9A028; color: #C9A028; }
-        .tab-btn:hover:not(.active) { color: #d1d5db; }
+
+        /* ── Form fields ── */
         .fi { width:100%; border:2px solid #2e2e2e; border-radius:.875rem; padding:.7rem 1rem; font-size:.9rem; font-family:'Inter',sans-serif; background:#1e1e1e; color:#fff; outline:none; transition:border-color .2s; }
         .fi:focus { border-color:#C9A028; }
         .fi::placeholder { color:#555; }
         .fi option { background:#1e1e1e; }
         select.fi { cursor:pointer; }
-        .badge { display:inline-flex; align-items:center; padding:2px 10px; border-radius:9999px; font-size:.7rem; font-weight:700; white-space:nowrap; }
-        .btn-gold { background:linear-gradient(135deg,#C9A028 0%,#E8C830 100%); color:#000; font-weight:800; border-radius:.875rem; padding:.625rem 1.25rem; font-size:.875rem; transition:all .2s; cursor:pointer; }
+
+        /* ── Buttons ── */
+        .btn-gold { background:linear-gradient(135deg,#C9A028 0%,#E8C830 100%); color:#000; font-weight:800; border-radius:.875rem; padding:.625rem 1.25rem; font-size:.875rem; transition:all .2s; cursor:pointer; border:none; }
         .btn-gold:hover { transform:scale(1.03); }
         .btn-dark { background:#1e1e1e; color:#d1d5db; font-weight:600; border:2px solid #2e2e2e; border-radius:.875rem; padding:.625rem 1.25rem; font-size:.875rem; transition:all .2s; cursor:pointer; }
         .btn-dark:hover { border-color:#444; color:#fff; }
-        .row-hover:hover { background:rgba(201,160,40,.04); }
-        @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-        .fadein { animation:fadein .2s ease; }
-        /* Modal overlay */
-        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:60; display:flex; align-items:center; justify-content:center; padding:1rem; }
-        /* Toggle */
-        .toggle-input:checked + .toggle-track { background:#C9A028; }
-        .toggle-input:checked + .toggle-track .toggle-thumb { transform:translateX(20px); }
-        .toggle-track { width:40px; height:22px; background:#2e2e2e; border-radius:9999px; position:relative; border:1px solid #444; transition:background .2s; }
-        .toggle-thumb { position:absolute; top:2px; left:2px; width:16px; height:16px; background:#fff; border-radius:50%; box-shadow:0 1px 3px rgba(0,0,0,.4); transition:transform .2s; }
-        /* Status badges */
+        .btn-ghost { background:none; color:#6b7280; font-weight:600; border-radius:.875rem; padding:.5rem 1rem; font-size:.875rem; transition:all .2s; cursor:pointer; border:none; }
+        .btn-ghost:hover { color:#d1d5db; background:rgba(255,255,255,.05); }
+
+        /* ── Sidebar ── */
+        .sidebar { width:240px; background:#090909; flex-shrink:0; display:flex; flex-direction:column; border-right:1px solid #1e1e1e; height:100vh; position:sticky; top:0; overflow:hidden; }
+        .nav-item { display:flex; align-items:center; gap:10px; padding:9px 14px; border-radius:10px; font-weight:600; font-size:.875rem; color:#6b7280; cursor:pointer; transition:all .15s; margin:1px 8px; border:none; background:none; width:calc(100% - 16px); text-align:left; position:relative; }
+        .nav-item:hover { background:rgba(201,160,40,.07); color:#d1d5db; }
+        .nav-item.active { background:rgba(201,160,40,.13); color:#C9A028; }
+        .nav-badge { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:#C9A028; color:#000; font-size:10px; font-weight:900; padding:1px 6px; border-radius:9999px; }
+
+        /* Sidebar collapse on small screens */
+        @media (max-width:767px) {
+            .sidebar { width:60px; }
+            .nav-label,.sidebar-logo-full,.sidebar-user-info { display:none; }
+            .nav-item { justify-content:center; padding:10px; }
+            .nav-badge { right:6px; top:6px; transform:none; }
+        }
+
+        /* ── Calendar ── */
+        .cal-header-cell { padding:8px 4px; text-align:center; font-size:.7rem; font-weight:700; letter-spacing:.06em; color:#4b5563; text-transform:uppercase; border-right:1px solid #1a1a1a; }
+        .cal-header-cell:last-child { border-right:none; }
+        .cal-cell { min-height:95px; padding:5px 6px; border-right:1px solid #1a1a1a; border-bottom:1px solid #1a1a1a; cursor:pointer; transition:background .1s; overflow:hidden; }
+        .cal-cell:hover:not(.cal-empty) { background:#161616; }
+        .cal-cell:nth-child(7n) { border-right:none; }
+        .cal-empty { cursor:default; background:#0b0b0b; }
+        .cal-today-cell { background:rgba(201,160,40,.04); }
+        .cal-day-num { font-size:.7rem; font-weight:700; color:#4b5563; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; margin-bottom:3px; }
+        .cal-day-num.is-today { background:#C9A028; color:#000; font-weight:900; }
+        .cal-chip { display:block; font-size:.6rem; font-weight:700; padding:2px 6px; border-radius:3px; margin-bottom:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; line-height:1.4; }
+        .cal-chip:hover { filter:brightness(1.2); }
+        .cal-chip-more { font-size:.6rem; color:#4b5563; padding:0 4px; }
+        .st-gepland     { background:rgba(201,160,40,.22); color:#d4a017; }
+        .st-actief      { background:rgba(34,197,94,.18); color:#4ade80; }
+        .st-afgerond    { background:rgba(107,114,128,.22); color:#9ca3af; }
+        .st-geannuleerd { background:rgba(239,68,68,.18); color:#f87171; }
+
+        /* ── Misc ── */
+        .badge { display:inline-flex; align-items:center; padding:2px 10px; border-radius:9999px; font-size:.7rem; font-weight:700; white-space:nowrap; }
         .s-nieuw           { background:rgba(59,130,246,.15); color:#93c5fd; border:1px solid rgba(59,130,246,.25); }
         .s-in_behandeling  { background:rgba(234,179,8,.12); color:#fde047; border:1px solid rgba(234,179,8,.25); }
         .s-offerte_verstuurd { background:rgba(168,85,247,.12); color:#d8b4fe; border:1px solid rgba(168,85,247,.25); }
         .s-geboekt         { background:rgba(34,197,94,.12); color:#86efac; border:1px solid rgba(34,197,94,.25); }
         .s-afgewezen       { background:rgba(239,68,68,.12); color:#fca5a5; border:1px solid rgba(239,68,68,.25); }
-        /* Image upload zone */
+        .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.78); z-index:60; display:flex; align-items:center; justify-content:center; padding:1rem; }
+        .toggle-input:checked + .toggle-track { background:#C9A028; }
+        .toggle-input:checked + .toggle-track .toggle-thumb { transform:translateX(20px); }
+        .toggle-track { width:40px; height:22px; background:#2e2e2e; border-radius:9999px; position:relative; border:1px solid #444; transition:background .2s; }
+        .toggle-thumb { position:absolute; top:2px; left:2px; width:16px; height:16px; background:#fff; border-radius:50%; box-shadow:0 1px 3px rgba(0,0,0,.4); transition:transform .2s; }
         .upload-zone { border:2px dashed #2e2e2e; border-radius:.875rem; padding:1.5rem; text-align:center; cursor:pointer; transition:border-color .2s; }
         .upload-zone:hover, .upload-zone.drag { border-color:#C9A028; }
-        /* Scrollable table wrapper */
-        .table-wrap { overflow-x:auto; }
-        /* Line clamp */
+        .row-hover:hover { background:rgba(201,160,40,.04); }
         .clamp2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+        .fadein { animation:fadein .2s ease; }
     </style>
 </head>
-<body class="bg-[#0d0d0d] text-white min-h-screen antialiased">
+<body class="bg-[#0d0d0d] text-white antialiased">
 
-<!-- ===== LOGIN ===== -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- LOGIN                                                                   -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
 <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
     <div class="w-full max-w-sm fadein">
         <div class="text-center mb-8">
             <a href="index.html" class="inline-block text-2xl font-black">
                 <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
             </a>
-            <p class="text-gray-500 text-sm mt-2">Verhuurshop Beheer</p>
+            <p class="text-gray-500 text-sm mt-2">Beheer Dashboard</p>
         </div>
         <div class="rounded-2xl border border-[#2a2a2a] p-7" style="background:#141414;">
             <h1 class="text-xl font-black mb-5">Inloggen</h1>
@@ -79,40 +112,156 @@
     </div>
 </div>
 
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboard" class="hidden min-h-screen flex flex-col">
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- DASHBOARD                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<div id="dashboard" class="hidden h-screen overflow-hidden flex">
 
-    <!-- Header -->
-    <header class="border-b border-[#1e1e1e] px-5 py-4 flex items-center justify-between sticky top-0 z-40" style="background:#111;">
-        <div class="flex items-center gap-4">
-            <span class="text-xl font-black"><span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span></span>
-            <span class="text-gray-600 text-sm hidden sm:block">/ Beheer</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <span id="header-user" class="text-gray-500 text-sm hidden sm:block"></span>
-            <a href="verhuurshop.html" target="_blank" class="text-gray-400 hover:text-white text-sm font-semibold flex items-center gap-1.5 transition-colors">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                <span class="hidden sm:inline">Shop</span>
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="px-4 py-5 border-b border-[#1e1e1e] flex-shrink-0">
+            <a href="index.html" class="flex items-center gap-2.5">
+                <span class="text-lg font-black leading-none">
+                    <span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1 py-0.5 ml-0.5 inline-block text-sm">TECH</span>
+                </span>
+                <span class="sidebar-logo-full text-gray-600 text-xs font-semibold mt-0.5">Beheer</span>
             </a>
-            <button id="logout-btn" class="text-gray-500 hover:text-red-400 text-sm font-semibold transition-colors">Uitloggen</button>
         </div>
-    </header>
 
-    <!-- Tab nav -->
-    <nav class="border-b border-[#1e1e1e] px-5 flex gap-6" style="background:#111;">
-        <button class="tab-btn active" data-tab="producten">Producten</button>
-        <button class="tab-btn" data-tab="offertes">Offertes <span id="badge-new" class="hidden ml-1.5 bg-[#C9A028] text-black text-[10px] font-black px-1.5 py-0.5 rounded-full"></span></button>
-        <button class="tab-btn" data-tab="gebruikers">Gebruikers</button>
-    </nav>
+        <!-- Nav -->
+        <nav class="flex-1 py-3 overflow-y-auto">
+            <p class="sidebar-logo-full text-gray-600 text-[10px] font-bold uppercase tracking-widest px-5 mb-2">Menu</p>
 
-    <!-- Main -->
-    <main class="flex-1 px-4 md:px-8 py-8 max-w-6xl mx-auto w-full">
+            <button class="nav-item active" data-nav="agenda">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span class="nav-label">Agenda</span>
+            </button>
 
-        <!-- ── TAB: PRODUCTEN ── -->
-        <div id="tab-producten" class="fadein">
+            <button class="nav-item" data-nav="verhuurshop">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                <span class="nav-label">Verhuurshop</span>
+            </button>
+
+            <button class="nav-item" data-nav="offertes">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span class="nav-label">Offertes</span>
+                <span id="sidebar-badge-new" class="nav-badge hidden">0</span>
+            </button>
+
+            <button class="nav-item" data-nav="gebruikers">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                <span class="nav-label">Gebruikers</span>
+            </button>
+
+            <div class="border-t border-[#1e1e1e] my-3 mx-4"></div>
+
+            <a href="verhuurshop.html" target="_blank" class="nav-item">
+                <svg class="w-[18px] h-[18px] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                <span class="nav-label">Bekijk shop</span>
+            </a>
+        </nav>
+
+        <!-- User -->
+        <div class="px-4 py-4 border-t border-[#1e1e1e] flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-black text-sm flex-shrink-0" style="background:linear-gradient(135deg,#C9A028,#E8C830);">
+                    <span id="sidebar-avatar">A</span>
+                </div>
+                <div class="sidebar-user-info flex-1 min-w-0">
+                    <p id="sidebar-username" class="text-white text-sm font-bold truncate"></p>
+                    <p id="sidebar-role" class="text-gray-500 text-xs"></p>
+                </div>
+                <button id="logout-btn" title="Uitloggen" class="flex-shrink-0 text-gray-600 hover:text-red-400 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <div class="flex-1 overflow-y-auto min-w-0 flex flex-col">
+
+        <!-- Top bar -->
+        <header class="sticky top-0 z-30 border-b border-[#1e1e1e] px-6 py-3.5 flex items-center gap-4 flex-shrink-0" style="background:#0f0f0f;">
+            <h1 id="page-title" class="font-black text-white text-base">Agenda</h1>
+            <div class="ml-auto flex items-center gap-2" id="topbar-actions"></div>
+        </header>
+
+        <!-- ─────────────────────────────────────────────────── -->
+        <!-- TAB: AGENDA                                          -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <section id="tab-agenda" class="flex-1 p-6 fadein">
+
             <!-- Stats -->
+            <div id="agenda-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"></div>
+
+            <!-- Calendar + sidebar -->
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+                <!-- Calendar panel -->
+                <div class="xl:col-span-2">
+                    <!-- Calendar header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button id="cal-prev" class="btn-ghost p-2 rounded-xl">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <h2 id="cal-label" class="font-black text-white text-base w-44 text-center"></h2>
+                            <button id="cal-next" class="btn-ghost p-2 rounded-xl">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                            <button id="cal-today" class="btn-dark py-1.5 px-3 text-xs">Vandaag</button>
+                        </div>
+                    </div>
+
+                    <!-- Grid -->
+                    <div class="rounded-2xl border border-[#1e1e1e] overflow-hidden" style="background:#111;">
+                        <!-- Day labels -->
+                        <div class="grid grid-cols-7 border-b border-[#1a1a1a]" style="background:#0f0f0f;">
+                            <div class="cal-header-cell">Ma</div>
+                            <div class="cal-header-cell">Di</div>
+                            <div class="cal-header-cell">Wo</div>
+                            <div class="cal-header-cell">Do</div>
+                            <div class="cal-header-cell">Vr</div>
+                            <div class="cal-header-cell" style="color:#C9A028;">Za</div>
+                            <div class="cal-header-cell" style="color:#C9A028;border-right:none;">Zo</div>
+                        </div>
+                        <!-- Cells -->
+                        <div id="cal-grid" class="grid grid-cols-7"></div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="flex items-center gap-4 mt-3 flex-wrap">
+                        <span class="text-gray-600 text-xs font-semibold">Status:</span>
+                        <span class="cal-chip st-gepland px-2 py-0.5 text-xs">Gepland</span>
+                        <span class="cal-chip st-actief  px-2 py-0.5 text-xs">Actief</span>
+                        <span class="cal-chip st-afgerond px-2 py-0.5 text-xs">Afgerond</span>
+                        <span class="cal-chip st-geannuleerd px-2 py-0.5 text-xs">Geannuleerd</span>
+                    </div>
+                </div>
+
+                <!-- Upcoming panel -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-black text-white text-sm">Aankomende projecten</h3>
+                        <button id="open-add-project" class="btn-gold text-xs py-2 px-3.5 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
+                            Nieuw
+                        </button>
+                    </div>
+                    <div id="upcoming-list" class="space-y-2"></div>
+                    <p id="upcoming-empty" class="hidden text-gray-600 text-sm text-center py-6">Geen aankomende projecten.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────────── -->
+        <!-- TAB: VERHUURSHOP                                     -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <section id="tab-verhuurshop" class="hidden flex-1 p-6 fadein">
             <div id="prod-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6"></div>
-            <!-- Toolbar -->
             <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
                 <h2 class="font-black text-white text-base">Producten</h2>
                 <div class="flex gap-3 items-center flex-wrap">
@@ -128,10 +277,12 @@
             </div>
             <div id="prod-list" class="space-y-2"></div>
             <p id="prod-empty" class="hidden text-gray-600 text-sm text-center py-12">Geen producten gevonden.</p>
-        </div>
+        </section>
 
-        <!-- ── TAB: OFFERTES ── -->
-        <div id="tab-offertes" class="hidden fadein">
+        <!-- ─────────────────────────────────────────────────── -->
+        <!-- TAB: OFFERTES                                        -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <section id="tab-offertes" class="hidden flex-1 p-6 fadein">
             <div id="quote-stats" class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6"></div>
             <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
                 <h2 class="font-black text-white text-base">Offerte Aanvragen</h2>
@@ -146,10 +297,12 @@
             </div>
             <div id="quote-list" class="space-y-2"></div>
             <p id="quote-empty" class="hidden text-gray-600 text-sm text-center py-12">Geen aanvragen gevonden.</p>
-        </div>
+        </section>
 
-        <!-- ── TAB: GEBRUIKERS ── -->
-        <div id="tab-gebruikers" class="hidden fadein">
+        <!-- ─────────────────────────────────────────────────── -->
+        <!-- TAB: GEBRUIKERS                                      -->
+        <!-- ─────────────────────────────────────────────────── -->
+        <section id="tab-gebruikers" class="hidden flex-1 p-6 fadein">
             <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
                 <h2 class="font-black text-white text-base">Gebruikers</h2>
                 <button id="open-add-user" class="btn-gold flex items-center gap-1.5">
@@ -158,12 +311,74 @@
                 </button>
             </div>
             <div id="user-list" class="space-y-2"></div>
+        </section>
+
+    </div><!-- /main -->
+</div><!-- /dashboard -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- MODALS                                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- Project modal -->
+<div id="modal-project" class="hidden modal-overlay">
+    <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto fadein">
+        <div class="px-6 py-4 border-b border-[#2a2a2a] flex items-center justify-between sticky top-0" style="background:#141414;">
+            <h3 id="modal-proj-title" class="font-black text-white text-base">Nieuw project</h3>
+            <button id="close-modal-project" class="text-gray-500 hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
         </div>
-
-    </main>
+        <form id="project-form" class="p-6 space-y-4">
+            <input type="hidden" id="pf-id">
+            <div>
+                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Projectnaam *</label>
+                <input type="text" id="pf-naam" required placeholder="Bijv. Bruiloft De Jong" class="fi">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Klant</label>
+                    <input type="text" id="pf-klant" placeholder="Naam klant" class="fi">
+                </div>
+                <div>
+                    <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Status</label>
+                    <select id="pf-status" class="fi">
+                        <option value="gepland">Gepland</option>
+                        <option value="actief">Actief</option>
+                        <option value="afgerond">Afgerond</option>
+                        <option value="geannuleerd">Geannuleerd</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Locatie</label>
+                <input type="text" id="pf-locatie" placeholder="Adres of zaal" class="fi">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Startdatum *</label>
+                    <input type="date" id="pf-from" required class="fi">
+                </div>
+                <div>
+                    <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Einddatum *</label>
+                    <input type="date" id="pf-to" required class="fi">
+                </div>
+            </div>
+            <div>
+                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Opmerkingen</label>
+                <textarea id="pf-opm" rows="3" placeholder="Interne notities…" class="fi resize-none"></textarea>
+            </div>
+            <div id="pf-delete-row" class="hidden pt-1">
+                <button type="button" id="pf-delete-btn" class="text-red-400 text-xs font-semibold hover:text-red-300 transition-colors">Project verwijderen</button>
+            </div>
+            <div class="flex gap-3 pt-1">
+                <button type="submit" class="btn-gold flex-1"><span id="pf-btn-label">Project aanmaken</span></button>
+                <button type="button" id="close-modal-project2" class="btn-dark">Annuleer</button>
+            </div>
+        </form>
+    </div>
 </div>
-
-<!-- ===== MODALS ===== -->
 
 <!-- Product modal -->
 <div id="modal-product" class="hidden modal-overlay">
@@ -191,24 +406,22 @@
                 </select>
             </div>
             <div>
-                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Beschrijving *</label>
-                <textarea id="f-desc" required rows="3" placeholder="Korte omschrijving…" class="fi resize-none"></textarea>
+                <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Beschrijving</label>
+                <textarea id="f-desc" rows="3" placeholder="Korte omschrijving…" class="fi resize-none"></textarea>
             </div>
-            <!-- Image upload -->
             <div>
                 <label class="text-gray-400 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Afbeelding</label>
                 <div id="upload-zone" class="upload-zone" onclick="document.getElementById('f-image').click()">
                     <div id="upload-placeholder">
                         <svg class="w-8 h-8 mx-auto mb-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         <p class="text-gray-500 text-sm">Klik om afbeelding te uploaden</p>
-                        <p class="text-gray-600 text-xs mt-0.5">JPG, PNG of WebP — max 5 MB</p>
+                        <p class="text-gray-600 text-xs mt-0.5">JPG, PNG of WebP</p>
                     </div>
                     <img id="upload-preview" class="hidden w-full rounded-lg object-cover max-h-40" alt="">
                 </div>
                 <input type="file" id="f-image" accept="image/jpeg,image/png,image/webp" class="sr-only">
                 <button type="button" id="remove-image-btn" class="hidden mt-2 text-red-400 text-xs font-semibold hover:text-red-300 transition-colors">Afbeelding verwijderen</button>
             </div>
-            <!-- Toggles -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <span class="text-gray-300 text-sm font-semibold">Populair</span>
@@ -236,7 +449,7 @@
 <!-- Quote detail modal -->
 <div id="modal-quote" class="hidden modal-overlay">
     <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto fadein">
-        <div class="px-6 py-4 border-b border-[#2a2a2a] flex items-center justify-between">
+        <div class="px-6 py-4 border-b border-[#2a2a2a] flex items-center justify-between sticky top-0" style="background:#141414;">
             <h3 class="font-black text-white text-base">Offerte aanvraag</h3>
             <button id="close-modal-quote" class="text-gray-500 hover:text-white transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -286,7 +499,7 @@
     </div>
 </div>
 
-<!-- Bevestiging modal -->
+<!-- Confirm modal -->
 <div id="modal-confirm" class="hidden modal-overlay">
     <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl w-full max-w-sm p-7 fadein">
         <h3 class="font-black text-white text-lg mb-2" id="confirm-title">Verwijderen?</h3>
@@ -301,28 +514,74 @@
 <!-- Toast -->
 <div id="toast" class="hidden fixed bottom-5 right-5 z-[70] px-5 py-3 rounded-xl shadow-2xl font-bold text-sm text-black fadein" style="background:linear-gradient(135deg,#C9A028,#E8C830);"></div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SCRIPT                                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
 <script>
-const API = '';  // same origin — server.js serves both API and HTML
-
-// ── Auth ────────────────────────────────────────────────────────────────
-let token = localStorage.getItem('bt_token');
+// ── State ────────────────────────────────────────────────────────────────────
+let token       = localStorage.getItem('bt_token');
 let currentUser = null;
+let products    = [];
+let quotes      = [];
+let users       = [];
+let projects    = [];
+let calYear     = new Date().getFullYear();
+let calMonth    = new Date().getMonth();
 
+// ── API helper ───────────────────────────────────────────────────────────────
 async function api(method, path, body = null, isForm = false) {
-    const opts = {
-        method,
-        headers: { Authorization: token ? `Bearer ${token}` : '' },
-    };
+    const opts = { method, headers: { Authorization: token ? `Bearer ${token}` : '' } };
     if (body && !isForm) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
     if (isForm) opts.body = body;
-    const res = await fetch(API + path, opts);
+    const res  = await fetch(path, opts);
     if (res.status === 204) return null;
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     return data;
 }
 
-// ── Login ────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const CAT_LABELS  = { geluid:'Geluid', licht:'Licht', microfoon:'Microfoon', overig:'Overig' };
+const CAT_COLORS  = { geluid:'bg-[#C9A028] text-black', licht:'bg-black text-[#C9A028] border border-[#C9A028]/30', microfoon:'bg-gray-700 text-gray-200', overig:'bg-gray-600 text-gray-100' };
+const STATUS_LABELS = { nieuw:'Nieuw', in_behandeling:'In behandeling', offerte_verstuurd:'Offerte verstuurd', geboekt:'Geboekt', afgewezen:'Afgewezen' };
+const PROJ_STATUS_LABELS = { gepland:'Gepland', actief:'Actief', afgerond:'Afgerond', geannuleerd:'Geannuleerd' };
+
+function statCard(value, label, color = 'text-white') {
+    return `<div class="rounded-2xl border border-[#2a2a2a] p-5" style="background:#141414;">
+        <p class="text-3xl font-black ${color} mb-1">${value}</p>
+        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">${label}</p>
+    </div>`;
+}
+
+let toastTimer;
+function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.classList.remove('hidden');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.add('hidden'), 2500);
+}
+
+let confirmCb = null;
+function confirm2(title, body, cb) {
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-body').textContent  = body;
+    confirmCb = cb;
+    document.getElementById('modal-confirm').classList.remove('hidden');
+}
+document.getElementById('confirm-yes').addEventListener('click', () => {
+    document.getElementById('modal-confirm').classList.add('hidden');
+    if (confirmCb) { confirmCb(); confirmCb = null; }
+});
+document.getElementById('confirm-no').addEventListener('click', () => {
+    document.getElementById('modal-confirm').classList.add('hidden'); confirmCb = null;
+});
+
+function fmtDate(s) {
+    if (!s) return '—';
+    const d = new Date(s + 'T00:00:00');
+    return d.toLocaleDateString('nl-NL', { day:'numeric', month:'short', year:'numeric' });
+}
+
+// ── Login / Auth ──────────────────────────────────────────────────────────────
 document.getElementById('login-form').addEventListener('submit', async e => {
     e.preventDefault();
     const errEl = document.getElementById('login-error');
@@ -356,73 +615,252 @@ async function openDashboard() {
     }
     document.getElementById('login-screen').classList.add('hidden');
     document.getElementById('dashboard').classList.remove('hidden');
-    document.getElementById('header-user').textContent = currentUser.username;
-    await loadProducts();
-    loadQuotes();
-    loadUsers();
+    // Populate sidebar user area
+    document.getElementById('sidebar-avatar').textContent   = currentUser.username.charAt(0).toUpperCase();
+    document.getElementById('sidebar-username').textContent = currentUser.username;
+    document.getElementById('sidebar-role').textContent     = currentUser.role;
+    // Load all data
+    await Promise.all([loadProjects(), loadProducts(), loadQuotes(), loadUsers()]);
 }
 
-// ── Tabs ─────────────────────────────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        ['producten','offertes','gebruikers'].forEach(t => {
-            document.getElementById('tab-'+t).classList.add('hidden');
+// ── Sidebar Navigation ────────────────────────────────────────────────────────
+const NAV_TITLES = { agenda:'Agenda', verhuurshop:'Verhuurshop', offertes:'Offertes', gebruikers:'Gebruikers' };
+const ALL_TABS   = ['agenda','verhuurshop','offertes','gebruikers'];
+
+function switchTab(name) {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.nav === name));
+    ALL_TABS.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        if (el) el.classList.toggle('hidden', t !== name);
+        if (el && t === name) el.classList.add('fadein');
+    });
+    document.getElementById('page-title').textContent = NAV_TITLES[name] || name;
+}
+
+document.querySelectorAll('.nav-item[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.nav));
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AGENDA / PROJECTS
+// ═══════════════════════════════════════════════════════════════════════════
+const MONTHS_NL = ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
+
+async function loadProjects() {
+    try { projects = await api('GET', '/api/projects'); }
+    catch { projects = []; }
+    renderAgendaStats();
+    renderCalendar();
+    renderUpcoming();
+}
+
+function renderAgendaStats() {
+    const today      = new Date(); today.setHours(0,0,0,0);
+    const weekEnd    = new Date(today); weekEnd.setDate(weekEnd.getDate() + 7);
+    const monthEnd   = new Date(today); monthEnd.setDate(monthEnd.getDate() + 30);
+
+    const active     = projects.filter(p => { const f=new Date(p.date_from+'T00:00:00'), t=new Date(p.date_to+'T00:00:00'); return f<=today && t>=today && p.status !== 'geannuleerd'; });
+    const thisWeek   = projects.filter(p => { const f=new Date(p.date_from+'T00:00:00'); return f>=today && f<=weekEnd && p.status !== 'geannuleerd'; });
+    const thisMonth  = projects.filter(p => { const f=new Date(p.date_from+'T00:00:00'); return f>=today && f<=monthEnd && p.status !== 'geannuleerd'; });
+    const totalLive  = projects.filter(p => p.status === 'gepland' || p.status === 'actief');
+
+    document.getElementById('agenda-stats').innerHTML = [
+        statCard(active.length,   'Nu actief',        'text-[#4ade80]'),
+        statCard(thisWeek.length, 'Komende 7 dagen',  'text-[#C9A028]'),
+        statCard(thisMonth.length,'Komende 30 dagen', 'text-white'),
+        statCard(totalLive.length,'Gepland/actief',   'text-white'),
+    ].join('');
+}
+
+function calDateStr(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function renderCalendar() {
+    document.getElementById('cal-label').textContent = MONTHS_NL[calMonth] + ' ' + calYear;
+
+    const firstDay   = new Date(calYear, calMonth, 1);
+    const lastDay    = new Date(calYear, calMonth+1, 0);
+    const totalDays  = lastDay.getDate();
+    const startOffset = (firstDay.getDay() + 6) % 7; // Mon = 0
+
+    const monthStart = new Date(calYear, calMonth, 1);
+    const monthEnd   = new Date(calYear, calMonth+1, 0);
+    const todayStr   = calDateStr(new Date());
+
+    // Projects that overlap this month
+    const visible = projects.filter(p => {
+        if (!p.date_from || !p.date_to) return false;
+        return new Date(p.date_from+'T00:00:00') <= monthEnd &&
+               new Date(p.date_to  +'T00:00:00') >= monthStart;
+    });
+
+    let html = '';
+
+    // Leading empty cells
+    for (let i = 0; i < startOffset; i++) html += `<div class="cal-cell cal-empty"></div>`;
+
+    // Day cells
+    for (let d = 1; d <= totalDays; d++) {
+        const date    = new Date(calYear, calMonth, d);
+        const dateStr = calDateStr(date);
+        const isToday = dateStr === todayStr;
+
+        const dayProjs = visible.filter(p => {
+            const f = new Date(p.date_from + 'T00:00:00');
+            const t = new Date(p.date_to   + 'T00:00:00');
+            return f <= date && t >= date;
         });
-        document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+
+        const chips = dayProjs.slice(0, 3).map(p => {
+            const label = p.naam + (p.klant ? ` · ${p.klant}` : '');
+            return `<span class="cal-chip st-${p.status}" onclick="event.stopPropagation();editProject(${p.id})" title="${label}">${p.naam}</span>`;
+        }).join('');
+        const more = dayProjs.length > 3 ? `<span class="cal-chip-more">+${dayProjs.length - 3} meer</span>` : '';
+
+        html += `
+            <div class="cal-cell${isToday ? ' cal-today-cell' : ''}" onclick="newProjectOnDate('${dateStr}')">
+                <span class="cal-day-num${isToday ? ' is-today' : ''}">${d}</span>
+                ${chips}${more}
+            </div>`;
+    }
+
+    // Trailing empty cells to complete the last row
+    const total = startOffset + totalDays;
+    const rem   = total % 7;
+    if (rem > 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="cal-cell cal-empty"></div>`;
+
+    document.getElementById('cal-grid').innerHTML = html;
+}
+
+function renderUpcoming() {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const limit = new Date(today); limit.setDate(limit.getDate() + 90);
+
+    const upcoming = projects
+        .filter(p => {
+            const t = new Date(p.date_to + 'T00:00:00');
+            return t >= today && p.status !== 'geannuleerd' && p.status !== 'afgerond';
+        })
+        .sort((a, b) => a.date_from.localeCompare(b.date_from))
+        .slice(0, 10);
+
+    document.getElementById('upcoming-empty').classList.toggle('hidden', upcoming.length > 0);
+    document.getElementById('upcoming-list').innerHTML = upcoming.map(p => `
+        <div class="rounded-xl border border-[#2a2a2a] p-3.5 row-hover fadein cursor-pointer" style="background:#141414;" onclick="editProject(${p.id})">
+            <div class="flex items-start gap-2.5">
+                <div class="w-1 self-stretch rounded-full flex-shrink-0 mt-0.5 st-${p.status}" style="min-height:32px;background:currentColor;width:3px;opacity:.7;"></div>
+                <div class="flex-1 min-w-0">
+                    <p class="font-bold text-white text-sm truncate">${p.naam}</p>
+                    ${p.klant ? `<p class="text-gray-500 text-xs truncate">${p.klant}</p>` : ''}
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <svg class="w-3 h-3 text-gray-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <span class="text-gray-500 text-xs">${fmtDate(p.date_from)} → ${fmtDate(p.date_to)}</span>
+                    </div>
+                    ${p.locatie ? `<p class="text-gray-600 text-xs mt-0.5 truncate">📍 ${p.locatie}</p>` : ''}
+                </div>
+                <span class="badge text-[10px] st-${p.status} flex-shrink-0" style="background:rgba(0,0,0,.3);">${PROJ_STATUS_LABELS[p.status]||p.status}</span>
+            </div>
+        </div>`).join('');
+}
+
+// Calendar navigation
+document.getElementById('cal-prev').addEventListener('click', () => {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click', () => {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+});
+document.getElementById('cal-today').addEventListener('click', () => {
+    calYear = new Date().getFullYear(); calMonth = new Date().getMonth(); renderCalendar();
+});
+
+// ── Project modal ─────────────────────────────────────────────────────────────
+function openProjectModal(mode) {
+    document.getElementById('modal-project').classList.remove('hidden');
+    document.getElementById('modal-proj-title').textContent = mode === 'edit' ? 'Project bewerken' : 'Nieuw project';
+    document.getElementById('pf-btn-label').textContent     = mode === 'edit' ? 'Opslaan' : 'Project aanmaken';
+    document.getElementById('pf-delete-row').classList.toggle('hidden', mode !== 'edit');
+}
+function closeProjectModal() {
+    document.getElementById('modal-project').classList.add('hidden');
+    document.getElementById('project-form').reset();
+    document.getElementById('pf-id').value = '';
+    document.getElementById('pf-status').value = 'gepland';
+}
+document.getElementById('open-add-project').addEventListener('click', () => { closeProjectModal(); openProjectModal('add'); });
+document.getElementById('close-modal-project').addEventListener('click', closeProjectModal);
+document.getElementById('close-modal-project2').addEventListener('click', closeProjectModal);
+document.getElementById('modal-project').addEventListener('click', e => { if (e.target === e.currentTarget) closeProjectModal(); });
+
+function newProjectOnDate(dateStr) {
+    closeProjectModal();
+    document.getElementById('pf-from').value = dateStr;
+    document.getElementById('pf-to').value   = dateStr;
+    openProjectModal('add');
+}
+
+function editProject(id) {
+    const p = projects.find(x => x.id == id);
+    if (!p) return;
+    document.getElementById('pf-id').value      = p.id;
+    document.getElementById('pf-naam').value    = p.naam;
+    document.getElementById('pf-klant').value   = p.klant || '';
+    document.getElementById('pf-status').value  = p.status;
+    document.getElementById('pf-locatie').value = p.locatie || '';
+    document.getElementById('pf-from').value    = p.date_from;
+    document.getElementById('pf-to').value      = p.date_to;
+    document.getElementById('pf-opm').value     = p.opmerkingen || '';
+    openProjectModal('edit');
+}
+
+document.getElementById('pf-delete-btn').addEventListener('click', () => {
+    const id = document.getElementById('pf-id').value;
+    const p  = projects.find(x => x.id == id);
+    if (!p) return;
+    confirm2('Project verwijderen?', `Weet je zeker dat je "${p.naam}" wil verwijderen?`, async () => {
+        try {
+            await api('DELETE', `/api/projects/${id}`);
+            closeProjectModal();
+            await loadProjects();
+            toast('Project verwijderd ✓');
+        } catch(err) { toast('Fout: ' + err.message); }
     });
 });
 
-// ── Helpers ──────────────────────────────────────────────────────────────
-const CAT_LABELS  = { geluid:'Geluid', licht:'Licht', microfoon:'Microfoon', overig:'Overig' };
-const CAT_COLORS  = { geluid:'bg-[#C9A028] text-black', licht:'bg-black text-[#C9A028] border border-[#C9A028]/30', microfoon:'bg-gray-700 text-gray-200', overig:'bg-gray-600 text-gray-100' };
-const STATUS_LABELS = { nieuw:'Nieuw', in_behandeling:'In behandeling', offerte_verstuurd:'Offerte verstuurd', geboekt:'Geboekt', afgewezen:'Afgewezen' };
-
-function statCard(value, label) {
-    return `<div class="rounded-2xl border border-[#2a2a2a] p-5" style="background:#141414;">
-        <p class="text-3xl font-black text-white mb-1">${value}</p>
-        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider">${label}</p>
-    </div>`;
-}
-
-let toastTimer;
-function toast(msg) {
-    const el = document.getElementById('toast');
-    el.textContent = msg; el.classList.remove('hidden');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.add('hidden'), 2500);
-}
-
-// ── Confirm modal ─────────────────────────────────────────────────────────
-let confirmCb = null;
-function confirm2(title, body, cb) {
-    document.getElementById('confirm-title').textContent = title;
-    document.getElementById('confirm-body').textContent = body;
-    confirmCb = cb;
-    document.getElementById('modal-confirm').classList.remove('hidden');
-}
-document.getElementById('confirm-yes').addEventListener('click', () => {
-    document.getElementById('modal-confirm').classList.add('hidden');
-    if (confirmCb) { confirmCb(); confirmCb = null; }
-});
-document.getElementById('confirm-no').addEventListener('click', () => {
-    document.getElementById('modal-confirm').classList.add('hidden');
-    confirmCb = null;
+document.getElementById('project-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const id   = document.getElementById('pf-id').value;
+    const body = {
+        naam:       document.getElementById('pf-naam').value.trim(),
+        klant:      document.getElementById('pf-klant').value.trim()   || null,
+        status:     document.getElementById('pf-status').value,
+        locatie:    document.getElementById('pf-locatie').value.trim() || null,
+        date_from:  document.getElementById('pf-from').value,
+        date_to:    document.getElementById('pf-to').value,
+        opmerkingen:document.getElementById('pf-opm').value.trim()    || null,
+    };
+    try {
+        if (id) { await api('PUT', `/api/projects/${id}`, body); toast('Project bijgewerkt ✓'); }
+        else    { await api('POST', '/api/projects', body);       toast('Project aangemaakt ✓'); }
+        closeProjectModal();
+        await loadProjects();
+    } catch(err) { toast('Fout: ' + err.message); }
 });
 
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // PRODUCTEN
-// ═══════════════════════════════════════════════════════════════════════
-let products = [];
-
+// ═══════════════════════════════════════════════════════════════════════════
 async function loadProducts() {
     try { products = await api('GET', '/api/products/all'); }
-    catch(e) { toast('Fout bij laden producten: ' + e.message); products = []; }
+    catch(e) { products = []; }
     renderProducts();
 }
 
 function renderProducts(filter = document.getElementById('prod-search')?.value || '') {
-    const q = filter.toLowerCase();
+    const q        = filter.toLowerCase();
     const filtered = q ? products.filter(p => p.name.toLowerCase().includes(q) || (CAT_LABELS[p.category]||'').toLowerCase().includes(q)) : products;
     document.getElementById('prod-stats').innerHTML = [
         statCard(products.length, 'Totaal'),
@@ -434,7 +872,7 @@ function renderProducts(filter = document.getElementById('prod-search')?.value |
     document.getElementById('prod-list').innerHTML = filtered.map(p => `
         <div class="rounded-xl border border-[#2a2a2a] p-4 flex items-center gap-4 row-hover fadein" style="background:#141414;">
             ${p.image_path
-                ? `<img src="/uploads/products/${p.image_path.split('/').pop()}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">`
+                ? `<img src="${p.image_path}?t=${Date.now()}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">`
                 : `<div class="w-14 h-14 rounded-xl bg-[#1e1e1e] flex items-center justify-center flex-shrink-0"><svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>`}
             <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 flex-wrap mb-0.5">
@@ -443,17 +881,16 @@ function renderProducts(filter = document.getElementById('prod-search')?.value |
                     ${!p.active ? '<span class="badge bg-gray-700 text-gray-300">Verborgen</span>' : ''}
                 </div>
                 <span class="badge ${CAT_COLORS[p.category]||'bg-gray-600 text-white'}">${CAT_LABELS[p.category]||p.category}</span>
-                <p class="text-gray-500 text-xs mt-1 clamp2">${p.description}</p>
+                <p class="text-gray-500 text-xs mt-1 clamp2">${p.description||''}</p>
             </div>
             <div class="flex gap-1.5 flex-shrink-0">
                 <button onclick="editProduct(${p.id})" class="p-2 rounded-lg text-gray-400 hover:text-[#C9A028] hover:bg-[#C9A028]/10 transition-colors" title="Bewerken">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                 </button>
-                <button onclick="toggleProduct(${p.id},${p.active})" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="${p.active ? 'Verbergen' : 'Activeren'}">
+                <button onclick="toggleProduct(${p.id},${p.active})" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="${p.active?'Verbergen':'Activeren'}">
                     ${p.active
                         ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>'
-                        : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'
-                    }
+                        : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>'}
                 </button>
                 <button onclick="deleteProduct(${p.id},'${p.name.replace(/'/g,"\\'")}')" class="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-400/10 transition-colors" title="Verwijderen">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -464,7 +901,6 @@ function renderProducts(filter = document.getElementById('prod-search')?.value |
 
 document.getElementById('prod-search').addEventListener('input', e => renderProducts(e.target.value));
 
-// Product modal open/close
 function openProductModal(mode) {
     document.getElementById('modal-product').classList.remove('hidden');
     document.getElementById('modal-prod-title').textContent = mode === 'edit' ? 'Product bewerken' : 'Nieuw product';
@@ -489,25 +925,21 @@ function editProduct(id) {
     const p = products.find(x => x.id === id);
     if (!p) return;
     document.getElementById('f-id').value       = p.id;
-    document.getElementById('f-name').value      = p.name;
-    document.getElementById('f-cat').value       = p.category;
-    document.getElementById('f-desc').value      = p.description;
-    document.getElementById('f-popular').checked = !!p.popular;
-    document.getElementById('f-active').checked  = !!p.active;
+    document.getElementById('f-name').value     = p.name;
+    document.getElementById('f-cat').value      = p.category;
+    document.getElementById('f-desc').value     = p.description || '';
+    document.getElementById('f-popular').checked= !!p.popular;
+    document.getElementById('f-active').checked = !!p.active;
     if (p.image_path) {
-        const url = '/uploads/products/' + p.image_path.split('/').pop();
-        document.getElementById('upload-preview').src = url;
+        document.getElementById('upload-preview').src = p.image_path + '?t=' + Date.now();
         document.getElementById('upload-preview').classList.remove('hidden');
         document.getElementById('upload-placeholder').classList.add('hidden');
         document.getElementById('remove-image-btn').classList.remove('hidden');
         currentImagePath = p.image_path;
-    } else {
-        currentImagePath = null;
-    }
+    } else { currentImagePath = null; }
     openProductModal('edit');
 }
 
-// Image upload
 let currentImagePath = null;
 document.getElementById('f-image').addEventListener('change', async e => {
     const file = e.target.files[0];
@@ -540,14 +972,11 @@ document.getElementById('remove-image-btn').addEventListener('click', async () =
         toast('Afbeelding verwijderd ✓');
     } catch(err) { toast('Fout: ' + err.message); }
 });
-
-// Image drag-drop
 const zone = document.getElementById('upload-zone');
 zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
 zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
 zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) { document.getElementById('f-image').files = e.dataTransfer.files; document.getElementById('f-image').dispatchEvent(new Event('change')); } });
 
-// Product form submit
 document.getElementById('product-form').addEventListener('submit', async e => {
     e.preventDefault();
     const id   = document.getElementById('f-id').value;
@@ -570,39 +999,34 @@ async function toggleProduct(id, active) {
     catch(err) { toast('Fout: ' + err.message); }
 }
 function deleteProduct(id, name) {
-    confirm2('Product verwijderen?', `Weet je zeker dat je "${name}" wil verwijderen? Dit kan niet ongedaan worden gemaakt.`, async () => {
+    confirm2('Product verwijderen?', `Weet je zeker dat je "${name}" wil verwijderen?`, async () => {
         try { await api('DELETE', `/api/products/${id}`); await loadProducts(); closeProductModal(); toast('Product verwijderd ✓'); }
         catch(err) { toast('Fout: ' + err.message); }
     });
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // OFFERTES
-// ═══════════════════════════════════════════════════════════════════════
-let quotes = [];
-
+// ═══════════════════════════════════════════════════════════════════════════
 async function loadQuotes() {
     try { quotes = await api('GET', '/api/quotes'); }
     catch { quotes = []; }
     renderQuotes();
-    updateBadge();
-}
-
-function updateBadge() {
+    // Badge
     const n = quotes.filter(q => q.status === 'nieuw').length;
-    const el = document.getElementById('badge-new');
+    const el = document.getElementById('sidebar-badge-new');
     if (n > 0) { el.textContent = n; el.classList.remove('hidden'); } else { el.classList.add('hidden'); }
 }
 
 function renderQuotes(filter = document.getElementById('quote-filter')?.value || '') {
     const filtered = filter ? quotes.filter(q => q.status === filter) : quotes;
-    const byStatus = s => quotes.filter(q => q.status === s).length;
+    const byS = s => quotes.filter(q => q.status === s).length;
     document.getElementById('quote-stats').innerHTML = [
         statCard(quotes.length, 'Totaal'),
-        statCard(byStatus('nieuw'), 'Nieuw'),
-        statCard(byStatus('in_behandeling'), 'In behandeling'),
-        statCard(byStatus('offerte_verstuurd'), 'Verstuurd'),
-        statCard(byStatus('geboekt'), 'Geboekt'),
+        statCard(byS('nieuw'), 'Nieuw'),
+        statCard(byS('in_behandeling'), 'In behandeling'),
+        statCard(byS('offerte_verstuurd'), 'Verstuurd'),
+        statCard(byS('geboekt'), 'Geboekt'),
     ].join('');
     document.getElementById('quote-empty').classList.toggle('hidden', filtered.length > 0);
     document.getElementById('quote-list').innerHTML = filtered.map(q => `
@@ -614,7 +1038,7 @@ function renderQuotes(filter = document.getElementById('quote-filter')?.value ||
                         <span class="badge s-${q.status}">${STATUS_LABELS[q.status]||q.status}</span>
                     </div>
                     <p class="text-gray-500 text-xs">${q.email}${q.telefoon ? ' · '+q.telefoon : ''}${q.bedrijf ? ' · '+q.bedrijf : ''}</p>
-                    <p class="text-gray-600 text-xs mt-1">${q.date_from} → ${q.date_to} · ${q.item_count||0} item(s)</p>
+                    <p class="text-gray-600 text-xs mt-1">${fmtDate(q.date_from)} → ${fmtDate(q.date_to)} · ${q.item_count||0} item(s)</p>
                 </div>
                 <div class="flex gap-2 items-center flex-shrink-0">
                     <span class="text-gray-600 text-xs">${new Date(q.created_at).toLocaleDateString('nl-NL')}</span>
@@ -629,31 +1053,31 @@ document.getElementById('quote-filter').addEventListener('change', e => renderQu
 
 async function openQuote(id) {
     const q = await api('GET', `/api/quotes/${id}`);
+    const deliveryHeen   = q.levering_heen   ? 'Bezorgen' : 'Zelf ophalen';
+    const deliveryRetour = q.levering_retour ? 'Retour bezorgen' : 'Zelf terugbrengen';
     document.getElementById('quote-detail-body').innerHTML = `
         <div class="space-y-5">
-            <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-start justify-between flex-wrap gap-3">
                 <div>
                     <p class="font-black text-white text-lg">${q.naam}</p>
                     <p class="text-gray-400 text-sm">${q.email}${q.telefoon ? ' · '+q.telefoon : ''}</p>
                     ${q.bedrijf ? `<p class="text-gray-500 text-xs">${q.bedrijf}</p>` : ''}
                 </div>
-                <div>
-                    <select onchange="updateStatus(${q.id},this.value)" class="fi py-2 text-sm">
-                        ${['nieuw','in_behandeling','offerte_verstuurd','geboekt','afgewezen'].map(s =>
-                            `<option value="${s}" ${q.status===s?'selected':''}>${STATUS_LABELS[s]}</option>`).join('')}
-                    </select>
-                </div>
+                <select onchange="updateStatus(${q.id},this.value)" class="fi py-2 text-sm w-48">
+                    ${['nieuw','in_behandeling','offerte_verstuurd','geboekt','afgewezen'].map(s =>
+                        `<option value="${s}" ${q.status===s?'selected':''}>${STATUS_LABELS[s]}</option>`).join('')}
+                </select>
             </div>
-            <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="grid grid-cols-2 gap-3 text-sm">
                 <div class="rounded-xl border border-[#2e2e2e] p-3" style="background:#1e1e1e;">
                     <p class="text-gray-500 text-xs mb-1 uppercase tracking-wider">Ophalen</p>
-                    <p class="text-white font-semibold">${q.date_from}</p>
-                    <p class="text-gray-400 text-xs mt-1">${q.levering_heen||'—'}</p>
+                    <p class="text-white font-semibold">${fmtDate(q.date_from)}</p>
+                    <p class="text-gray-400 text-xs mt-1">${deliveryHeen}</p>
                 </div>
                 <div class="rounded-xl border border-[#2e2e2e] p-3" style="background:#1e1e1e;">
                     <p class="text-gray-500 text-xs mb-1 uppercase tracking-wider">Retour</p>
-                    <p class="text-white font-semibold">${q.date_to}</p>
-                    <p class="text-gray-400 text-xs mt-1">${q.levering_retour||'—'}</p>
+                    <p class="text-white font-semibold">${fmtDate(q.date_to)}</p>
+                    <p class="text-gray-400 text-xs mt-1">${deliveryRetour}</p>
                 </div>
             </div>
             ${q.locatie ? `<p class="text-gray-400 text-sm"><span class="text-gray-600">Locatie:</span> ${q.locatie}</p>` : ''}
@@ -667,26 +1091,48 @@ async function openQuote(id) {
                         </div>`).join('')}
                 </div>
             </div>
-            ${q.opmerkingen ? `<div class="rounded-xl border border-[#2e2e2e] p-4" style="background:#1e1e1e;"><p class="text-gray-500 text-xs uppercase tracking-wider mb-1">Opmerkingen</p><p class="text-gray-300 text-sm leading-relaxed">${q.opmerkingen}</p></div>` : ''}
+            ${q.opmerkingen ? `<div class="rounded-xl border border-[#2e2e2e] p-4" style="background:#1e1e1e;"><p class="text-gray-500 text-xs uppercase tracking-wider mb-1">Opmerkingen klant</p><p class="text-gray-300 text-sm leading-relaxed">${q.opmerkingen}</p></div>` : ''}
             <div>
                 <label class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1.5 block">Interne notities</label>
-                <textarea onblur="saveNotes(${q.id},this.value)" rows="3" placeholder="Notities voor intern gebruik…" class="fi resize-none text-sm">${q.admin_notes||''}</textarea>
+                <textarea id="quote-notes-area" onblur="saveNotes(${q.id},this.value,'${q.status}')" rows="3" placeholder="Notities voor intern gebruik…" class="fi resize-none text-sm">${q.admin_notes||''}</textarea>
             </div>
-            <a href="mailto:${q.email}?subject=Offerte%20BeijTech%20verhuurshop&body=Hallo%20${encodeURIComponent(q.naam)}%2C%0A%0ABedankt%20voor%20uw%20aanvraag.%0A%0AMet%20vriendelijke%20groet%2C%0ABeijTech"
-               class="btn-gold inline-flex items-center gap-2 w-full justify-center mt-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                E-mail sturen
-            </a>
+            <div class="flex gap-2 flex-wrap">
+                <a href="mailto:${q.email}?subject=Offerte%20BeijTech%20verhuurshop&body=Hallo%20${encodeURIComponent(q.naam)}%2C%0A%0ABedankt%20voor%20uw%20aanvraag.%0A%0AMet%20vriendelijke%20groet%2C%0ABeijTech"
+                   class="btn-gold flex-1 inline-flex items-center gap-2 justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    E-mail sturen
+                </a>
+                <button onclick="quoteToProject(${q.id})" class="btn-dark flex-1 flex items-center gap-2 justify-center">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Naar agenda
+                </button>
+            </div>
         </div>`;
     document.getElementById('modal-quote').classList.remove('hidden');
+    // Store current quote for quoteToProject
+    window._currentQuote = q;
+}
+
+function quoteToProject(qid) {
+    const q = window._currentQuote;
+    if (!q) return;
+    document.getElementById('modal-quote').classList.add('hidden');
+    closeProjectModal();
+    document.getElementById('pf-naam').value    = 'Verhuur – ' + q.naam;
+    document.getElementById('pf-klant').value   = q.naam;
+    document.getElementById('pf-locatie').value = q.locatie || '';
+    document.getElementById('pf-from').value    = q.date_from || '';
+    document.getElementById('pf-to').value      = q.date_to   || '';
+    switchTab('agenda');
+    openProjectModal('add');
 }
 
 async function updateStatus(id, status) {
     try { await api('PUT', `/api/quotes/${id}/status`, { status }); await loadQuotes(); toast('Status bijgewerkt ✓'); }
     catch(err) { toast('Fout: ' + err.message); }
 }
-async function saveNotes(id, notes) {
-    try { await api('PUT', `/api/quotes/${id}/status`, { admin_notes: notes }); }
+async function saveNotes(id, notes, status) {
+    try { await api('PUT', `/api/quotes/${id}/status`, { admin_notes: notes, status }); }
     catch {}
 }
 function deleteQuote(id, naam) {
@@ -698,11 +1144,9 @@ function deleteQuote(id, naam) {
 document.getElementById('close-modal-quote').addEventListener('click', () => document.getElementById('modal-quote').classList.add('hidden'));
 document.getElementById('modal-quote').addEventListener('click', e => { if (e.target === e.currentTarget) document.getElementById('modal-quote').classList.add('hidden'); });
 
-// ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
 // GEBRUIKERS
-// ═══════════════════════════════════════════════════════════════════════
-let users = [];
-
+// ═══════════════════════════════════════════════════════════════════════════
 async function loadUsers() {
     try { users = await api('GET', '/api/auth/users'); }
     catch { users = []; }
@@ -756,18 +1200,18 @@ document.getElementById('modal-user').addEventListener('click', e => { if (e.tar
 function editUser(id) {
     const u = users.find(x => x.id === id);
     if (!u) return;
-    document.getElementById('u-id').value       = u.id;
-    document.getElementById('u-username').value  = u.username;
-    document.getElementById('u-email').value     = u.email;
-    document.getElementById('u-role').value      = u.role;
-    document.getElementById('u-password').value  = '';
+    document.getElementById('u-id').value      = u.id;
+    document.getElementById('u-username').value = u.username;
+    document.getElementById('u-email').value    = u.email;
+    document.getElementById('u-role').value     = u.role;
+    document.getElementById('u-password').value = '';
     document.getElementById('u-password').required = false;
     openUserModal('edit');
 }
 
 document.getElementById('user-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const id = document.getElementById('u-id').value;
+    const id   = document.getElementById('u-id').value;
     const body = {
         username: document.getElementById('u-username').value.trim(),
         email:    document.getElementById('u-email').value.trim(),
@@ -777,7 +1221,7 @@ document.getElementById('user-form').addEventListener('submit', async e => {
     if (pw) body.password = pw;
     try {
         if (id) { await api('PUT', `/api/auth/users/${id}`, body); toast('Account bijgewerkt ✓'); }
-        else    { await api('POST', '/api/auth/users', body);      toast('Account aangemaakt ✓'); }
+        else    { await api('POST', '/api/auth/users', body);       toast('Account aangemaakt ✓'); }
         await loadUsers(); closeUserModal();
     } catch(err) { toast('Fout: ' + err.message); }
 });
@@ -789,7 +1233,7 @@ function deleteUser(id, name) {
     });
 }
 
-// ── Init ─────────────────────────────────────────────────────────────────
+// ── Init ──────────────────────────────────────────────────────────────────────
 if (token) openDashboard();
 </script>
 </body>

@@ -75,24 +75,29 @@ function handle_quotes(string $method, string $sub): void
         json_ok($quote);
     }
 
-    // PUT /:id/status — auth, update status + admin notes
+    // PUT /:id/status — auth, update status and/or admin_notes
     if ($method === 'PUT' && preg_match('#^/(\d+)/status$#', $sub, $m)) {
         require_auth();
         $id     = (int)$m[1];
         $b      = get_body();
-        $status = $b['status'] ?? '';
+        $status = $b['status'] ?? null;
 
-        if (!$status) json_error('Status is verplicht.', 400);
-        if (!in_array($status, $VALID_STATUSES, true)) {
+        if ($status !== null && !in_array($status, $VALID_STATUSES, true)) {
             json_error('Ongeldige status. Geldige waarden: ' . implode(', ', $VALID_STATUSES) . '.', 400);
         }
+        if ($status === null && !array_key_exists('admin_notes', $b)) {
+            json_error('Status of admin_notes is verplicht.', 400);
+        }
 
-        $quote = db_get('SELECT id FROM quote_requests WHERE id = ?', [$id]);
+        $quote = db_get('SELECT * FROM quote_requests WHERE id = ?', [$id]);
         if (!$quote) json_error('Aanvraag niet gevonden.', 404);
+
+        $newStatus = $status ?? $quote['status'];
+        $newNotes  = array_key_exists('admin_notes', $b) ? $b['admin_notes'] : $quote['admin_notes'];
 
         db_run(
             'UPDATE quote_requests SET status=?, admin_notes=? WHERE id=?',
-            [$status, $b['admin_notes'] ?? null, $id]
+            [$newStatus, $newNotes, $id]
         );
 
         $updated          = db_get('SELECT * FROM quote_requests WHERE id = ?', [$id]);

@@ -78,6 +78,9 @@ try {
     } elseif (str_starts_with($sub, '/quotes')) {
         require_once __DIR__ . '/routes/quotes.php';
         handle_quotes($method, substr($sub, 7));
+    } elseif (str_starts_with($sub, '/projects')) {
+        require_once __DIR__ . '/routes/projects.php';
+        handle_projects($method, substr($sub, 9));
     } else {
         json_error('Route niet gevonden.', 404);
     }
