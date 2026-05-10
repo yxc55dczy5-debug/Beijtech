@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verhuurshop – BeijTech | Licht & Geluid Verhuur</title>
+    <meta name="description" content="Huur professionele licht- en geluidsapparatuur bij BeijTech. Bekijk ons aanbod, stel je verlanglijst samen en vraag direct een offerte aan.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .header-gradient { background: linear-gradient(90deg, #C9A028 0%, #E2C84E 40%, #F0DC94 80%, #F8F0C0 100%); }
+        .hero-gradient   { background: linear-gradient(135deg, #C9A028 0%, #E0CB60 50%, #F0DC94 100%); }
+        .cta-gradient    { background: linear-gradient(135deg, #C9A028 0%, #DFC048 60%, #EDD570 100%); }
+
+        @keyframes blob-a {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33%     { transform: translate(18px,-14px) scale(1.05); }
+            66%     { transform: translate(-10px,10px) scale(0.97); }
+        }
+        @keyframes blob-b {
+            0%,100% { transform: translate(0,0) scale(1); }
+            40%     { transform: translate(-20px,12px) scale(1.04); }
+            70%     { transform: translate(14px,-8px) scale(0.98); }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .blob-a    { animation: blob-a 8s ease-in-out infinite; }
+        .blob-b    { animation: blob-b 11s ease-in-out infinite; }
+        .spin-slow { animation: spin-slow 20s linear infinite; }
+
+        .product-card {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+            border-color: #C9A028;
+        }
+        .product-card.in-list {
+            border-color: #C9A028;
+            box-shadow: 0 0 0 3px rgba(201,160,40,0.18);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
+
+        .cat-pill {
+            cursor: pointer;
+            padding: 0.4rem 1.1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #374151;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .cat-pill:hover { border-color: #C9A028; color: #7a5c0e; }
+        .cat-pill.active { background: #C9A028; border-color: #C9A028; color: #000; }
+
+        .qty-btn {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1rem;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+        .qty-btn:hover { background: #e5e7eb; }
+
+        .form-input {
+            width: 100%;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.875rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #1a1a1a;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus { border-color: #C9A028; }
+
+        /* Bezorgoptie cards */
+        .delivery-card input[type="radio"] { position: absolute; opacity: 0; width: 0; }
+        .delivery-card-inner {
+            border: 2px solid #2e2e2e;
+            border-radius: 1rem;
+            padding: 0.875rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+        }
+        .delivery-card-inner:hover { border-color: #C9A028; }
+        .delivery-card input[type="radio"]:checked + .delivery-card-inner {
+            border-color: #C9A028;
+            background: rgba(201,160,40,0.08);
+        }
+        .delivery-dot {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            border: 2px solid #444;
+            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .delivery-card input[type="radio"]:checked + .delivery-card-inner .delivery-dot {
+            border-color: #C9A028;
+            background: #C9A028;
+        }
+        .delivery-dot::after {
+            content: '';
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #111;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .delivery-card input[type="radio"]:checked + .delivery-card-inner .delivery-dot::after {
+            opacity: 1;
+        }
+
+        #sticky-bar { transition: transform 0.3s; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+    <!-- ========= HEADER ========= -->
+    <header class="header-gradient sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+            <a href="index.html" class="flex items-center select-none">
+                <span class="text-2xl font-black tracking-tight leading-none">
+                    <span class="text-black">BEIJ</span><span class="bg-black text-[#C9A028] px-1.5 py-0.5 ml-0.5 inline-block">TECH</span>
+                </span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black hover:text-amber-900 transition-colors">Home</a>
+                <a href="over-ons.html" class="text-black hover:text-amber-900 transition-colors">Over Ons</a>
+
+                <div class="group relative">
+                    <button class="flex items-center gap-1 text-black hover:text-amber-900 transition-colors py-1 cursor-default">
+                        Diensten
+                        <svg class="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="absolute left-0 top-full pt-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
+                        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                            <div class="group/it relative">
+                                <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-7 h-7 bg-black/6 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                                        </span>IT
+                                    </div>
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                                <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/it:visible group-hover/it:opacity-100 transition-all duration-150 z-50 min-w-[220px]">
+                                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                                        <a href="netwerkbeheer.html"    class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🌐</span> Netwerkbeheer</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="webdesign-hosting.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">💻</span> Webdesign &amp; Hosting</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="werkplek-beheer.html"  class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🖥️</span> Werkplek Beheer</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="telefonie.html"        class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">📞</span> Telefonie</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                            <div class="group/ev relative">
+                                <div class="flex items-center justify-between px-4 py-2.5 text-sm text-gray-800 hover:bg-gray-50 transition-colors cursor-default select-none">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-7 h-7 bg-[#C9A028]/12 rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <svg class="w-3.5 h-3.5 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                                        </span>Events
+                                    </div>
+                                    <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                                <div class="absolute top-0 left-full pl-2 invisible opacity-0 group-hover/ev:visible group-hover/ev:opacity-100 transition-all duration-150 z-50 min-w-[210px]">
+                                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 py-2">
+                                        <a href="event-pakketten.html"  class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">💍</span> Bruiloftpakketten</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="feest-pakketten.html"  class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🎉</span> Feestpakketten</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="vaste-installaties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🎭</span> Vaste Installaties</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="totaalproducties.html" class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🚀</span> Totaalproducties</a>
+                                        <div class="h-px bg-gray-100 mx-3 my-1"></div>
+                                        <a href="artiesten.html"        class="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"><span class="text-base">🎤</span> Artiesten Boeken</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="contact.html"     class="text-black hover:text-amber-900 transition-colors">Contact</a>
+                <a href="verhuurshop.html" class="text-black underline underline-offset-4 decoration-black/40 font-black">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="text-black font-black py-2.5 px-5 rounded-xl hover:scale-105 transition-all inline-flex items-center gap-1.5 shadow-md whitespace-nowrap text-[14px]">
+                    ✨ Offerte Aanvragen
+                </a>
+            </nav>
+
+            <button id="menu-btn" aria-label="Menu openen" class="md:hidden p-1">
+                <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden px-5 pb-5 border-t border-black/10 mt-1 pt-3">
+            <div class="flex flex-col gap-0.5 text-[15px] font-semibold">
+                <a href="index.html"    class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Home</a>
+                <a href="over-ons.html" class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Over Ons</a>
+                <div>
+                    <button id="mob-diensten-btn" class="w-full flex items-center justify-between text-black py-2 px-3 rounded-xl hover:bg-black/5">
+                        Diensten
+                        <svg id="mob-diensten-arrow" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div id="mob-diensten-sub" class="hidden pl-3 mt-1 mb-1 space-y-0.5 border-l-2 border-[#C9A028]/40 ml-3">
+                        <div>
+                            <button id="mob-it-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
+                                IT <svg id="mob-it-arrow" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="mob-it-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-gray-200 ml-3">
+                                <a href="netwerkbeheer.html"    class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🌐 Netwerkbeheer</a>
+                                <a href="webdesign-hosting.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💻 Webdesign &amp; Hosting</a>
+                                <a href="werkplek-beheer.html"  class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🖥️ Werkplek Beheer</a>
+                                <a href="telefonie.html"        class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">📞 Telefonie</a>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="mob-events-btn" class="w-full flex items-center justify-between text-gray-700 py-1.5 px-3 rounded-lg hover:bg-black/5 text-[14px]">
+                                Events <svg id="mob-events-arrow" class="w-3.5 h-3.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div id="mob-events-sub" class="hidden pl-3 mt-1 space-y-0.5 border-l-2 border-[#C9A028]/20 ml-3">
+                                <a href="event-pakketten.html"  class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">💍 Bruiloftpakketten</a>
+                                <a href="feest-pakketten.html"  class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎉 Feestpakketten</a>
+                                <a href="vaste-installaties.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎭 Vaste Installaties</a>
+                                <a href="totaalproducties.html" class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🚀 Totaalproducties</a>
+                                <a href="artiesten.html"        class="block text-gray-600 font-semibold py-1.5 px-3 rounded-lg hover:bg-black/5 text-[13px]">🎤 Artiesten Boeken</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="contact.html"     class="text-black py-2 px-3 rounded-xl hover:bg-black/5">Contact</a>
+                <a href="verhuurshop.html" class="text-[#8a6c10] font-black py-2 px-3 rounded-xl bg-[#C9A028]/10">Verhuurshop</a>
+                <a href="contact.html#offerte" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="mt-2 text-black font-black py-3 px-5 rounded-xl inline-flex items-center gap-2 shadow-md justify-center text-[14px]">✨ Offerte Aanvragen</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========= HERO ========= -->
+    <section class="hero-gradient relative overflow-hidden min-h-[48vh] flex items-center justify-center text-center">
+        <div class="blob-a absolute -top-12 -left-12 w-72 h-72 bg-white/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="blob-b absolute -bottom-8 right-0 w-96 h-96 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="spin-slow absolute top-14 right-16 w-12 h-12 opacity-20 pointer-events-none hidden md:block">
+            <svg viewBox="0 0 48 48" fill="none"><path d="M24 4 L26 20 L40 24 L26 28 L24 44 L22 28 L8 24 L22 20 Z" fill="#1a1a1a"/></svg>
+        </div>
+        <div class="spin-slow absolute bottom-20 left-14 w-7 h-7 opacity-15 pointer-events-none hidden md:block" style="animation-direction:reverse;animation-duration:14s">
+            <svg viewBox="0 0 28 28" fill="none"><path d="M14 2 L15.5 11 L24 14 L15.5 17 L14 26 L12.5 17 L4 14 L12.5 11 Z" fill="#1a1a1a"/></svg>
+        </div>
+        <div class="relative px-6 py-24">
+            <div class="inline-flex items-center gap-2 bg-black/12 text-black font-semibold text-sm px-5 py-2 rounded-full mb-7 border border-black/10">
+                <span>🎛️</span> Professionele apparatuur — direct beschikbaar
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black text-black mb-5 leading-[1.05]">
+                Verhuur<span class="bg-black text-[#C9A028] px-3 py-1 inline-block -rotate-1 rounded-lg ml-3">Shop</span>
+            </h1>
+            <p class="text-black/65 text-lg md:text-xl max-w-xl mx-auto leading-relaxed">
+                Stel jouw verlanglijst samen, geef de huurdatums op en vraag direct een offerte op maat aan.
+            </p>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 leading-none">
+            <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block"><path d="M0,35 C300,70 900,0 1440,40 L1440,70 L0,70 Z" fill="#f9fafb"/></svg>
+        </div>
+    </section>
+
+    <!-- ========= HOE WERKT HET ========= -->
+    <section class="bg-gray-50 py-12 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-white rounded-2xl p-6 flex items-start gap-4 border border-gray-100 shadow-sm">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028, #E8C830);">
+                        <span class="font-black text-black text-sm">1</span>
+                    </div>
+                    <div><p class="font-bold text-black text-sm mb-1">Kies je producten</p><p class="text-gray-500 text-sm leading-relaxed">Blader door het aanbod en voeg items toe aan je verlanglijst.</p></div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 flex items-start gap-4 border border-gray-100 shadow-sm">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028, #E8C830);">
+                        <span class="font-black text-black text-sm">2</span>
+                    </div>
+                    <div><p class="font-bold text-black text-sm mb-1">Kies datums & bezorging</p><p class="text-gray-500 text-sm leading-relaxed">Geef huurdatums op en kies of je ophaalt of laat bezorgen.</p></div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 flex items-start gap-4 border border-gray-100 shadow-sm">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028, #E8C830);">
+                        <span class="font-black text-black text-sm">3</span>
+                    </div>
+                    <div><p class="font-bold text-black text-sm mb-1">Ontvang je offerte</p><p class="text-gray-500 text-sm leading-relaxed">Wij sturen je snel een offerte op maat retour.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= SHOP ========= -->
+    <section class="bg-gray-50 pb-32 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Filter & zoek -->
+            <div class="flex flex-col sm:flex-row gap-3 mb-6 pt-4">
+                <div class="relative flex-1 max-w-xs">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input id="search-input" type="text" placeholder="Zoek apparatuur…" class="form-input pl-9 py-2.5 text-sm">
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button class="cat-pill active" data-cat="all">Alles</button>
+                    <button class="cat-pill" data-cat="geluid">Geluid</button>
+                    <button class="cat-pill" data-cat="licht">Licht</button>
+                    <button class="cat-pill" data-cat="microfoon">Microfoons</button>
+                    <button class="cat-pill" data-cat="overig">Overig</button>
+                </div>
+            </div>
+
+            <div class="flex gap-6 items-start">
+
+                <!-- Product grid -->
+                <div class="flex-1 min-w-0">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+                    <div id="no-results" class="hidden text-center py-16 text-gray-400">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <p class="font-semibold">Geen producten gevonden</p>
+                    </div>
+                </div>
+
+                <!-- Verlanglijst sidebar desktop -->
+                <aside id="sidebar" class="hidden lg:block w-80 flex-shrink-0 sticky top-24">
+                    <div class="bg-white rounded-2xl border-2 border-gray-100 overflow-hidden shadow-sm">
+                        <div class="p-5 border-b border-gray-100" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-black text-black text-base">Mijn Verlanglijst</h3>
+                                <span id="sidebar-count" class="bg-black text-white text-xs font-black px-2.5 py-1 rounded-full">0</span>
+                            </div>
+                        </div>
+                        <div id="sidebar-empty" class="p-8 text-center text-gray-400">
+                            <svg class="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            <p class="text-sm font-semibold">Nog niets toegevoegd</p>
+                            <p class="text-xs mt-1">Klik op "Toevoegen" bij een product.</p>
+                        </div>
+                        <div id="sidebar-items" class="hidden divide-y divide-gray-50 max-h-64 overflow-y-auto"></div>
+                        <div id="sidebar-form" class="hidden p-5 border-t border-gray-100 space-y-3">
+                            <p class="font-bold text-black text-sm">Huurdatums</p>
+                            <div>
+                                <label class="text-xs text-gray-500 font-semibold mb-1 block">Ophaaldatum</label>
+                                <input type="date" id="date-from-desktop" class="form-input text-sm py-2">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-500 font-semibold mb-1 block">Retourdatum</label>
+                                <input type="date" id="date-to-desktop" class="form-input text-sm py-2">
+                            </div>
+                            <button onclick="scrollToForm()" class="w-full font-black text-black py-3 rounded-xl text-sm hover:scale-105 transition-all shadow-md" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">
+                                ✨ Offerte Aanvragen
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= OFFERTE FORMULIER ========= -->
+    <div class="leading-none bg-gray-50">
+        <svg viewBox="0 0 1440 70" xmlns="http://www.w3.org/2000/svg" class="w-full block"><path d="M0,30 C480,70 960,0 1440,40 L1440,70 L0,70 Z" fill="#111"/></svg>
+    </div>
+
+    <section id="offerte-section" class="bg-[#111] py-20 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background: radial-gradient(circle, rgba(201,160,40,0.12) 0%, transparent 70%);"></div>
+
+        <div class="max-w-2xl mx-auto relative">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center gap-3 text-gray-600 text-sm font-bold tracking-widest uppercase mb-4">
+                    <div class="h-px w-12 bg-gray-700"></div>Offerte Aanvragen<div class="h-px w-12 bg-gray-700"></div>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-white mb-3 leading-tight">Jouw <span class="text-[#C9A028]">Verlanglijst</span><br>Naar Ons</h2>
+                <p class="text-gray-400 text-base leading-relaxed">Vul je gegevens in en wij sturen je zo snel mogelijk een offerte op maat.</p>
+            </div>
+
+            <form id="offerte-form" class="space-y-5">
+
+                <!-- Verlanglijst overzicht -->
+                <div id="form-list-summary" class="rounded-2xl border border-[#C9A028]/30 p-5" style="background: rgba(201,160,40,0.05);">
+                    <p class="text-[#C9A028] font-bold text-sm mb-3">Geselecteerde producten</p>
+                    <div id="form-list-items">
+                        <p class="text-gray-500 text-sm italic">Nog geen producten geselecteerd. Voeg items toe via de shop hierboven.</p>
+                    </div>
+                </div>
+
+                <!-- Datums -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">Ophaaldatum *</label>
+                        <input type="date" id="date-from" required class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white focus:border-[#C9A028]">
+                    </div>
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">Retourdatum *</label>
+                        <input type="date" id="date-to" required class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white focus:border-[#C9A028]">
+                    </div>
+                </div>
+
+                <!-- ── BEZORGOPTIES ── -->
+                <div class="rounded-2xl border border-[#2e2e2e] p-5 space-y-5" style="background:#1a1a1a;">
+                    <p class="text-gray-300 font-bold text-sm flex items-center gap-2">
+                        <svg class="w-4 h-4 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                        Bezorgvoorkeur
+                    </p>
+
+                    <!-- Heen -->
+                    <div>
+                        <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Heen — levering</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="delivery-card relative">
+                                <input type="radio" name="levering-heen" value="Zelf ophalen" checked>
+                                <div class="delivery-card-inner">
+                                    <div class="delivery-dot"></div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm leading-none mb-0.5">Zelf ophalen</p>
+                                        <p class="text-gray-500 text-xs">Bij ons op locatie</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="delivery-card relative">
+                                <input type="radio" name="levering-heen" value="Bezorging gewenst">
+                                <div class="delivery-card-inner">
+                                    <div class="delivery-dot"></div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm leading-none mb-0.5">Bezorgen</p>
+                                        <p class="text-gray-500 text-xs">Prijs op aanvraag</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Retour -->
+                    <div>
+                        <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Retour</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="delivery-card relative">
+                                <input type="radio" name="levering-retour" value="Zelf terugbrengen" checked>
+                                <div class="delivery-card-inner">
+                                    <div class="delivery-dot"></div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm leading-none mb-0.5">Zelf terugbrengen</p>
+                                        <p class="text-gray-500 text-xs">Bij ons op locatie</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="delivery-card relative">
+                                <input type="radio" name="levering-retour" value="Ophalen door BeijTech">
+                                <div class="delivery-card-inner">
+                                    <div class="delivery-dot"></div>
+                                    <div>
+                                        <p class="text-white font-bold text-sm leading-none mb-0.5">Ophalen door ons</p>
+                                        <p class="text-gray-500 text-xs">Prijs op aanvraag</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Naam + bedrijf -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">Naam *</label>
+                        <input type="text" id="naam" required placeholder="Jan de Vries" class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028]">
+                    </div>
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">Bedrijf <span class="text-gray-600 font-normal">(optioneel)</span></label>
+                        <input type="text" id="bedrijf" placeholder="BeijTech B.V." class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028]">
+                    </div>
+                </div>
+
+                <!-- E-mail + telefoon -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">E-mailadres *</label>
+                        <input type="email" id="email" required placeholder="jan@bedrijf.nl" class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028]">
+                    </div>
+                    <div>
+                        <label class="text-gray-300 text-sm font-semibold mb-2 block">Telefoonnummer</label>
+                        <input type="tel" id="telefoon" placeholder="+31 6 12 34 56 78" class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028]">
+                    </div>
+                </div>
+
+                <!-- Locatie -->
+                <div>
+                    <label class="text-gray-300 text-sm font-semibold mb-2 block">Locatie evenement <span class="text-gray-600 font-normal">(optioneel)</span></label>
+                    <input type="text" id="locatie" placeholder="Amsterdam, feestzaal naam…" class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028]">
+                </div>
+
+                <!-- Opmerkingen -->
+                <div>
+                    <label class="text-gray-300 text-sm font-semibold mb-2 block">Extra wensen of opmerkingen</label>
+                    <textarea id="opmerkingen" rows="4" placeholder="Bijv. specifieke tijden, extra benodigdheden…" class="form-input bg-[#1e1e1e] border-[#2e2e2e] text-white placeholder-gray-600 focus:border-[#C9A028] resize-none"></textarea>
+                </div>
+
+                <button type="submit" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);" class="w-full text-black font-black py-4 rounded-2xl text-base hover:scale-[1.02] transition-all shadow-xl inline-flex items-center justify-center gap-2">
+                    ✨ Verstuur Offerte Aanvraag
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </button>
+
+                <div id="form-success" class="hidden rounded-2xl p-5 border border-green-500/30 text-center" style="background: rgba(34,197,94,0.08);">
+                    <svg class="w-8 h-8 text-green-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                    <p class="text-green-400 font-bold">Aanvraag ontvangen!</p>
+                    <p class="text-gray-400 text-sm mt-1">Wij nemen zo snel mogelijk contact met je op.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ========= CTA ========= -->
+    <div class="leading-none bg-[#111]">
+        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" class="w-full block"><path d="M0,30 C480,90 960,0 1440,50 L1440,80 L0,80 Z" fill="#C9A028"/></svg>
+    </div>
+    <section class="cta-gradient relative py-20 px-6 text-center overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-black/8 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-2xl mx-auto relative">
+            <p class="text-black/60 italic font-semibold mb-3">Toch liever een compleet pakket?</p>
+            <h2 class="text-4xl md:text-5xl font-black text-black mb-4 leading-tight">Bekijk Onze<br>Event Pakketten</h2>
+            <p class="text-black/65 text-lg mb-10">Licht, geluid, DJ en opbouw in één — wij regelen alles voor jullie evenement.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="feest-pakketten.html" class="bg-black text-white font-bold py-4 px-8 rounded-2xl text-base hover:bg-gray-800 transition-all hover:scale-105 inline-flex items-center gap-2 shadow-xl">Feestpakketten <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></a>
+                <a href="event-pakketten.html" class="border-2 border-black/25 text-black font-bold py-4 px-8 rounded-2xl text-base hover:bg-black/10 transition-all hover:scale-105 inline-flex items-center gap-2">Bruiloftpakketten</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= FOOTER ========= -->
+    <footer class="bg-black text-white py-14 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                <div>
+                    <div class="text-2xl font-black mb-4 leading-none"><span class="text-white">BEIJ</span><span class="bg-[#C9A028] text-black px-1.5 py-0.5 ml-0.5 inline-block">TECH</span></div>
+                    <p class="text-gray-400 text-sm leading-relaxed mt-4">Jouw alles-in-één partner voor professionele IT-oplossingen en onvergetelijke evenementen.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Navigatie</h4>
+                    <ul class="space-y-2.5 text-gray-400 text-sm">
+                        <li><a href="index.html"           class="hover:text-[#C9A028] transition-colors">Home</a></li>
+                        <li><a href="over-ons.html"        class="hover:text-[#C9A028] transition-colors">Over Ons</a></li>
+                        <li><a href="event-pakketten.html" class="hover:text-[#C9A028] transition-colors">Bruiloftpakketten</a></li>
+                        <li><a href="feest-pakketten.html" class="hover:text-[#C9A028] transition-colors">Feestpakketten</a></li>
+                        <li><a href="verhuurshop.html"     class="hover:text-[#C9A028] transition-colors">Verhuurshop</a></li>
+                        <li><a href="contact.html"         class="hover:text-[#C9A028] transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4 text-sm tracking-widest uppercase">Contact</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>info@beijtech.nl</li>
+                        <li class="flex items-center gap-2"><svg class="w-4 h-4 text-[#C9A028] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>www.beijtech.nl</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-6 text-center text-gray-600 text-xs">© 2025 BeijTech. Alle rechten voorbehouden.</div>
+        </div>
+    </footer>
+
+    <a href="contact.html" aria-label="Stuur een e-mail" class="fixed bottom-6 left-6 w-14 h-14 bg-[#6B46C1] hover:bg-[#553C9A] text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 z-40">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+    </a>
+
+    <!-- Mobile sticky bar -->
+    <div id="sticky-bar" class="fixed bottom-0 left-0 right-0 z-50 lg:hidden translate-y-full">
+        <div class="bg-white border-t-2 border-[#C9A028] px-4 py-3 flex items-center justify-between gap-3 shadow-2xl">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background: linear-gradient(135deg, #C9A028, #E8C830);">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <div>
+                    <p class="font-black text-black text-sm leading-none"><span id="mobile-count">0</span> items geselecteerd</p>
+                    <p class="text-gray-500 text-xs">Verlanglijst</p>
+                </div>
+            </div>
+            <button onclick="scrollToForm()" class="font-black text-black text-sm py-2.5 px-5 rounded-xl hover:scale-105 transition-all shadow-md whitespace-nowrap" style="background: linear-gradient(135deg, #C9A028 0%, #E8C830 100%);">✨ Offerte aanvragen</button>
+        </div>
+    </div>
+
+    <script>
+        // ── Standaard producten (fallback als server niet bereikbaar is) ─
+        const DEFAULT_PRODUCTS = [
+            { id:1,  category:'geluid',    name:'LD Systems MAUI 28 G2 Column PA',       description:'Column PA-systeem — compact, krachtig geluid tot ±150 personen. Inclusief subwoofer en kabels.', popular:0 },
+            { id:2,  category:'geluid',    name:'QSC K12.2 Actieve Speaker',             description:'2000W actieve full-range speaker. Kristalhelder geluid, ideaal als hoofd- of monitorluidspreker.', popular:0 },
+            { id:3,  category:'geluid',    name:'LD Systems MAUI 44 G2 Sub',             description:'Krachtige subwoofer voor diepe bas. Geschikt voor feesten en evenementen tot ±300 personen.', popular:0 },
+            { id:4,  category:'licht',     name:'Showtec Compact Par 7 Tri Uplight',     description:'Draadloze RGB uplight, ideaal voor sfeerverlichting langs wanden. Per stuk of per set.', popular:0 },
+            { id:5,  category:'licht',     name:'Chauvet DJ Intimidator Spot 375Z',      description:'Moving head spot met zoom — voor dynamische lichtshows op elk podium of dansvloer.', popular:1 },
+            { id:6,  category:'licht',     name:'Showtec Performer 2500 Fresnel',        description:'Krachtige theaterfresnel voor scèneverlichting, toneelspelen of productie-opnames.', popular:0 },
+            { id:7,  category:'microfoon', name:'Shure SM58 Dynamische Microfoon',       description:'De industrie-standaard voor vocals. Robuust, betrouwbaar. Inclusief standaard en kabel.', popular:0 },
+            { id:8,  category:'microfoon', name:'LD Systems U508 HHD 2 Dubbel draadloos',description:'Professioneel dubbel draadloos systeem inclusief ontvanger. Ideaal voor sprekers en zangers.', popular:1 },
+            { id:9,  category:'overig',    name:'Rookmachine 1500W',                     description:'Krachtige rookmachine voor sfeereffecten. Incl. rookvloeistof voor één avond.', popular:0 },
+            { id:10, category:'overig',    name:'Podiumtrap / Verhogingsplateau',        description:'Modulaire podiumelementen, 2×1 m, instelbare hoogte 40–80 cm. Eenvoudig op te bouwen.', popular:0 },
+            { id:11, category:'overig',    name:'Statieven (microfoon / licht)',          description:'Verstelbare statieven voor microfoon of lichtarmatuur. Per stuk of set.', popular:0 },
+            { id:12, category:'geluid',    name:'Allen & Heath ZEDi-10FX Mixer',         description:'Compact 10-kanaals mengpaneel met ingebouwde FX. Voor kleine tot middelgrote evenementen.', popular:0 },
+        ];
+
+        // Laad producten via API, val terug op hardcoded lijst
+        let PRODUCTS = [];
+        async function initProducts() {
+            try {
+                const res = await fetch('/api/products');
+                if (res.ok) { PRODUCTS = await res.json(); return; }
+            } catch(e) {}
+            PRODUCTS = DEFAULT_PRODUCTS;
+        }
+
+        // Categorie-iconen (SVG paths)
+        const CAT_ICONS = {
+            geluid:    'M15.536 8.464a5 5 0 010 7.072M12 6v12m-3.536-9.536a5 5 0 000 7.072M5.757 5.757a8 8 0 0112.486 0M18.243 18.243A8 8 0 015.757 5.757',
+            licht:     'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z',
+            microfoon: 'M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3zm-9 9v1a9 9 0 0018 0v-1M12 19v4m-3 0h6',
+            overig:    'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
+        };
+        const CAT_BADGE = {
+            geluid:    { bg:'bg-[#C9A028]',  text:'text-black',  label:'Geluid'    },
+            licht:     { bg:'bg-black',       text:'text-[#C9A028]', label:'Licht'  },
+            microfoon: { bg:'bg-gray-600',    text:'text-white',  label:'Microfoon' },
+            overig:    { bg:'bg-gray-500',    text:'text-white',  label:'Overig'    },
+        };
+
+        // ── Render product grid ────────────────────────────────────
+        function buildCard(p) {
+            const cat   = p.category || p.cat;
+            const desc  = p.description || p.desc || '';
+            const badge = CAT_BADGE[cat] || CAT_BADGE.overig;
+            const icon  = CAT_ICONS[cat] || CAT_ICONS.overig;
+            const imgEl = p.image_path
+                ? `<img src="/uploads/products/${p.image_path.split('/').pop()}" alt="${p.name}" class="w-full h-full object-cover">`
+                : `<svg class="w-16 h-16 opacity-20 text-[#C9A028]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${icon}"/></svg>`;
+            return `
+            <div class="product-card" data-id="${p.id}" data-cat="${cat}" data-name="${p.name.replace(/"/g,'&quot;')}">
+                <div class="h-44 bg-gray-900 flex items-center justify-center relative overflow-hidden">
+                    ${imgEl}
+                    <div class="absolute top-3 left-3">
+                        <span class="${badge.bg} ${badge.text} text-xs font-black px-2.5 py-1 rounded-full">${badge.label}</span>
+                    </div>
+                    ${(p.popular||p.popular===1) ? '<div class="absolute top-3 right-3"><span class="bg-[#C9A028] text-black text-xs font-black px-2.5 py-1 rounded-full">Populair</span></div>' : ''}
+                </div>
+                <div class="p-5">
+                    <h3 class="font-black text-black text-[15px] mb-1 leading-snug">${p.name}</h3>
+                    <p class="text-gray-500 text-xs leading-relaxed mb-3">${desc}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-gray-400 font-semibold">Prijs op aanvraag</span>
+                        <button class="add-btn bg-black text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-gray-800 transition-all hover:scale-105 flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                            Toevoegen
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        const grid = document.getElementById('product-grid');
+
+        async function initGrid() {
+            await initProducts();
+            grid.innerHTML = PRODUCTS.map(buildCard).join('');
+        }
+        initGrid();
+
+        // ── State ──────────────────────────────────────────────────
+        const wishlist = {};
+
+        // ── Event delegation voor add-buttons ─────────────────────
+        grid.addEventListener('click', e => {
+            const btn = e.target.closest('.add-btn');
+            if (!btn) return;
+            const card = btn.closest('.product-card');
+            const id   = card.dataset.id;
+            const name = card.dataset.name;
+
+            if (wishlist[id]) {
+                wishlist[id].qty++;
+            } else {
+                wishlist[id] = { name, qty: 1 };
+                card.classList.add('in-list');
+                btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Toegevoegd`;
+                btn.classList.remove('bg-black','hover:bg-gray-800');
+                btn.style.background = 'linear-gradient(135deg, #C9A028 0%, #E8C830 100%)';
+                btn.classList.add('text-black');
+                btn.classList.remove('text-white');
+            }
+            renderSidebar(); renderFormList(); updateMobileBar();
+        });
+
+        // ── Filter / zoek ──────────────────────────────────────────
+        document.querySelectorAll('.cat-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                applyFilter();
+            });
+        });
+        document.getElementById('search-input').addEventListener('input', applyFilter);
+
+        function applyFilter() {
+            const cat   = document.querySelector('.cat-pill.active')?.dataset.cat || 'all';
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            let visible = 0;
+            cards.forEach(card => {
+                const ok = (cat === 'all' || card.dataset.cat === cat) &&
+                           (!query || card.dataset.name.toLowerCase().includes(query));
+                card.style.display = ok ? '' : 'none';
+                if (ok) visible++;
+            });
+            document.getElementById('no-results').classList.toggle('hidden', visible > 0);
+        }
+
+        // ── Sidebar ────────────────────────────────────────────────
+        function renderSidebar() {
+            const count = Object.keys(wishlist).length;
+            document.getElementById('sidebar-count').textContent = count;
+            const emptyEl = document.getElementById('sidebar-empty');
+            const itemsEl = document.getElementById('sidebar-items');
+            const formEl  = document.getElementById('sidebar-form');
+            if (count === 0) { emptyEl.classList.remove('hidden'); itemsEl.classList.add('hidden'); formEl.classList.add('hidden'); return; }
+            emptyEl.classList.add('hidden'); itemsEl.classList.remove('hidden'); formEl.classList.remove('hidden');
+            itemsEl.innerHTML = Object.entries(wishlist).map(([id, item]) => `
+                <div class="flex items-center gap-3 px-4 py-3">
+                    <div class="flex-1 min-w-0"><p class="font-semibold text-black text-xs leading-snug truncate">${item.name}</p></div>
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button class="qty-btn" onclick="changeQty('${id}',-1)">−</button>
+                        <span class="text-xs font-black text-black w-5 text-center">${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty('${id}',1)">+</button>
+                    </div>
+                    <button onclick="removeItem('${id}')" class="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0 ml-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>`).join('');
+        }
+
+        function renderFormList() {
+            const el = document.getElementById('form-list-items');
+            const count = Object.keys(wishlist).length;
+            if (count === 0) { el.innerHTML = '<p class="text-gray-500 text-sm italic">Nog geen producten geselecteerd.</p>'; return; }
+            el.innerHTML = Object.entries(wishlist).map(([,item]) =>
+                `<div class="flex items-center justify-between py-1.5 border-b border-[#C9A028]/10 last:border-0">
+                    <span class="text-gray-300 text-sm">${item.name}</span>
+                    <span class="text-[#C9A028] font-bold text-sm ml-3 flex-shrink-0">× ${item.qty}</span>
+                </div>`).join('');
+        }
+
+        function updateMobileBar() {
+            const count = Object.values(wishlist).reduce((s,i) => s + i.qty, 0);
+            document.getElementById('mobile-count').textContent = count;
+            document.getElementById('sticky-bar').classList.toggle('translate-y-full', count === 0);
+        }
+
+        function changeQty(id, delta) {
+            if (!wishlist[id]) return;
+            wishlist[id].qty += delta;
+            if (wishlist[id].qty <= 0) removeItem(id);
+            else { renderSidebar(); renderFormList(); updateMobileBar(); }
+        }
+
+        function removeItem(id) {
+            delete wishlist[id];
+            const card = document.querySelector(`.product-card[data-id="${id}"]`);
+            if (card) {
+                card.classList.remove('in-list');
+                const btn = card.querySelector('.add-btn');
+                btn.innerHTML = `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>Toevoegen`;
+                btn.style.background = ''; btn.classList.add('bg-black','hover:bg-gray-800','text-white'); btn.classList.remove('text-black');
+            }
+            renderSidebar(); renderFormList(); updateMobileBar();
+        }
+
+        // ── Datum sync desktop ↔ formulier ─────────────────────────
+        document.getElementById('date-from-desktop').addEventListener('change', e => { document.getElementById('date-from').value = e.target.value; });
+        document.getElementById('date-to-desktop').addEventListener('change',   e => { document.getElementById('date-to').value   = e.target.value; });
+        document.getElementById('date-from').addEventListener('change', e => { document.getElementById('date-from-desktop').value = e.target.value; });
+        document.getElementById('date-to').addEventListener('change',   e => { document.getElementById('date-to-desktop').value   = e.target.value; });
+
+        function scrollToForm() {
+            document.getElementById('offerte-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ── Formulier versturen ────────────────────────────────────
+        document.getElementById('offerte-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo   = document.getElementById('date-to').value;
+            const naam     = document.getElementById('naam').value;
+            const email    = document.getElementById('email').value;
+            if (!naam || !email || !dateFrom || !dateTo) return;
+            if (new Date(dateTo) < new Date(dateFrom)) { alert('De retourdatum mag niet voor de ophaaldatum liggen.'); return; }
+
+            const lHeen      = document.querySelector('input[name="levering-heen"]:checked')?.value   || 'Zelf ophalen';
+            const lRetour    = document.querySelector('input[name="levering-retour"]:checked')?.value || 'Zelf terugbrengen';
+            const bedrijf    = document.getElementById('bedrijf').value;
+            const telefoon   = document.getElementById('telefoon').value;
+            const locatie    = document.getElementById('locatie').value;
+            const opmerkingen = document.getElementById('opmerkingen').value;
+            const items      = Object.entries(wishlist).map(([id, i]) => ({ product_id: parseInt(id), product_name: i.name, quantity: i.qty }));
+
+            const payload = { naam, email, telefoon, bedrijf, locatie, date_from: dateFrom, date_to: dateTo, levering_heen: lHeen, levering_retour: lRetour, opmerkingen, items };
+
+            let usedApi = false;
+            try {
+                const res = await fetch('/api/quotes', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                if (res.ok) usedApi = true;
+            } catch {}
+
+            if (!usedApi) {
+                // Fallback: mailto als server niet bereikbaar is
+                const itemsTxt = Object.values(wishlist).map(i => `- ${i.name} (x${i.qty})`).join('\n');
+                const body = encodeURIComponent(`Hallo BeijTech,\n\nOfferte aanvraag:\n\n${itemsTxt||'(geen items)'}\n\nDatums: ${dateFrom} → ${dateTo}\nHeen: ${lHeen}\nRetour: ${lRetour}\n\nNaam: ${naam}\n${bedrijf?'Bedrijf: '+bedrijf+'\n':''}E-mail: ${email}\n${telefoon?'Telefoon: '+telefoon+'\n':''}${locatie?'Locatie: '+locatie+'\n':''}${opmerkingen?'\nOpmerkingen:\n'+opmerkingen:''}\n\nMet vriendelijke groet,\n${naam}`);
+                window.location.href = `mailto:info@beijtech.nl?subject=${encodeURIComponent('Verhuurofferte – '+naam)}&body=${body}`;
+            }
+
+            document.getElementById('form-success').classList.remove('hidden');
+            this.querySelector('button[type="submit"]').classList.add('opacity-50','pointer-events-none');
+        });
+
+        // ── Nav ────────────────────────────────────────────────────
+        document.getElementById('menu-btn').addEventListener('click', () => { document.getElementById('mobile-menu').classList.toggle('hidden'); });
+        document.getElementById('mob-diensten-btn').addEventListener('click', () => { document.getElementById('mob-diensten-sub').classList.toggle('hidden'); document.getElementById('mob-diensten-arrow').classList.toggle('rotate-180'); });
+        document.getElementById('mob-it-btn').addEventListener('click', () => { document.getElementById('mob-it-sub').classList.toggle('hidden'); document.getElementById('mob-it-arrow').classList.toggle('rotate-180'); });
+        document.getElementById('mob-events-btn').addEventListener('click', () => { document.getElementById('mob-events-sub').classList.toggle('hidden'); document.getElementById('mob-events-arrow').classList.toggle('rotate-180'); });
+
+        // ── Min datum = vandaag ────────────────────────────────────
+        const today = new Date().toISOString().split('T')[0];
+        ['date-from','date-to','date-from-desktop','date-to-desktop'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.min = today;
+        });
+    </script>
+</body>
+</html>
