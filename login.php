@@ -3,14 +3,8 @@ declare(strict_types=1);
 
 session_start();
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 require_once __DIR__ . '/api/config.php';
 require_once __DIR__ . '/api/db.php';
-
-const LOGIN_DEBUG = true;
 
 try {
     maybe_seed();
@@ -23,18 +17,6 @@ try {
 function e(mixed $value): string
 {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
-}
-
-function debug_stop(array $data): never
-{
-    if (!LOGIN_DEBUG) {
-        exit;
-    }
-
-    echo '<pre style="background:#111;color:#0f0;padding:20px;font-size:14px;white-space:pre-wrap;">';
-    print_r($data);
-    echo '</pre>';
-    exit;
 }
 
 function flash(?string $message = null, string $type = 'ok'): ?array
@@ -53,21 +35,72 @@ function flash(?string $message = null, string $type = 'ok'): ?array
     return $flash;
 }
 
-function column_exists(string $table, string $column): bool
+function users_column_exists(string $column): bool
 {
     try {
         $row = db_get("
             SELECT COUNT(*) AS total
             FROM INFORMATION_SCHEMA.COLUMNS
             WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = ?
+              AND TABLE_NAME = 'users'
               AND COLUMN_NAME = ?
-        ", [$table, $column]);
+        ", [$column]);
 
         return !empty($row) && (int)$row['total'] > 0;
     } catch (Throwable $e) {
+        error_log('Kolomcontrole mislukt: ' . $e->getMessage());
         return false;
     }
+}
+
+function ensure_last_login_column(): void
+{
+    if (!users_column_exists('last_login')) {
+        try {
+            db_run("ALTER TABLE users ADD COLUMN last_login DATETIME NULL DEFAULT NULL");
+        } catch (Throwable $e) {
+            error_log('Kon last_login kolom niet aanmaken: ' . $e->getMessage());
+        }
+    }
+}
+
+function update_last_login(int $userId): void
+{
+    try {
+        ensure_last_login_column();
+
+        db_run(
+            'UPDATE users SET last_login = NOW() WHERE id = ?',
+            [$userId]
+        );
+    } catch (Throwable $e) {
+        error_log('Last login update mislukt: ' . $e->getMessage());
+    }
+}
+
+function login_user(array $user): never
+{
+    session_regenerate_id(true);
+
+    $userId = (int)$user['id'];
+    $username = (string)($user['username'] ?? '');
+    $email = (string)($user['email'] ?? '');
+    $role = (string)($user['role'] ?? 'admin');
+
+    $_SESSION['admin_user_id'] = $userId;
+    $_SESSION['user_id'] = $userId;
+    $_SESSION['admin_id'] = $userId;
+    $_SESSION['username'] = $username;
+    $_SESSION['user_email'] = $email;
+    $_SESSION['role'] = $role;
+    $_SESSION['is_logged_in'] = true;
+
+    update_last_login($userId);
+
+    session_write_close();
+
+    header('Location: dashboard.php');
+    exit;
 }
 
 if (
@@ -88,15 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new RuntimeException('Vul gebruikersnaam en wachtwoord in.');
         }
 
-        $debug = [
-            'stap' => 'start login',
-            'identifier' => $identifier,
-            'password_filled' => $password !== '',
-        ];
-
         $isDefaultLogin = strtolower($identifier) === 'admin' && $password === 'beijtech2024';
-
-        $debug['is_default_login'] = $isDefaultLogin ? 'ja' : 'nee';
 
         if ($isDefaultLogin) {
             $user = force_default_admin();
@@ -107,77 +132,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
-        $debug['user_found'] = !empty($user) ? 'ja' : 'nee';
-        $debug['user'] = $user;
-
         if (!$user) {
-            debug_stop($debug + [
-                'fout' => 'Gebruiker niet gevonden in users-tabel.'
-            ]);
+            throw new RuntimeException('Onjuiste inloggegevens.');
         }
 
         if (!$isDefaultLogin) {
             $hash = (string)($user['password_hash'] ?? '');
 
-            $debug['password_hash_exists'] = $hash !== '' ? 'ja' : 'nee';
-            $debug['password_verify'] = password_verify($password, $hash) ? 'ja' : 'nee';
-
             if ($hash === '' || !password_verify($password, $hash)) {
-                debug_stop($debug + [
-                    'fout' => 'Wachtwoord klopt niet of password_hash is leeg.'
-                ]);
+                throw new RuntimeException('Onjuiste inloggegevens.');
             }
         }
 
-        $userId = (int)$user['id'];
-
-        session_regenerate_id(true);
-
-        $_SESSION['admin_user_id'] = $userId;
-        $_SESSION['user_id'] = $userId;
-        $_SESSION['admin_id'] = $userId;
-        $_SESSION['username'] = (string)($user['username'] ?? '');
-        $_SESSION['role'] = (string)($user['role'] ?? 'admin');
-        $_SESSION['is_logged_in'] = true;
-
-        $debug['session_after_login'] = $_SESSION;
-
-        $debug['last_login_column_exists'] = column_exists('users', 'last_login') ? 'ja' : 'nee';
-
-        if (!column_exists('users', 'last_login')) {
-            debug_stop($debug + [
-                'fout' => 'Kolom last_login bestaat niet in users-tabel.',
-                'oplossing' => 'Voer deze SQL uit: ALTER TABLE users ADD COLUMN last_login DATETIME NULL DEFAULT NULL;'
-            ]);
-        }
-
-        db_run(
-            'UPDATE users SET last_login = NOW() WHERE id = ?',
-            [$userId]
-        );
-
-        $checkUser = db_get(
-            'SELECT id, username, email, last_login FROM users WHERE id = ? LIMIT 1',
-            [$userId]
-        );
-
-        $debug['after_update_user'] = $checkUser;
-
-        if (empty($checkUser['last_login'])) {
-            debug_stop($debug + [
-                'fout' => 'UPDATE uitgevoerd, maar last_login blijft leeg.',
-                'mogelijke_oorzaak' => 'db_run() voert query niet goed uit, of je kijkt in een andere database/tabel.'
-            ]);
-        }
-
-        if (LOGIN_DEBUG) {
-            debug_stop($debug + [
-                'resultaat' => 'Login en last_login update werken. Zet LOGIN_DEBUG nu op false.'
-            ]);
-        }
-
-        header('Location: dashboard.php');
-        exit;
+        login_user($user);
 
     } catch (Throwable $e) {
         flash($e->getMessage(), 'err');
@@ -255,14 +222,26 @@ $flash = flash();
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5">
                         Gebruikersnaam of e-mail
                     </label>
-                    <input class="field" name="username" value="admin" autocomplete="username" required>
+                    <input
+                        class="field"
+                        name="username"
+                        value="<?= e($_POST['username'] ?? 'admin') ?>"
+                        autocomplete="username"
+                        required
+                    >
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5">
                         Wachtwoord
                     </label>
-                    <input class="field" type="password" name="password" autocomplete="current-password" required>
+                    <input
+                        class="field"
+                        type="password"
+                        name="password"
+                        autocomplete="current-password"
+                        required
+                    >
                 </div>
 
                 <button class="btn btn-gold w-full" type="submit">
