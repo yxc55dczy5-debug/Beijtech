@@ -63,20 +63,68 @@ function check_csrf(): void
 function current_user(): ?array
 {
     static $user = false;
-    if ($user !== false) return $user;
-    $id = $_SESSION['admin_user_id'] ?? null;
-    $user = $id ? db_get('SELECT id, username, email, role, last_login FROM users WHERE id = ?', [(int)$id]) : null;
-    if (!$user) unset($_SESSION['admin_user_id']);
+
+    if ($user !== false) {
+        return $user;
+    }
+
+    $id = null;
+
+    if (!empty($_SESSION['admin_user_id'])) {
+        $id = (int)$_SESSION['admin_user_id'];
+    } elseif (!empty($_SESSION['user_id'])) {
+        $id = (int)$_SESSION['user_id'];
+    } elseif (!empty($_SESSION['admin_id'])) {
+        $id = (int)$_SESSION['admin_id'];
+    }
+
+    if (!$id) {
+        $user = null;
+        return null;
+    }
+
+    try {
+        $user = db_get(
+            'SELECT id, username, email, role, last_login FROM users WHERE id = ? LIMIT 1',
+            [$id]
+        );
+    } catch (Throwable $e) {
+        error_log('current_user fout: ' . $e->getMessage());
+        $user = null;
+    }
+
+    if (!$user) {
+        unset(
+            $_SESSION['admin_user_id'],
+            $_SESSION['user_id'],
+            $_SESSION['admin_id'],
+            $_SESSION['username'],
+            $_SESSION['role'],
+            $_SESSION['is_logged_in']
+        );
+
+        return null;
+    }
+
+    $_SESSION['admin_user_id'] = (int)$user['id'];
+    $_SESSION['user_id'] = (int)$user['id'];
+    $_SESSION['admin_id'] = (int)$user['id'];
+    $_SESSION['username'] = (string)$user['username'];
+    $_SESSION['role'] = (string)($user['role'] ?? 'admin');
+    $_SESSION['is_logged_in'] = true;
+
     return $user;
 }
 
 function require_login(): array
 {
     $user = current_user();
+
     if (!$user) {
         header('Location: login.php');
         exit;
     }
+
     return $user;
 }
 
