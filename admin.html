@@ -583,7 +583,8 @@ async function api(method, path, body = null, isForm = false) {
     const opts = { method, headers: { Authorization: token ? `Bearer ${token}` : '' } };
     if (body && !isForm) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
     if (isForm) opts.body = body;
-    const res  = await fetch(path, opts);
+    const apiPath = path.startsWith('/api/') ? `.${path}` : path;
+    const res  = await fetch(apiPath, opts);
     if (res.status === 204) return null;
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
@@ -638,14 +639,15 @@ document.getElementById('login-form').addEventListener('submit', async e => {
     errEl.classList.add('hidden');
     try {
         const data = await api('POST', '/api/auth/login', {
-            username: document.getElementById('login-user').value,
+            username: document.getElementById('login-user').value.trim(),
             password: document.getElementById('login-pw').value,
         });
         token = data.token;
         localStorage.setItem('bt_token', token);
         currentUser = data.user;
         openDashboard();
-    } catch {
+    } catch (err) {
+        errEl.textContent = err.message || 'Inloggen mislukt. Controleer je gegevens.';
         errEl.classList.remove('hidden');
     }
 });
