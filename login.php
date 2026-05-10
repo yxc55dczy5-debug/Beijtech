@@ -3,8 +3,14 @@ declare(strict_types=1);
 
 session_start();
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 require_once __DIR__ . '/api/config.php';
 require_once __DIR__ . '/api/db.php';
+
+const LOGIN_DEBUG = true;
 
 try {
     maybe_seed();
@@ -17,6 +23,18 @@ try {
 function e(mixed $value): string
 {
     return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+
+function debug_stop(array $data): never
+{
+    if (!LOGIN_DEBUG) {
+        exit;
+    }
+
+    echo '<pre style="background:#111;color:#0f0;padding:20px;font-size:14px;white-space:pre-wrap;">';
+    print_r($data);
+    echo '</pre>';
+    exit;
 }
 
 function flash(?string $message = null, string $type = 'ok'): ?array
@@ -35,40 +53,16 @@ function flash(?string $message = null, string $type = 'ok'): ?array
     return $flash;
 }
 
-function redirect_dashboard(string $message = 'Login gelukt. Dashboard openen...'): never
-{
-    session_write_close();
-
-    header('Location: dashboard.php');
-    echo '<!doctype html><html lang="nl"><head><meta charset="utf-8">';
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
-    echo '<meta http-equiv="refresh" content="0; url=dashboard.php">';
-    echo '<title>Dashboard openen</title>';
-    echo '<script>window.location.replace("dashboard.php");</script>';
-    echo '<style>
-        body{font-family:system-ui;background:#0b0b0b;color:#fff;display:grid;place-items:center;min-height:100vh;margin:0}
-        .box{background:#141414;border:1px solid #2a2a2a;border-radius:14px;padding:28px;max-width:380px}
-        .btn{display:block;background:#C9A028;color:#000;text-align:center;padding:12px 14px;border-radius:10px;font-weight:800;text-decoration:none;margin-top:16px}
-    </style>';
-    echo '</head><body><div class="box">';
-    echo '<h1>' . e($message) . '</h1>';
-    echo '<p>Als je niet automatisch doorgaat, open het dashboard handmatig.</p>';
-    echo '<a class="btn" href="dashboard.php">Open dashboard</a>';
-    echo '</div></body></html>';
-
-    exit;
-}
-
-function users_column_exists(string $column): bool
+function column_exists(string $table, string $column): bool
 {
     try {
         $row = db_get("
             SELECT COUNT(*) AS total
             FROM INFORMATION_SCHEMA.COLUMNS
             WHERE TABLE_SCHEMA = DATABASE()
-              AND TABLE_NAME = 'users'
+              AND TABLE_NAME = ?
               AND COLUMN_NAME = ?
-        ", [$column]);
+        ", [$table, $column]);
 
         return !empty($row) && (int)$row['total'] > 0;
     } catch (Throwable $e) {
@@ -76,56 +70,13 @@ function users_column_exists(string $column): bool
     }
 }
 
-function update_last_login(int $userId): void
-{
-    try {
-        if (users_column_exists('last_login')) {
-            db_run('UPDATE users SET last_login = NOW() WHERE id = ?', [$userId]);
-            return;
-        }
-
-        if (users_column_exists('last_login_at')) {
-            db_run('UPDATE users SET last_login_at = NOW() WHERE id = ?', [$userId]);
-            return;
-        }
-    } catch (Throwable $e) {
-        error_log('Last login update mislukt: ' . $e->getMessage());
-    }
-}
-
-function login_user(array $user): void
-{
-    session_regenerate_id(true);
-
-    $userId = (int)$user['id'];
-    $username = (string)($user['username'] ?? '');
-    $email = (string)($user['email'] ?? '');
-    $role = (string)($user['role'] ?? 'admin');
-
-    /*
-     * Meerdere sessienamen, zodat dashboard.php blijft werken
-     * ook als daar user_id of admin_id wordt gecontroleerd.
-     */
-    $_SESSION['admin_user_id'] = $userId;
-    $_SESSION['user_id'] = $userId;
-    $_SESSION['admin_id'] = $userId;
-
-    $_SESSION['username'] = $username;
-    $_SESSION['user_email'] = $email;
-    $_SESSION['role'] = $role;
-    $_SESSION['is_logged_in'] = true;
-
-    update_last_login($userId);
-
-    redirect_dashboard('Ingelogd als ' . $username . '.');
-}
-
 if (
     !empty($_SESSION['admin_user_id']) ||
     !empty($_SESSION['user_id']) ||
     !empty($_SESSION['admin_id'])
 ) {
-    redirect_dashboard('Je bent al ingelogd.');
+    header('Location: dashboard.php');
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -137,7 +88,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new RuntimeException('Vul gebruikersnaam en wachtwoord in.');
         }
 
+        $debug = [
+            'stap' => 'start login',
+            'identifier' => $identifier,
+            'password_filled' => $password !== '',
+        ];
+
         $isDefaultLogin = strtolower($identifier) === 'admin' && $password === 'beijtech2024';
+
+        $debug['is_default_login'] = $isDefaultLogin ? 'ja' : 'nee';
 
         if ($isDefaultLogin) {
             $user = force_default_admin();
@@ -148,19 +107,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
         }
 
+        $debug['user_found'] = !empty($user) ? 'ja' : 'nee';
+        $debug['user'] = $user;
+
         if (!$user) {
-            throw new RuntimeException('Onjuiste inloggegevens.');
+            debug_stop($debug + [
+                'fout' => 'Gebruiker niet gevonden in users-tabel.'
+            ]);
         }
 
         if (!$isDefaultLogin) {
             $hash = (string)($user['password_hash'] ?? '');
 
+            $debug['password_hash_exists'] = $hash !== '' ? 'ja' : 'nee';
+            $debug['password_verify'] = password_verify($password, $hash) ? 'ja' : 'nee';
+
             if ($hash === '' || !password_verify($password, $hash)) {
-                throw new RuntimeException('Onjuiste inloggegevens.');
+                debug_stop($debug + [
+                    'fout' => 'Wachtwoord klopt niet of password_hash is leeg.'
+                ]);
             }
         }
 
-        login_user($user);
+        $userId = (int)$user['id'];
+
+        session_regenerate_id(true);
+
+        $_SESSION['admin_user_id'] = $userId;
+        $_SESSION['user_id'] = $userId;
+        $_SESSION['admin_id'] = $userId;
+        $_SESSION['username'] = (string)($user['username'] ?? '');
+        $_SESSION['role'] = (string)($user['role'] ?? 'admin');
+        $_SESSION['is_logged_in'] = true;
+
+        $debug['session_after_login'] = $_SESSION;
+
+        $debug['last_login_column_exists'] = column_exists('users', 'last_login') ? 'ja' : 'nee';
+
+        if (!column_exists('users', 'last_login')) {
+            debug_stop($debug + [
+                'fout' => 'Kolom last_login bestaat niet in users-tabel.',
+                'oplossing' => 'Voer deze SQL uit: ALTER TABLE users ADD COLUMN last_login DATETIME NULL DEFAULT NULL;'
+            ]);
+        }
+
+        db_run(
+            'UPDATE users SET last_login = NOW() WHERE id = ?',
+            [$userId]
+        );
+
+        $checkUser = db_get(
+            'SELECT id, username, email, last_login FROM users WHERE id = ? LIMIT 1',
+            [$userId]
+        );
+
+        $debug['after_update_user'] = $checkUser;
+
+        if (empty($checkUser['last_login'])) {
+            debug_stop($debug + [
+                'fout' => 'UPDATE uitgevoerd, maar last_login blijft leeg.',
+                'mogelijke_oorzaak' => 'db_run() voert query niet goed uit, of je kijkt in een andere database/tabel.'
+            ]);
+        }
+
+        if (LOGIN_DEBUG) {
+            debug_stop($debug + [
+                'resultaat' => 'Login en last_login update werken. Zet LOGIN_DEBUG nu op false.'
+            ]);
+        }
+
+        header('Location: dashboard.php');
+        exit;
 
     } catch (Throwable $e) {
         flash($e->getMessage(), 'err');
@@ -238,26 +255,14 @@ $flash = flash();
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5">
                         Gebruikersnaam of e-mail
                     </label>
-                    <input
-                        class="field"
-                        name="username"
-                        value="<?= e($_POST['username'] ?? 'admin') ?>"
-                        autocomplete="username"
-                        required
-                    >
+                    <input class="field" name="username" value="admin" autocomplete="username" required>
                 </div>
 
                 <div>
                     <label class="block text-xs uppercase font-bold text-gray-400 mb-1.5">
                         Wachtwoord
                     </label>
-                    <input
-                        class="field"
-                        type="password"
-                        name="password"
-                        autocomplete="current-password"
-                        required
-                    >
+                    <input class="field" type="password" name="password" autocomplete="current-password" required>
                 </div>
 
                 <button class="btn btn-gold w-full" type="submit">
